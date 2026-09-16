@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Flag, ChevronRight, Calendar } from "lucide-react";
-import { LeMansCelebration } from "@/components/LeMansCelebration";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -69,8 +68,6 @@ export default function Landing() {
       <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(268_30%_15%_/_0.3),_transparent_60%)]" />
 
       <div className="relative z-10">
-        <LeMansCelebration />
-
         <section className="relative overflow-hidden border-b border-border h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)]">
           <div className="container relative h-full flex items-start justify-center pt-24 sm:pt-28 md:pt-32">
             <motion.div
