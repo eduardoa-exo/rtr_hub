@@ -114,7 +114,7 @@ Issues a presigned PUT URL for uploading a file.
 - `contentType` (required): MIME type (must be image/jpeg, image/png, image/webp, image/avif, or image/gif)
 - `fileName` (optional): Original filename (will be sanitized)
 - `entityId` (optional): Entity ID for namespacing (e.g., raceId, championshipId)
-- `sizeBytes` (optional): File size in bytes (max 10MB)
+- `sizeBytes` (required): File size in bytes (max 10MB). This is a presign-time check; PUT still relies on R2 enforcement.
 
 **Response (200 OK):**
 ```json
@@ -136,8 +136,8 @@ Issues a presigned PUT URL for uploading a file.
 
 **Errors:**
 - `401 Unauthorized`: Missing or invalid JWT
-- `400 Bad Request`: Invalid type, content type, or size
-- `500 Internal Server Error`: Server error (check logs)
+- `400 Bad Request`: Invalid type, content type, size, or missing sizeBytes
+- `500 internal_error`: Server error (details logged internally, not exposed to client)
 
 ### GET /health
 

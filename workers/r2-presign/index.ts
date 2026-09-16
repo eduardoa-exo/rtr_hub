@@ -22,7 +22,7 @@ interface PresignRequest {
   contentType: string;
   fileName?: string;
   entityId?: string;
-  sizeBytes?: number;
+  sizeBytes: number;
 }
 
 interface PresignResponse {
@@ -139,6 +139,9 @@ async function generatePresignedUrl(
 ): Promise<string> {
   const endpoint = `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
   const url = new URL(`/${env.R2_BUCKET}/${key}`, endpoint);
+  
+  // MUST include X-Amz-Expires in URL BEFORE signing for SigV4
+  url.searchParams.set('X-Amz-Expires', expiresIn.toString());
 
   const aws = new AwsClient({
     accessKeyId: env.R2_ACCESS_KEY_ID,
@@ -160,11 +163,7 @@ async function generatePresignedUrl(
     },
   });
 
-  // Add expiration to query params
-  const signedUrl = new URL(signedRequest.url);
-  signedUrl.searchParams.set('X-Amz-Expires', expiresIn.toString());
-
-  return signedUrl.toString();
+  return signedRequest.url;
 }
 
 /**
@@ -264,8 +263,20 @@ async function handlePresign(request: Request, env: Env): Promise<Response> {
       );
     }
 
-    // Validate size
-    if (body.sizeBytes && body.sizeBytes > MAX_FILE_SIZE_BYTES) {
+    // Validate size (required)
+    if (!body.sizeBytes || typeof body.sizeBytes !== 'number') {
+      return new Response(
+        JSON.stringify({
+          error: 'Bad Request: sizeBytes is required',
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    if (body.sizeBytes > MAX_FILE_SIZE_BYTES) {
       return new Response(
         JSON.stringify({
           error: `Bad Request: File too large. Max ${MAX_FILE_SIZE_BYTES / 1024 / 1024}MB`,
@@ -300,11 +311,13 @@ async function handlePresign(request: Request, env: Env): Promise<Response> {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error('Presign error:', error);
+    // Log internally without exposing secrets or JWT
+    console.error('Presign error:', error instanceof Error ? error.message : 'Unknown error');
+    
+    // Return generic error to client (never leak error details)
     return new Response(
       JSON.stringify({
-        error: 'Internal Server Error',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        error: 'internal_error',
       }),
       {
         status: 500,
