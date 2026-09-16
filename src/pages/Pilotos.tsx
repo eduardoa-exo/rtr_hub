@@ -380,6 +380,8 @@ export default function Pilotos() {
                       <img
                         src={driver.image_url}
                         alt={driver.name}
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-contain object-center"
                       />
                     ) : (
@@ -402,7 +404,7 @@ export default function Pilotos() {
                       className="inline-flex items-center gap-1.5 mt-3 text-[#E4405F] hover:text-[#E4405F]/80 transition-colors"
                       aria-label={`Instagram de ${driver.name}`}
                     >
-                      <img src="/images/instagram.png" alt="Instagram" className="h-4 w-4 shrink-0" />
+                      <img src="/images/instagram.png" alt="Instagram" loading="lazy" decoding="async" className="h-4 w-4 shrink-0" />
                     </a>
                   )}
                 </motion.div>

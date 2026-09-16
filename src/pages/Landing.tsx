@@ -104,18 +104,24 @@ export default function Landing() {
 
       {activeImage ? (
         <div className="pointer-events-none fixed inset-0 z-0">
-          {[activeImage, nextImage].filter(Boolean).map((img, index) => (
+          <img
+            key={`page-bg-${activeImage.id}`}
+            src={activeImage.url}
+            alt={activeImage.description ?? "Imagem da equipa"}
+            loading="eager"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover opacity-100"
+          />
+          {nextImage && (
             <img
-              key={`page-bg-${img!.id}`}
-              src={img!.url}
-              alt={img!.description ?? "Imagem da equipa"}
-              loading={index === 0 ? "eager" : "lazy"}
+              key={`page-bg-${nextImage.id}`}
+              src={nextImage.url}
+              alt={nextImage.description ?? "Imagem da equipa"}
+              loading="lazy"
               decoding="async"
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                index === 0 ? "opacity-100" : "opacity-0"
-              }`}
+              className="absolute inset-0 h-full w-full object-cover opacity-0"
             />
-          ))}
+          )}
         </div>
       ) : (
         <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(24_90%_50%_/_0.12)_0%,_hsl(268_40%_30%_/_0.06)_40%,_transparent_70%)] bg-secondary/30" />
@@ -307,6 +313,8 @@ export default function Landing() {
                       <img
                         src={img.url}
                         alt={img.description ?? ""}
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover"
                       />
                       <Button
