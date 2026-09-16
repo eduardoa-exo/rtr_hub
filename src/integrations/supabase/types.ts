@@ -479,6 +479,63 @@ export type Database = {
         }
         Relationships: []
       }
+      scoreboard_live_config: {
+        Row: {
+          id: number
+          enabled: boolean
+          title: string
+          intro: string | null
+          updated_at: string
+        }
+        Insert: {
+          id: number
+          enabled?: boolean
+          title?: string
+          intro?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          enabled?: boolean
+          title?: string
+          intro?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      scoreboard_live_lines: {
+        Row: {
+          id: string
+          sort_order: number
+          condition_label: string
+          result_label: string
+          result_variant: string
+          visible: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          sort_order?: number
+          condition_label: string
+          result_label: string
+          result_variant?: string
+          visible?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          sort_order?: number
+          condition_label?: string
+          result_label?: string
+          result_variant?: string
+          visible?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
