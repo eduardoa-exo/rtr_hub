@@ -136,11 +136,44 @@ export default function ScoreboardLiveAdmin() {
     setSubmitting(true);
 
     try {
+      const trimmedTitle = configForm.title.trim();
+      const trimmedIntro = configForm.intro.trim();
+
+      if (!trimmedTitle || trimmedTitle.length === 0) {
+        toast({
+          title: "Erro",
+          description: "O título não pode estar vazio.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      if (trimmedTitle.length > 80) {
+        toast({
+          title: "Erro",
+          description: "O título não pode ter mais de 80 caracteres.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      if (trimmedIntro.length > 500) {
+        toast({
+          title: "Erro",
+          description: "A introdução não pode ter mais de 500 caracteres.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+
       const configData = {
         id: 1,
         enabled: configForm.enabled,
-        title: configForm.title || "Scoreboard Live",
-        intro: configForm.intro || null,
+        title: trimmedTitle,
+        intro: trimmedIntro || null,
       };
 
       const { error } = await supabase
@@ -166,10 +199,40 @@ export default function ScoreboardLiveAdmin() {
   const handleSaveLine = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!lineForm.condition_label.trim() || !lineForm.result_label.trim()) {
+    const trimmedCondition = lineForm.condition_label.trim();
+    const trimmedResult = lineForm.result_label.trim();
+
+    if (!trimmedCondition || trimmedCondition.length === 0) {
       toast({
         title: "Erro",
-        description: "Preencha os campos obrigatórios.",
+        description: "A condição não pode estar vazia.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (trimmedCondition.length > 200) {
+      toast({
+        title: "Erro",
+        description: "A condição não pode ter mais de 200 caracteres.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!trimmedResult || trimmedResult.length === 0) {
+      toast({
+        title: "Erro",
+        description: "O resultado não pode estar vazio.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (trimmedResult.length > 80) {
+      toast({
+        title: "Erro",
+        description: "O resultado não pode ter mais de 80 caracteres.",
         variant: "destructive",
       });
       return;
@@ -178,15 +241,17 @@ export default function ScoreboardLiveAdmin() {
     setSubmitting(true);
 
     try {
+      const lineData = {
+        condition_label: trimmedCondition,
+        result_label: trimmedResult,
+        result_variant: lineForm.result_variant,
+        visible: lineForm.visible,
+      };
+
       if (editingLineId) {
         const { error } = await supabase
           .from("scoreboard_live_lines")
-          .update({
-            condition_label: lineForm.condition_label,
-            result_label: lineForm.result_label,
-            result_variant: lineForm.result_variant,
-            visible: lineForm.visible,
-          })
+          .update(lineData)
           .eq("id", editingLineId);
 
         if (error) throw error;
@@ -200,11 +265,8 @@ export default function ScoreboardLiveAdmin() {
           .from("scoreboard_live_lines")
           .insert([
             {
+              ...lineData,
               sort_order: maxOrder + 1,
-              condition_label: lineForm.condition_label,
-              result_label: lineForm.result_label,
-              result_variant: lineForm.result_variant,
-              visible: lineForm.visible,
             },
           ]);
 
@@ -376,7 +438,12 @@ export default function ScoreboardLiveAdmin() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="title">Título</Label>
+                    <Label htmlFor="title">
+                      Título
+                      <span className="text-xs text-muted-foreground ml-2">
+                        ({configForm.title.length}/80)
+                      </span>
+                    </Label>
                     <Input
                       id="title"
                       value={configForm.title}
@@ -385,11 +452,18 @@ export default function ScoreboardLiveAdmin() {
                       }
                       placeholder="Scoreboard Live"
                       className="bg-secondary"
+                      maxLength={80}
+                      required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="intro">Introdução (opcional)</Label>
+                    <Label htmlFor="intro">
+                      Introdução (opcional)
+                      <span className="text-xs text-muted-foreground ml-2">
+                        ({configForm.intro.length}/500)
+                      </span>
+                    </Label>
                     <Textarea
                       id="intro"
                       value={configForm.intro}
@@ -398,6 +472,7 @@ export default function ScoreboardLiveAdmin() {
                       }
                       placeholder="Texto de introdução para a página..."
                       className="bg-secondary min-h-[100px]"
+                      maxLength={500}
                     />
                   </div>
 
@@ -424,7 +499,12 @@ export default function ScoreboardLiveAdmin() {
                 </h2>
                 <form onSubmit={handleSaveLine} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="condition">Condição</Label>
+                    <Label htmlFor="condition">
+                      Condição
+                      <span className="text-xs text-muted-foreground ml-2">
+                        ({lineForm.condition_label.length}/200)
+                      </span>
+                    </Label>
                     <Input
                       id="condition"
                       value={lineForm.condition_label}
@@ -436,12 +516,18 @@ export default function ScoreboardLiveAdmin() {
                       }
                       placeholder="Ex: Se o piloto A vencer..."
                       className="bg-secondary"
+                      maxLength={200}
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="result">Resultado</Label>
+                    <Label htmlFor="result">
+                      Resultado
+                      <span className="text-xs text-muted-foreground ml-2">
+                        ({lineForm.result_label.length}/80)
+                      </span>
+                    </Label>
                     <Input
                       id="result"
                       value={lineForm.result_label}
@@ -453,6 +539,7 @@ export default function ScoreboardLiveAdmin() {
                       }
                       placeholder="Ex: Piloto A é campeão"
                       className="bg-secondary"
+                      maxLength={80}
                       required
                     />
                   </div>
