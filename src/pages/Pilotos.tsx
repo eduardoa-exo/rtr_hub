@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { RacingLoader } from "@/components/RacingLoader";
 import { supabase } from "@/integrations/supabase/client";
 import { compressImage } from "@/lib/compressImage";
+import { uploadMedia } from "@/lib/r2Upload";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -123,51 +124,27 @@ export default function Pilotos() {
     setUploadingImage(true);
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error("Não autenticado");
+      }
+
       const { file: compressed } = await compressImage(file, {
         maxEdge: 800,
         quality: 0.8,
       });
-      const fileExt = compressed.name.split(".").pop() || "webp";
-      // Unique filename invalidates CDN/browser cache without ?t= query params
-      const fileName = `profile-${Date.now()}.${fileExt}`;
+
       const driverId =
         editingDriver?.id || `temp-${Math.random().toString(36).substring(2)}`;
-      const filePath = `${driverId}/${fileName}`;
 
-      if (editingDriver?.image_url) {
-        try {
-          const oldUrl = editingDriver.image_url;
-          const urlParts = oldUrl.split("/Pilotos/");
-          if (urlParts.length > 1) {
-            const oldPath = urlParts[1].split("?")[0];
-            await supabase.storage.from("Pilotos").remove([oldPath]);
-          }
-        } catch {
-          // non-critical: old image cleanup failed
-        }
-      }
+      const { publicUrl } = await uploadMedia({
+        file: compressed,
+        type: "championship",
+        authToken: session.access_token,
+        entityId: driverId,
+      });
 
-      const { error: uploadError } = await supabase.storage
-        .from("Pilotos")
-        .upload(filePath, compressed, {
-          cacheControl: "31536000",
-          upsert: false,
-        });
-
-      if (uploadError) {
-        toast({
-          title: "Erro ao enviar imagem",
-          description: uploadError.message,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const { data: publicUrlData } = supabase.storage
-        .from("Pilotos")
-        .getPublicUrl(filePath);
-
-      setForm({ ...form, image_url: publicUrlData.publicUrl });
+      setForm({ ...form, image_url: publicUrl });
       toast({ title: "Imagem carregada!" });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Erro desconhecido";
