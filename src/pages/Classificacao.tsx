@@ -7,6 +7,7 @@ import { Plus, Edit, Trash2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { uploadMedia } from "@/lib/r2Upload";
 import { useStandings } from "@/hooks/queries/useStandings";
 import { queryKeys } from "@/hooks/queries/queryKeys";
 import {
@@ -271,57 +272,33 @@ export default function Classificacao() {
 
     setUploadingImage(true);
 
-    // Generate file path
-    const fileExt = file.name.split(".").pop();
-    const fileName = `logo.${fileExt}`;
-
-    // If editing, use standing ID; if adding, use temp random ID
-    const standingId =
-      editingStanding?.id || `temp-${Math.random().toString(36).substring(2)}`;
-    const filePath = `${standingId}/${fileName}`;
-
-    // If editing and has old image, try to delete it first
-    if (editingStanding?.car_logo_url) {
-      try {
-        const oldUrl = editingStanding.car_logo_url;
-        const urlParts = oldUrl.split("/ChampionshipLogos/");
-        if (urlParts.length > 1) {
-          const oldPath = urlParts[1].split("?")[0];
-          await supabase.storage.from("ChampionshipLogos").remove([oldPath]);
-        }
-      } catch (err) {
-        // non-critical: old image cleanup failed
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error("Não autenticado");
       }
-    }
 
-    // Upload to Supabase Storage
-    const { error: uploadError } = await supabase.storage
-      .from("ChampionshipLogos")
-      .upload(filePath, file, {
-        upsert: true,
+      // Use standing ID or car number as entity ID
+      const entityId = editingStanding?.id || form.car_number;
+
+      const { publicUrl } = await uploadMedia({
+        file,
+        type: "championship",
+        authToken: session.access_token,
+        entityId,
       });
 
-    if (uploadError) {
+      setForm({ ...form, car_logo_url: publicUrl });
+      setUploadingImage(false);
+      toast({ title: "Imagem carregada!" });
+    } catch (error: any) {
       toast({
         title: "Erro ao enviar imagem",
-        description: uploadError.message,
+        description: error.message,
         variant: "destructive",
       });
       setUploadingImage(false);
-      return;
     }
-
-    // Get public URL
-    const { data: publicUrlData } = supabase.storage
-      .from("ChampionshipLogos")
-      .getPublicUrl(filePath);
-
-    // Add timestamp to force browser to reload the image
-    const urlWithTimestamp = `${publicUrlData.publicUrl}?t=${Date.now()}`;
-
-    setForm({ ...form, car_logo_url: urlWithTimestamp });
-    setUploadingImage(false);
-    toast({ title: "Imagem carregada!" });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -406,18 +383,7 @@ export default function Classificacao() {
     if (!standingToDelete) return;
     const classToRecompute = standingToDelete.class as "LMP2" | "GT3 PRO";
 
-    // Delete logo from storage if exists
-    if (standingToDelete.car_logo_url) {
-      try {
-        const urlParts = standingToDelete.car_logo_url.split("/ChampionshipLogos/");
-        if (urlParts.length > 1) {
-          const path = urlParts[1].split("?")[0];
-          await supabase.storage.from("ChampionshipLogos").remove([path]);
-        }
-      } catch (err) {
-        // non-critical: logo cleanup failed
-      }
-    }
+    // R2 files will remain but are orphaned (cleanup can be done separately)
 
     // Delete from database
     const { error } = await supabase

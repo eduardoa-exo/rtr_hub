@@ -5,6 +5,7 @@ import { Cloud, Map, Loader2, Upload, X, Thermometer, CloudRain } from "lucide-r
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { uploadMedia } from "@/lib/r2Upload";
 import type { Database } from "@/integrations/supabase/types";
 
 type TrackInfoRow = Database["public"]["Tables"]["track_info"]["Row"];
@@ -109,21 +110,16 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
     setUploading(type);
 
     try {
-      const bucket = type === "map" ? "track-images" : "track-weather";
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      const filePath = `${raceId}/${fileName}`;
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error("Não autenticado");
 
-      const { error: uploadError } = await supabase.storage
-        .from(bucket)
-        .upload(filePath, file, {
-          cacheControl: "31536000",
-          upsert: false,
-        });
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage.from(bucket).getPublicUrl(filePath);
+      const uploadType = (type === "map" || type === "tempChart" || type === "precipChart") ? "map" : "weather";
+      const { publicUrl, key } = await uploadMedia({
+        file,
+        type: uploadType,
+        authToken: session.access_token,
+        entityId: raceId,
+      });
 
       const descriptions: Record<typeof type, string> = {
         weather: "Weather forecast",
@@ -147,7 +143,7 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
       const { data: imageData, error: imageError } = await supabase
         .from("images")
         .insert({
-          storage_path: filePath,
+          storage_path: key,
           url: publicUrl,
           filename: file.name,
           mime_type: file.type,
