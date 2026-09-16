@@ -1,0 +1,29 @@
+# Cloudflare Worker Configuration for R2 Presigned URLs
+# 
+# IMPORTANT: Do NOT commit real credentials to this file.
+# Set secrets using: wrangler secret put <SECRET_NAME>
+
+name = "rtr-hub-r2-presign"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+
+# Environment variables (non-sensitive)
+[vars]
+R2_ACCOUNT_ID = "1b19ccb374ddcd2fc94563d710beac2a"
+R2_BUCKET = "rtr-hub-media"
+R2_PUBLIC_BASE = "https://pub-f0a47a1e0660483ac04c343f23495c08.r2.dev"
+
+# ALLOWED_ORIGINS - comma-separated list of allowed origins for CORS
+# Example: "http://localhost:5173,https://your-app.vercel.app"
+# IMPORTANT: Set this before deployment!
+ALLOWED_ORIGINS = "http://localhost:5173,http://localhost:4173"
+
+# Secrets (set using wrangler secret put <NAME>)
+# Run these commands to set secrets:
+# wrangler secret put R2_ACCESS_KEY_ID
+# wrangler secret put R2_SECRET_ACCESS_KEY  
+# wrangler secret put SUPABASE_JWT_SECRET
+
+# Note: Secrets are NOT stored in wrangler.toml for security reasons.
+# They must be set using the Wrangler CLI or Cloudflare Dashboard.
+# See README.md for detailed instructions.
