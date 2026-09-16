@@ -6,6 +6,7 @@
  */
 
 import { AwsClient } from 'aws4fetch';
+import * as jose from 'jose';
 
 interface Env {
   R2_ACCOUNT_ID: string;
@@ -13,7 +14,8 @@ interface Env {
   R2_ACCESS_KEY_ID: string;
   R2_SECRET_ACCESS_KEY: string;
   R2_PUBLIC_BASE: string;
-  SUPABASE_JWT_SECRET: string;
+  SUPABASE_URL: string;
+  SUPABASE_JWT_SECRET?: string;
   ALLOWED_ORIGINS: string;
 }
 
@@ -53,52 +55,37 @@ const TYPE_PREFIX_MAP: Record<string, string> = {
 };
 
 /**
- * Verify Supabase JWT
+ * Verify Supabase JWT.
+ * Prefers JWKS (ES256/RS256 signing keys). Falls back to legacy HS256 JWT secret.
  */
-async function verifySupabaseJWT(token: string, secret: string): Promise<boolean> {
+async function verifySupabaseJWT(token: string, env: Env): Promise<boolean> {
   try {
-    const encoder = new TextEncoder();
-    const secretKey = await crypto.subtle.importKey(
-      'raw',
-      encoder.encode(secret),
-      { name: 'HMAC', hash: 'SHA-256' },
-      false,
-      ['verify']
-    );
-
-    const [headerB64, payloadB64, signatureB64] = token.split('.');
-    if (!headerB64 || !payloadB64 || !signatureB64) {
-      return false;
+    const supabaseUrl = (env.SUPABASE_URL || '').replace(/\/$/, '');
+    if (supabaseUrl) {
+      try {
+        const JWKS = jose.createRemoteJWKSet(
+          new URL(`${supabaseUrl}/auth/v1/.well-known/jwks.json`)
+        );
+        await jose.jwtVerify(token, JWKS, {
+          issuer: `${supabaseUrl}/auth/v1`,
+        });
+        return true;
+      } catch (jwksErr) {
+        console.error('JWKS JWT verification failed, trying HS256 fallback:', jwksErr);
+      }
     }
 
-    const data = encoder.encode(`${headerB64}.${payloadB64}`);
-    const signature = base64UrlDecode(signatureB64);
+    if (!env.SUPABASE_JWT_SECRET) return false;
 
-    const valid = await crypto.subtle.verify('HMAC', secretKey, signature, data);
-    if (!valid) return false;
-
-    // Check expiration
-    const payload = JSON.parse(atob(payloadB64.replace(/-/g, '+').replace(/_/g, '/')));
-    const now = Math.floor(Date.now() / 1000);
-    if (payload.exp && payload.exp < now) {
-      return false;
-    }
-
+    const secret = new TextEncoder().encode(env.SUPABASE_JWT_SECRET);
+    await jose.jwtVerify(token, secret, {
+      algorithms: ['HS256'],
+    });
     return true;
   } catch (error) {
     console.error('JWT verification error:', error);
     return false;
   }
-}
-
-function base64UrlDecode(str: string): Uint8Array {
-  const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
-  const binString = atob(base64);
-  const bytes = new Uint8Array(binString.length);
-  for (let i = 0; i < binString.length; i++) {
-    bytes[i] = binString.charCodeAt(i);
-  }
-  return bytes;
 }
 
 /**
@@ -226,7 +213,7 @@ async function handlePresign(request: Request, env: Env): Promise<Response> {
     }
 
     const token = authHeader.substring(7);
-    const isValid = await verifySupabaseJWT(token, env.SUPABASE_JWT_SECRET);
+    const isValid = await verifySupabaseJWT(token, env);
     if (!isValid) {
       return new Response(JSON.stringify({ error: 'Unauthorized: Invalid JWT' }), {
         status: 401,
