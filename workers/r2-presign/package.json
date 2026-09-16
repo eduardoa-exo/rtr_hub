@@ -1,0 +1,21 @@
+{
+  "name": "r2-presign-worker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloudflare Worker for R2 presigned upload URLs",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "aws4fetch": "^1.0.20"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250112.0",
+    "typescript": "^5.8.0",
+    "vitest": "^2.0.0",
+    "wrangler": "^3.100.0"
+  }
+}
