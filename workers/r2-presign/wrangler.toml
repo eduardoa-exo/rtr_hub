@@ -12,7 +12,7 @@ compatibility_date = "2024-01-01"
 SUPABASE_URL = "https://ggkvgohzwwoqdeaqhkzq.supabase.co"
 R2_ACCOUNT_ID = "1b19ccb374ddcd2fc94563d710beac2a"
 R2_BUCKET = "rtr-hub-media"
-R2_PUBLIC_BASE = "https://pub-f0a47a1e0660483ac04c343f23495c08.r2.dev"
+R2_PUBLIC_BASE = "https://pub-f0a47a1e0660483ca04c343f23495c08.r2.dev"
 
 # ALLOWED_ORIGINS - comma-separated list of allowed origins for CORS
 # Example: "http://localhost:5173,https://your-app.vercel.app"
