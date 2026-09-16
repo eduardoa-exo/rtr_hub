@@ -276,6 +276,18 @@ async function handlePresign(request: Request, env: Env): Promise<Response> {
       );
     }
 
+    if (!Number.isFinite(body.sizeBytes) || body.sizeBytes <= 0) {
+      return new Response(
+        JSON.stringify({
+          error: 'Bad Request: sizeBytes must be a positive number',
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
     if (body.sizeBytes > MAX_FILE_SIZE_BYTES) {
       return new Response(
         JSON.stringify({
