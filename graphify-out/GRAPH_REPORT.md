@@ -1,13 +1,18 @@
-# Graph Report - .  (2026-06-09)
+# Graph Report - rtr_hub  (2026-09-16)
 
 ## Corpus Check
-- 130 files · ~477,307 words
+- 131 files · ~488,607 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3975 nodes · 8338 edges · 414 communities (104 shown, 310 thin omitted)
+- 4053 nodes · 8505 edges · 426 communities (106 shown, 320 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 16 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `62cee3da`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_PDF Worker Core|PDF Worker Core]]
@@ -417,6 +422,18 @@
 - [[_COMMUNITY_Community 405|Community 405]]
 - [[_COMMUNITY_Community 407|Community 407]]
 - [[_COMMUNITY_Community 408|Community 408]]
+- [[_COMMUNITY_Community 414|Community 414]]
+- [[_COMMUNITY_Community 415|Community 415]]
+- [[_COMMUNITY_Community 416|Community 416]]
+- [[_COMMUNITY_Community 417|Community 417]]
+- [[_COMMUNITY_Community 418|Community 418]]
+- [[_COMMUNITY_Community 419|Community 419]]
+- [[_COMMUNITY_Community 420|Community 420]]
+- [[_COMMUNITY_Community 421|Community 421]]
+- [[_COMMUNITY_Community 422|Community 422]]
+- [[_COMMUNITY_Community 423|Community 423]]
+- [[_COMMUNITY_Community 424|Community 424]]
+- [[_COMMUNITY_Community 425|Community 425]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `warn()` - 156 edges
@@ -450,99 +467,91 @@
 - **Supabase Security Layer** — rtr_hub_supabase_auth, rtr_hub_service_role_key, rtr_hub_disable_public_signup, rtr_hub_rls_policies [EXTRACTED 1.00]
 - **RTR Brand Identity Assets** — images_rtr_logo, public_android_chrome_192x192, public_android_chrome_512x512, public_apple_touch_icon, public_favicon_16x16, public_favicon_32x32 [INFERRED 0.95]
 
-## Communities (414 total, 310 thin omitted)
+## Communities (426 total, 320 thin omitted)
 
 ### Community 0 - "PDF Worker Core"
 Cohesion: 0.01
-Nodes (166): aa, ac, addChildren(), ai, an, ao, as, ba (+158 more)
+Nodes (167): aa, ac, ai, an, ao, as, ba, bi (+159 more)
 
 ### Community 3 - "PDF XFA Constructors"
 Cohesion: 0.02
-Nodes (47): AppearanceFilter, BatchOutput, Bind, Calculate, Certificates, Compress, Connect, CurrencySymbol (+39 more)
+Nodes (50): AppearanceFilter, BatchOutput, Bind, Calculate, Certificates, Compress, Connect, CurrencySymbol (+42 more)
 
 ### Community 4 - "PDF Annotations & Catalog"
 Cohesion: 0.05
-Nodes (14): AppearanceStreamEvaluator, Catalog, collectActions(), DecodingContext, FeatureTest, fetchDest(), fetchRemoteDest(), fonts_Glyph (+6 more)
+Nodes (19): Catalog, _collectJS(), ColorSpaceUtils, createValidAbsoluteUrl(), decodeString(), FeatureTest, fetchDest(), fetchRemoteDest() (+11 more)
 
 ### Community 5 - "CFF Font Compiler"
-Cohesion: 0.06
-Nodes (10): CFFCompiler, CFFDict, CFFOffsetTracker, CFFParser, CFFPrivateDict, CFFStrings, CFFTopDict, parseIndex() (+2 more)
+Cohesion: 0.05
+Nodes (13): CFFCompiler, CFFDict, CFFFDSelect, CFFOffsetTracker, CFFParser, CFFPrivateDict, CFFStrings, CFFTopDict (+5 more)
 
 ### Community 6 - "Package Dependencies"
 Cohesion: 0.04
 Nodes (55): dependencies, class-variance-authority, clsx, cmdk, country-flag-icons, date-fns, embla-carousel-react, framer-motion (+47 more)
 
 ### Community 7 - "Font Table Builder"
-Cohesion: 0.06
-Nodes (44): adjustMapping(), adjustWidths(), amendFallbackToUnicode(), applyStandardFontGlyphMap(), buildToFontChar(), createCmapTable(), createNameTable(), createOS2Table() (+36 more)
+Cohesion: 0.15
+Nodes (17): createCmapTable(), createNameTable(), createOS2Table(), createPostscriptName(), createPostTable(), getUnicodeRangeFor(), int16(), isWinNameRecord() (+9 more)
 
 ### Community 8 - "PDF Manager & Factory"
-Cohesion: 0.07
-Nodes (5): clearGlobalCaches(), getNewAnnotationsMap(), PDFDocument, validateCSSFont(), XFAFactory
+Cohesion: 0.08
+Nodes (10): AnnotationFactory, clearGlobalCaches(), getNewAnnotationsMap(), getVerbosityLevel(), getXfaFontDict(), getXfaFontName(), isRefsEqual(), NetworkPdfManager (+2 more)
 
 ### Community 9 - "PDF XFA Elements"
-Cohesion: 0.04
-Nodes (22): Arc, Break, BreakAfter, BreakBefore, Comb, config_Area, DayNames, Equate (+14 more)
+Cohesion: 0.03
+Nodes (29): Arc, Barcode, Break, BreakAfter, BreakBefore, ChoiceList, Comb, config_Area (+21 more)
 
 ### Community 10 - "PDF Dict & Catalog Pages"
-Cohesion: 0.09
-Nodes (6): _collectJS(), isDict(), isName(), ObjectLoader, writeObject(), writeValue()
+Cohesion: 0.05
+Nodes (15): addChildren(), EquateRange, escapePDFName(), getIndexes(), GlobalColorSpaceCache, incrementalUpdate(), isDict(), isName() (+7 more)
 
 ### Community 11 - "PDF Stream Decoders"
-Cohesion: 0.06
-Nodes (8): AsciiHexStream, DecodeStream, DecryptStream, Jbig2Stream, JpxStream, PredictorStream, RunLengthStream, StreamsSequenceStream
+Cohesion: 0.05
+Nodes (10): Ascii85Stream, AsciiHexStream, CCITTFaxStream, DecodeStream, DecryptStream, Jbig2Stream, JpxStream, PredictorStream (+2 more)
 
 ### Community 13 - "PDF Font Mapping"
-Cohesion: 0.08
-Nodes (8): Empty, getEncoding(), IdentityToUnicodeMap, isPDFFunction(), PartialEvaluator, qr, Root, type1FontGlyphMapping()
+Cohesion: 0.15
+Nodes (5): adjustMapping(), Empty, getLookupTableFactory(), qr, Root
 
 ### Community 14 - "XFA Layout Engine"
-Cohesion: 0.12
-Nodes (21): applyAssist(), checkDimensions(), computeBbox(), createWrapper(), fixDimensions(), getBorderDims(), handleBreak(), handleOverflow() (+13 more)
+Cohesion: 0.24
+Nodes (16): applyAssist(), checkDimensions(), computeBbox(), createWrapper(), fixDimensions(), getBorderDims(), handleBreak(), handleOverflow() (+8 more)
 
 ### Community 15 - "PDF Cryptography"
-Cohesion: 0.08
-Nodes (16): ARCFourCipher, calculateMD5(), calculateSHA384(), calculateSHA512(), ch(), CipherTransformFactory, isArrayEqual(), littleSigma() (+8 more)
-
-### Community 16 - "PDF Stream Transport"
-Cohesion: 0.07
-Nodes (3): BasePDFStream, ChunkedStream, ChunkedStreamManager
+Cohesion: 0.20
+Nodes (9): Border, calculateSHA512(), ch(), littleSigma(), littleSigmaPrime(), maj(), sigma(), sigmaPrime() (+1 more)
 
 ### Community 17 - "Navigation & UI Atoms"
 Cohesion: 0.07
-Nodes (22): NavLink, NavLinkCompatProps, cn(), Avatar, AvatarFallback, AvatarImage, Badge(), BadgeProps (+14 more)
+Nodes (23): NavLink, NavLinkCompatProps, cn(), Alert, AlertDescription, AlertTitle, alertVariants, Avatar (+15 more)
 
 ### Community 18 - "FAQ & Palmarés Pages"
-Cohesion: 0.13
-Nodes (29): RacingLoader(), racingLoaderData, FAQItem, AchievementPosition, Category, Race, Category, Driver (+21 more)
+Cohesion: 0.10
+Nodes (33): RacingLoader(), racingLoaderData, Header(), COUNTRIES, COUNTRY_CODE_ALIASES, FLAG_COMPONENTS, INVERTED_BRANDS, Standing (+25 more)
 
 ### Community 19 - "PDF Rendering Ops"
-Cohesion: 0.12
-Nodes (8): addCachedImageOps(), getTilingPatternIR(), getTransformMatrix(), isNumberArray(), lookupMatrix(), lookupNormalRect(), lookupRect(), OperatorList
+Cohesion: 0.05
+Nodes (13): addCachedImageOps(), DummyShading, getTilingPatternIR(), GlobalImageCache, isNumberArray(), isPDFFunction(), lookupMatrix(), lookupNormalRect() (+5 more)
 
 ### Community 20 - "PDF Color & Image"
-Cohesion: 0.09
+Cohesion: 0.08
 Nodes (3): Annotation, AnnotationBorderStyle, MarkupAnnotation
 
 ### Community 21 - "PDF JBIG2 Decoder"
-Cohesion: 0.06
-Nodes (15): Caption, CheckButton, ContentArea, Corner, Draw, Edge, Field, fixTextIndent() (+7 more)
+Cohesion: 0.08
+Nodes (13): Caption, CheckButton, ContentArea, Draw, Field, fixTextIndent(), getMeasurement(), getRelevant() (+5 more)
 
 ### Community 22 - "Auth & Celebrations"
-Cohesion: 0.08
-Nodes (24): CONFETTI_PIECES, LeMansCelebration(), SPARKLES, AuthContext, AuthContextType, Driver, ImageRow, OPTIMIZED_LANDING_VIDEOS (+16 more)
+Cohesion: 0.09
+Nodes (25): queryKeys, AchievementPosition, PalmaresData, Race, ActiveRaceResult, Race, useActiveRace(), Driver (+17 more)
 
 ### Community 23 - "PDF JPEG Decoder"
-Cohesion: 0.10
-Nodes (4): AnnotationFactory, Dict, getModificationDate(), stringToAsciiOrUTF16BE()
+Cohesion: 0.09
+Nodes (7): ButtonWidgetAnnotation, Dict, getModificationDate(), HighlightAnnotation, PopupAnnotation, stringToAsciiOrUTF16BE(), stringToUTF16String()
 
 ### Community 24 - "PDF Parser Core"
-Cohesion: 0.08
-Nodes (10): createValidAbsoluteUrl(), decodeString(), normalizeBlendMode(), parseXFAPath(), PopupAnnotation, Rename, stringToUTF8String(), Template (+2 more)
-
-### Community 25 - "PDF Lexer & Tokens"
-Cohesion: 0.07
-Nodes (13): encodeToXmlString(), EquateRange, escapePDFName(), getIndexes(), PageRange, PatternInfo, PostScriptEvaluator, PostScriptStack (+5 more)
+Cohesion: 0.18
+Nodes (4): createDataNode(), parseExpression(), searchNode(), Template
 
 ### Community 26 - "PDF OpenType"
 Cohesion: 0.06
@@ -553,104 +562,84 @@ Cohesion: 0.06
 Nodes (29): useIsMobile(), Separator, Sidebar, SidebarContent, SidebarContext, SidebarFooter, SidebarGroup, SidebarGroupAction (+21 more)
 
 ### Community 28 - "PDF JPEG2000 Decoder"
-Cohesion: 0.08
-Nodes (7): CFFFDSelect, Commands, compileCharString(), CompiledFont, EvaluatorPreprocessor, lookupCmap(), StateManager
-
-### Community 29 - "PDF CMap"
-Cohesion: 0.09
-Nodes (4): Builder, DatasetXMLParser, XFAParser, XMLParserBase
+Cohesion: 0.10
+Nodes (9): compileCharString(), compileGlyf(), EvaluatorPreprocessor, getFloat214(), getSubroutineBias(), readInt16(), StateManager, TrueTypeCompiled (+1 more)
 
 ### Community 30 - "PDF Shading Patterns"
-Cohesion: 0.08
-Nodes (8): computeIDs(), incrementalUpdate(), MurmurHash3_64, objectSize(), RefSet, RefSetCache, StructElementNode, writeString()
+Cohesion: 0.10
+Nodes (4): FontFinder, objectSize(), Ref, RefSetCache
 
 ### Community 31 - "PDF Font Builder"
-Cohesion: 0.08
-Nodes (14): ca, CmykICCBasedCS, fetchSync(), getUint8ArrayMemory0(), IccColorSpace, JBig2WasmImage, MessageHandler, passArray8ToWasm0() (+6 more)
-
-### Community 32 - "PDF Evaluator Canvas"
-Cohesion: 0.10
-Nodes (3): FontPathInfo, NetworkPdfManager, Page
+Cohesion: 0.15
+Nodes (9): ca, CmykICCBasedCS, fetchSync(), getUint8ArrayMemory0(), passArray8ToWasm0(), t, __wbg_finalize_init(), __wbg_get_imports() (+1 more)
 
 ### Community 33 - "PDF Font Descriptor"
-Cohesion: 0.14
-Nodes (14): ContextCache, decodeBitmap(), decodeIAID(), decodeInteger(), decodeMMRBitmap(), decodeRefinement(), decodeTextRegion(), getCustomHuffmanTable() (+6 more)
+Cohesion: 0.19
+Nodes (9): ContextCache, decodeIAID(), decodeInteger(), decodeRefinement(), decodeTextRegion(), getCustomHuffmanTable(), getStandardTable(), Reader (+1 more)
 
 ### Community 34 - "PDF Structure Tree"
-Cohesion: 0.09
-Nodes (6): BasePDFStreamRangeReader, BaseShading, BaseStream, PatternCS, RadialAxialShading, unreachable()
+Cohesion: 0.12
+Nodes (4): BaseShading, BaseStream, RadialAxialShading, unreachable()
+
+### Community 35 - "PDF Message Handler"
+Cohesion: 0.12
+Nodes (8): generateFont(), getFamilyName(), getFontSubstitution(), PatternInfo, RefSet, StructElementNode, validateCSSFont(), validateFontName()
 
 ### Community 36 - "App Layout & Header"
-Cohesion: 0.09
-Nodes (14): FloatingVideo(), partners, AuthProvider(), Header(), NavItem, NavItemDirect, NavItemDropdown, navItems (+6 more)
-
-### Community 37 - "PDF Page Operators"
-Cohesion: 0.07
-Nodes (6): Area, Border, getRelevant(), PageArea, SubformSet, Value
+Cohesion: 0.05
+Nodes (23): ErrorBoundary, Props, State, FloatingVideo(), partners, AuthContext, AuthContextType, AuthProvider() (+15 more)
 
 ### Community 38 - "PDF Unicode Mapper"
-Cohesion: 0.10
-Nodes (22): buildComponentData(), buildHuffmanTable(), compileGlyf(), decodeScan(), findNextFileMarker(), getBlockBufferOffset(), getFloat214(), Jbig2Image (+14 more)
+Cohesion: 0.24
+Nodes (8): Jbig2Image, processSegment(), processSegments(), readInt8(), readRegionSegmentInformation(), readSegmentHeader(), readSegments(), readUint32()
 
 ### Community 39 - "PDF Type1 Font Parser"
-Cohesion: 0.13
-Nodes (7): FakeUnicodeFont, FreeTextAnnotation, getPdfColor(), InkAnnotation, numberToString(), StampAnnotation, stringToUTF16HexString()
+Cohesion: 0.08
+Nodes (12): ErrorFont, escapeString(), FakeUnicodeFont, FreeTextAnnotation, getPdfColor(), getTransformMatrix(), InkAnnotation, numberToString() (+4 more)
 
 ### Community 40 - "PDF Annotations Render"
-Cohesion: 0.13
-Nodes (5): getPdfColorArray(), getQuadPoints(), getRgbColor(), HighlightAnnotation, TranslatedFont
+Cohesion: 0.11
+Nodes (9): CircleAnnotation, getPdfColorArray(), getQuadPoints(), getRgbColor(), LineAnnotation, LinkAnnotation, PolylineAnnotation, SquareAnnotation (+1 more)
 
 ### Community 42 - "Toast Notification System"
-Cohesion: 0.12
-Nodes (22): Action, ActionType, actionTypes, addToRemoveQueue(), dispatch(), genId(), listeners, memoryState (+14 more)
+Cohesion: 0.11
+Nodes (23): Action, ActionType, actionTypes, addToRemoveQueue(), dispatch(), genId(), listeners, memoryState (+15 more)
 
 ### Community 43 - "Page Exports & Hooks"
 Cohesion: 0.13
-Nodes (24): useToast(), useAuth(), useIsAdmin(), Admin(), Classificacao(), FAQ(), ForgotPassword(), Index() (+16 more)
+Nodes (29): ProtectedRoute(), useToast(), useAuth(), useIsAdmin(), Admin(), Category, Driver, EventType (+21 more)
 
 ### Community 44 - "PDF XRef Table"
 Cohesion: 0.08
 Nodes (7): AstArgument, AstBinaryOperation, AstLiteral, AstMin, AstVariable, AstVariableDefinition, ExpressionBuilderVisitor
 
 ### Community 46 - "Admin CRUD"
-Cohesion: 0.11
-Nodes (21): Category, Driver, EventType, Race, RaceEventType, Category, Driver, EventType (+13 more)
+Cohesion: 0.13
+Nodes (23): Race, DriverRow, QualifyingResult, QualifyingResultRow, QualifyingTableProps, Category, Driver, EventType (+15 more)
 
 ### Community 47 - "PDF Document Metadata"
 Cohesion: 0.10
 Nodes (6): addHTML(), createLine(), ExclGroup, flushHTML(), getAvailableSpace(), Subform
 
-### Community 48 - "PDF Sig Validation"
-Cohesion: 0.17
-Nodes (5): Binder, createDataNode(), createText(), parseExpression(), searchNode()
-
 ### Community 49 - "PDF Optional Content"
-Cohesion: 0.11
-Nodes (5): convertCidString(), Font, fr, IdentityCMap, mr
-
-### Community 50 - "PDF Stamping"
-Cohesion: 0.09
-Nodes (3): Color, Stipple, Util
-
-### Community 51 - "PDF Document Writer"
-Cohesion: 0.13
-Nodes (7): bytesToString(), CipherTransform, doRun(), FontRendererFactory, getFontFileType(), isTrueTypeCollectionFile(), parseCff()
+Cohesion: 0.22
+Nodes (4): convertCidString(), Font, fr, mr
 
 ### Community 52 - "PDF Worker Util"
-Cohesion: 0.17
-Nodes (3): PDFFunction, PDFFunctionFactory, toNumberArray()
+Cohesion: 0.22
+Nodes (4): parseDefaultAppearance(), PDFFunction, PDFFunctionFactory, toNumberArray()
 
 ### Community 54 - "PDF Pattern IR"
-Cohesion: 0.19
-Nodes (4): ErrorFont, escapeString(), parseDefaultAppearance(), WidgetAnnotation
+Cohesion: 0.12
+Nodes (3): encodeToXmlString(), SimpleDOMNode, XFAObjectArray
 
 ### Community 55 - "PDF Text Extraction"
-Cohesion: 0.21
-Nodes (16): CMapFactory, createBuiltInCMap(), expectInt(), expectString(), extendCMap(), isCmd(), Linearization, parseBfChar() (+8 more)
+Cohesion: 0.11
+Nodes (17): CMapFactory, createBuiltInCMap(), expectInt(), expectString(), extendCMap(), isCmd(), Linearization, parseBfChar() (+9 more)
 
 ### Community 56 - "PDF Outline Builder"
-Cohesion: 0.16
-Nodes (5): convertBlackAndWhiteToRGBA(), convertToRGBA(), DeviceRgbaCS, PDFImage, resizeImageMask()
+Cohesion: 0.15
+Nodes (5): assert(), CssFontInfo, PDFImage, resizeImageMask(), toRomanNumerals()
 
 ### Community 57 - "TypeScript App Config"
 Cohesion: 0.09
@@ -658,71 +647,71 @@ Nodes (21): compilerOptions, allowImportingTsExtensions, baseUrl, isolatedModule
 
 ### Community 58 - "PDF Scripting Proxy"
 Cohesion: 0.23
-Nodes (3): Ascii85Stream, isWhiteSpace(), Parser
+Nodes (5): bytesToString(), getFontFileType(), isTrueTypeCollectionFile(), isWhiteSpace(), Parser
 
 ### Community 59 - "PDF Encoding Tables"
-Cohesion: 0.10
-Nodes (6): B, FontSelector, _i, layoutText(), P, TextMeasure
+Cohesion: 0.13
+Nodes (5): B, _i, layoutText(), P, TextMeasure
 
 ### Community 60 - "Pages & Routing"
-Cohesion: 0.23
-Nodes (10): useDriversCache(), Race, QualifyingTable(), RaceDrivers(), Button, Input, Label, labelVariants (+2 more)
+Cohesion: 0.19
+Nodes (12): canvasToBlob(), CompressedImage, compressImage(), CompressImageOptions, loadImage(), supportsWebp(), saveTrackInfo(), uploadRaceImage() (+4 more)
 
 ### Community 61 - "PDF Crypt Filters"
 Cohesion: 0.22
 Nodes (3): getB(), MeshShading, MeshStreamReader
 
-### Community 62 - "PDF Incremental Save"
-Cohesion: 0.12
-Nodes (3): TextState, TimeSlotManager, WorkerTask
-
 ### Community 63 - "Dev Dependencies"
 Cohesion: 0.11
 Nodes (18): devDependencies, autoprefixer, eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals, lovable-tagger (+10 more)
 
-### Community 64 - "PDF Bidi Text"
-Cohesion: 0.14
-Nodes (4): assert(), CssFontInfo, SystemFontInfo, toRomanNumerals()
-
 ### Community 65 - "PDF Highlight"
-Cohesion: 0.16
-Nodes (3): ButtonWidgetAnnotation, ChoiceWidgetAnnotation, TextWidgetAnnotation
+Cohesion: 0.06
+Nodes (12): ChoiceWidgetAnnotation, collectActions(), getInheritableProperty(), LocalColorSpaceCache, LocalFunctionCache, LocalGStateCache, LocalImageCache, LocalTilingPatternCache (+4 more)
 
 ### Community 66 - "Component Aliases Config"
 Cohesion: 0.12
 Nodes (16): aliases, components, hooks, lib, ui, utils, rsc, $schema (+8 more)
 
 ### Community 67 - "Classification & Countries"
-Cohesion: 0.15
-Nodes (11): COUNTRIES, COUNTRY_CODE_ALIASES, FLAG_COMPONENTS, INVERTED_BRANDS, Standing, StandingForm, extractStandingsFromText(), ParsedStanding (+3 more)
+Cohesion: 0.47
+Nodes (5): extractStandingsFromText(), ParsedStanding, parsePdfToStandings(), ParseResult, parseStandingFromWords()
 
 ### Community 68 - "PDF Writer Objects"
-Cohesion: 0.14
-Nodes (7): ariaLabel(), ChoiceList, DateTimeEdit, Image, isRequired(), NumericEdit, TextEdit
+Cohesion: 0.16
+Nodes (7): ariaLabel(), Corner, Edge, hasMargin(), isRequired(), measureToString(), toStyle()
+
+### Community 70 - "PDF Embedded Files"
+Cohesion: 0.18
+Nodes (13): adjustWidths(), amendFallbackToUnicode(), applyStandardFontGlyphMap(), getStandardFontName(), hr, isKnownFontName(), jr, normalizeFontName() (+5 more)
 
 ### Community 71 - "PDF Struct Builder"
-Cohesion: 0.13
-Nodes (3): CompositeGlyph, GlyfTable, Glyph
+Cohesion: 0.10
+Nodes (4): CompositeGlyph, FontPathInfo, GlyfTable, Glyph
 
 ### Community 72 - "PDF Glyph List"
-Cohesion: 0.19
+Cohesion: 0.21
 Nodes (6): addHex(), BinaryCMapReader, BinaryCMapStream, hexToInt(), hexToStr(), incHex()
 
+### Community 73 - "PDF Appearance Stream"
+Cohesion: 0.13
+Nodes (13): 1. Registro no Frontend, 2. Proteção da Tabela admin_users, 3. Proteção de Dados, 4. Proteção no Frontend, 🚨 Ação Imediata Necessária, 🔒 Checklist de Segurança, ✅ Proteções Implementadas, 📝 Resumo (+5 more)
+
 ### Community 74 - "PDF Free Text"
-Cohesion: 0.20
-Nodes (4): isSpecial(), Lexer, PostScriptLexer, toHexDigit()
+Cohesion: 0.13
+Nodes (7): decrypt(), isHexDigit(), isSpecial(), Lexer, PostScriptLexer, toHexDigit(), Type1Parser
 
 ### Community 75 - "TypeScript Node Config"
 Cohesion: 0.12
 Nodes (15): compilerOptions, allowImportingTsExtensions, isolatedModules, lib, module, moduleDetection, moduleResolution, noEmit (+7 more)
 
-### Community 82 - "Supabase Types"
-Cohesion: 0.30
-Nodes (3): decrypt(), isHexDigit(), Type1Parser
+### Community 76 - "PDF Ink Annotation"
+Cohesion: 0.13
+Nodes (4): AlternateCS, DefaultAppearanceEvaluator, IccColorSpace, IndexedCS
 
 ### Community 83 - "PDF Metrics"
-Cohesion: 0.19
-Nodes (7): find(), getCurrentPara(), PageSet, selectFont(), setFontFamily(), stripQuotes(), text_FontInfo
+Cohesion: 0.16
+Nodes (8): find(), getCurrentPara(), PageSet, selectFont(), setFontFamily(), setPara(), stripQuotes(), text_FontInfo
 
 ### Community 84 - "UI Button & Calendar"
 Cohesion: 0.16
@@ -733,24 +722,24 @@ Cohesion: 0.14
 Nodes (12): Carousel, CarouselApi, CarouselContent, CarouselContext, CarouselContextProps, CarouselItem, CarouselNext, CarouselOptions (+4 more)
 
 ### Community 86 - "Admin & Security Docs"
-Cohesion: 0.19
-Nodes (13): Supabase Cached Egress Checklist, Admin Setup Guide, admin_users Table, Admin Whitelist System, Disable Public Signup Requirement, Media Egress Guardrails, is_admin() SQL Function, Migration 20260213165239 Add Admin Whitelist (+5 more)
+Cohesion: 0.14
+Nodes (16): Before and After Validation, Media Guardrails, Release Checklist, Supabase Cached Egress Checklist, Admin Setup Guide, admin_users Table, Admin Whitelist System, Disable Public Signup Requirement (+8 more)
 
 ### Community 88 - "PDF Line Annotation"
-Cohesion: 0.23
-Nodes (3): fetchBinaryData(), JpxImage, pa
+Cohesion: 0.19
+Nodes (4): fetchBinaryData(), JBig2WasmImage, JpxImage, pa
+
+### Community 89 - "PDF MurmurHash"
+Cohesion: 0.24
+Nodes (3): getSizeInBytes(), ImageResizer, log2()
 
 ### Community 91 - "Root TypeScript Config"
 Cohesion: 0.15
 Nodes (12): compilerOptions, allowJs, baseUrl, noImplicitAny, noUnusedLocals, noUnusedParameters, paths, skipLibCheck (+4 more)
 
 ### Community 92 - "Calendar Page"
-Cohesion: 0.20
-Nodes (9): Calendario(), container, DAY_NAMES_PT, formatDateKey(), formatDateTime(), item, MONTH_NAMES_PT, Race (+1 more)
-
-### Community 93 - "PDF Dest Resolution"
-Cohesion: 0.20
-Nodes (3): DefaultAppearanceEvaluator, PDFWorkerStreamRangeReader, PDFWorkerStreamReader
+Cohesion: 0.19
+Nodes (10): Calendario(), container, DAY_NAMES_PT, formatDateKey(), formatDateTime(), item, MONTH_NAMES_PT, Race (+2 more)
 
 ### Community 98 - "Form UI Components"
 Cohesion: 0.17
@@ -773,8 +762,8 @@ Cohesion: 0.18
 Nodes (8): Command, CommandDialogProps, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator
 
 ### Community 106 - "Community 106"
-Cohesion: 0.20
-Nodes (5): Barcode, getKeyword(), getRatio(), OptionObject, Submit
+Cohesion: 0.22
+Nodes (9): CONFETTI_PIECES, LeMansCelebration(), LIGHT_RAYS, SPARKLES, LANDING_IMAGES, LandingImage, ImageRow, Landing() (+1 more)
 
 ### Community 107 - "Community 107"
 Cohesion: 0.27
@@ -800,6 +789,10 @@ Nodes (8): Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Ta
 Cohesion: 0.32
 Nodes (8): RTR Ric Team Racing Logo, Site Background - iRacing Scene, Android Chrome Icon 192x192, Android Chrome Icon 512x512, Apple Touch Icon, RTR Hub HTML Entry Point, iRacing Sim Racing Platform, RTR - Ric Team Racing
 
+### Community 116 - "Community 116"
+Cohesion: 0.11
+Nodes (3): FlateStream, SimpleGlyph, TimeSlotManager
+
 ### Community 120 - "Community 120"
 Cohesion: 0.25
 Nodes (5): Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage
@@ -815,6 +808,14 @@ Nodes (7): NavigationMenu, NavigationMenuContent, NavigationMenuIndicator, Navig
 ### Community 123 - "Community 123"
 Cohesion: 0.29
 Nodes (4): $a, Button, fixURL(), recoverJsURL()
+
+### Community 124 - "Community 124"
+Cohesion: 0.12
+Nodes (3): Color, ColorSpace, Stipple
+
+### Community 125 - "Community 125"
+Cohesion: 0.29
+Nodes (3): decodeBitmap(), decodeMMRBitmap(), SimpleSegmentVisitor
 
 ### Community 127 - "Community 127"
 Cohesion: 0.29
@@ -832,32 +833,56 @@ Nodes (5): ToggleGroup, ToggleGroupContext, ToggleGroupItem, Toggle, toggleVaria
 Cohesion: 0.33
 Nodes (5): buildAddOperation(), buildMinOperation(), buildMulOperation(), buildSubOperation(), PostScriptCompiler
 
+### Community 143 - "Community 143"
+Cohesion: 0.18
+Nodes (10): Como Adicionar um Admin, Configuração de Administradores, Importante, ⚠️ IMPORTANTE: Desabilitar Registro Público no Supabase, Opção 1: Via Supabase Dashboard (Recomendado), Opção 2: Via SQL Editor, Opção 3: Via Service Role (Para automação), Remover um Admin (+2 more)
+
 ### Community 144 - "Community 144"
-Cohesion: 0.40
-Nodes (4): Alert, AlertDescription, AlertTitle, alertVariants
+Cohesion: 0.25
+Nodes (4): ARCFourCipher, calculateMD5(), computeIDs(), writeString()
 
 ### Community 145 - "Community 145"
 Cohesion: 0.40
 Nodes (4): InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot
 
+### Community 147 - "Community 147"
+Cohesion: 0.31
+Nodes (4): calculateSHA384(), isArrayEqual(), PDF20, PDFBase
+
+### Community 209 - "Community 209"
+Cohesion: 0.42
+Nodes (7): buildHuffmanTable(), decodeScan(), findNextFileMarker(), prepareComponents(), readDataBlock(), readUint16(), skipData()
+
+### Community 244 - "Community 244"
+Cohesion: 0.38
+Nodes (6): buildToFontChar(), getEncoding(), getUnicodeForGlyph(), gr, recoverGlyphName(), type1FontGlyphMapping()
+
+### Community 347 - "Community 347"
+Cohesion: 0.40
+Nodes (3): doRun(), FontRendererFactory, parseCff()
+
+### Community 418 - "Community 418"
+Cohesion: 0.67
+Nodes (3): Badge(), BadgeProps, badgeVariants
+
 ## Knowledge Gaps
-- **543 isolated node(s):** `version`, `configurations`, `allow`, `$schema`, `style` (+538 more)
+- **577 isolated node(s):** `version`, `configurations`, `PreToolUse`, `allow`, `$schema` (+572 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **310 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **320 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ConfigNamespace` connect `PDF Config Namespace` to `PDF Worker Core`, `PDF Annotations & Catalog`, `PDF JPEG2000 Decoder`, `Community 141`?**
-  _High betweenness centrality (0.063) - this node is a cross-community bridge._
-- **Why does `TemplateNamespace` connect `PDF Template Namespace` to `PDF Worker Core`, `PDF Worker Util`, `PDF Editor State`, `PDF Popup Annotation`?**
-  _High betweenness centrality (0.049) - this node is a cross-community bridge._
-- **Why does `unreachable()` connect `PDF Structure Tree` to `PDF Worker Core`, `Community 131`, `CFF Font Compiler`, `Font Table Builder`, `PDF Stream Decoders`, `PDF Cryptography`, `PDF JPEG2000 Decoder`, `Community 157`, `PDF Font Builder`, `Community 168`, `PDF Optional Content`, `PDF Document Writer`, `PDF Text Extraction`, `PDF Crypt Filters`, `PDF Bidi Text`, `PDF Highlight`, `PDF Glyph List`, `Landing Page`, `Vite Build Config`, `Community 111`, `Community 124`?**
-  _High betweenness centrality (0.023) - this node is a cross-community bridge._
-- **What connects `version`, `configurations`, `allow` to the rest of the system?**
-  _543 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `ConfigNamespace` connect `PDF Config Namespace` to `PDF Worker Core`, `PDF Stream Transport`, `PDF JPEG2000 Decoder`, `Community 141`?**
+  _High betweenness centrality (0.061) - this node is a cross-community bridge._
+- **Why does `TemplateNamespace` connect `PDF Template Namespace` to `PDF Worker Core`, `PDF Dict & Catalog Pages`, `PDF Worker Util`, `Community 125`?**
+  _High betweenness centrality (0.048) - this node is a cross-community bridge._
+- **Why does `Stream` connect `Community 103` to `PDF Worker Core`, `Community 116`?**
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+- **What connects `version`, `configurations`, `PreToolUse` to the rest of the system?**
+  _577 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `PDF Worker Core` be split into smaller, more focused modules?**
-  _Cohesion score 0.01210390316877465 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.011275791920953212 - nodes in this community are weakly interconnected._
 - **Should `PDF Config Namespace` be split into smaller, more focused modules?**
   _Cohesion score 0.014492753623188406 - nodes in this community are weakly interconnected._
 - **Should `PDF Template Namespace` be split into smaller, more focused modules?**

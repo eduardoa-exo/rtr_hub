@@ -1,0 +1,652 @@
+{
+  "/Users/eduazevedo/Developer/rtr_hub/.claude/launch.json": {
+    "mtime": 1780777698.2525172,
+    "ast_hash": "eeeeebf27cb25ddaed638f4c451c0ab2",
+    "semantic_hash": "eeeeebf27cb25ddaed638f4c451c0ab2"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/.claude/settings.local.json": {
+    "mtime": 1780842802.546556,
+    "ast_hash": "316f808732e67123a8368f6cfd4ff8fa",
+    "semantic_hash": "316f808732e67123a8368f6cfd4ff8fa"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/components.json": {
+    "mtime": 1768257334.6415093,
+    "ast_hash": "a547944ace00dc5d5373aaca70a40bc4",
+    "semantic_hash": "a547944ace00dc5d5373aaca70a40bc4"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/eslint.config.js": {
+    "mtime": 1768257334.641576,
+    "ast_hash": "31c0881fdd8500aa4d0aa963079713ae",
+    "semantic_hash": "31c0881fdd8500aa4d0aa963079713ae"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/package.json": {
+    "mtime": 1780778256.3126733,
+    "ast_hash": "9002a0409fc851b3fbaa85cccf058fa1",
+    "semantic_hash": "9002a0409fc851b3fbaa85cccf058fa1"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/postcss.config.js": {
+    "mtime": 1768257334.6422024,
+    "ast_hash": "c735540bb63936a123bc867d950c9f69",
+    "semantic_hash": "c735540bb63936a123bc867d950c9f69"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/pdf.worker.min.mjs": {
+    "mtime": 1771073335.83383,
+    "ast_hash": "1393e76d3d3c826e3702fd2bb9cf4033",
+    "semantic_hash": "1393e76d3d3c826e3702fd2bb9cf4033"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/App.tsx": {
+    "mtime": 1774036858.1221428,
+    "ast_hash": "d0b934e761fc34bd4e6ce29a9406ecc3",
+    "semantic_hash": "d0b934e761fc34bd4e6ce29a9406ecc3"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/FloatingVideo.tsx": {
+    "mtime": 1771670169.791769,
+    "ast_hash": "eb0e466c04719ef737ec3f0bd701ede3",
+    "semantic_hash": "eb0e466c04719ef737ec3f0bd701ede3"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/LeMansCelebration.tsx": {
+    "mtime": 1780841463.3466191,
+    "ast_hash": "379b832e797edb04237195ed5f3c4811",
+    "semantic_hash": "379b832e797edb04237195ed5f3c4811"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/NavLink.tsx": {
+    "mtime": 1768257334.6432366,
+    "ast_hash": "8f7c178b4776787e58e1011855ca28f6",
+    "semantic_hash": "8f7c178b4776787e58e1011855ca28f6"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/RacingLoader.tsx": {
+    "mtime": 1780778666.9515214,
+    "ast_hash": "db0dd3a7a27647a8326197c84598e4ec",
+    "semantic_hash": "db0dd3a7a27647a8326197c84598e4ec"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/layout/Header.tsx": {
+    "mtime": 1780778548.0456648,
+    "ast_hash": "552e90b0c0235866659857dadd74bd4a",
+    "semantic_hash": "552e90b0c0235866659857dadd74bd4a"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/race/Countdown.tsx": {
+    "mtime": 1770590991.4043543,
+    "ast_hash": "296ce2459156ca999b2739e76f3363e1",
+    "semantic_hash": "296ce2459156ca999b2739e76f3363e1"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/race/QualifyingTable.tsx": {
+    "mtime": 1776289653.347418,
+    "ast_hash": "1b5e06138e3b8e2bac830e3069c615f8",
+    "semantic_hash": "1b5e06138e3b8e2bac830e3069c615f8"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/race/RaceDrivers.tsx": {
+    "mtime": 1776289646.240794,
+    "ast_hash": "2091457b998edacb4ab4e1e4aa892708",
+    "semantic_hash": "2091457b998edacb4ab4e1e4aa892708"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/race/RaceEventCard.tsx": {
+    "mtime": 1769542654.768127,
+    "ast_hash": "67c689a9846ae2bdffbed92de492a15d",
+    "semantic_hash": "67c689a9846ae2bdffbed92de492a15d"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/race/RaceEventsList.tsx": {
+    "mtime": 1780779972.5599825,
+    "ast_hash": "62a03346554b110c2e51175102f41792",
+    "semantic_hash": "62a03346554b110c2e51175102f41792"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/race/TrackInfo.tsx": {
+    "mtime": 1776289601.8250945,
+    "ast_hash": "e5a8bb43108360c1f86bc783ad6b16c6",
+    "semantic_hash": "e5a8bb43108360c1f86bc783ad6b16c6"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/accordion.tsx": {
+    "mtime": 1768257334.6438076,
+    "ast_hash": "f9ebb6ee913b44e5f3e06fe1d9679784",
+    "semantic_hash": "f9ebb6ee913b44e5f3e06fe1d9679784"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/alert-dialog.tsx": {
+    "mtime": 1768257334.6439276,
+    "ast_hash": "2ee6c5e5e070315114319bc060d17a52",
+    "semantic_hash": "2ee6c5e5e070315114319bc060d17a52"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/alert.tsx": {
+    "mtime": 1768257334.643988,
+    "ast_hash": "354d0206f924d48bcebbb023c3940a6b",
+    "semantic_hash": "354d0206f924d48bcebbb023c3940a6b"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/aspect-ratio.tsx": {
+    "mtime": 1768257334.6440525,
+    "ast_hash": "c5c364545e1b25a94e9e752cd67ad048",
+    "semantic_hash": "c5c364545e1b25a94e9e752cd67ad048"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/avatar.tsx": {
+    "mtime": 1768257334.6441152,
+    "ast_hash": "53921dca0903c74cd72fada89388d9f8",
+    "semantic_hash": "53921dca0903c74cd72fada89388d9f8"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/badge.tsx": {
+    "mtime": 1768257334.6441767,
+    "ast_hash": "8db4e6d330f88f4041f81e7cde43782b",
+    "semantic_hash": "8db4e6d330f88f4041f81e7cde43782b"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/breadcrumb.tsx": {
+    "mtime": 1768257334.644246,
+    "ast_hash": "c200fc41e9b214ebb6ccd19a300c42c5",
+    "semantic_hash": "c200fc41e9b214ebb6ccd19a300c42c5"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/button.tsx": {
+    "mtime": 1768257334.6443107,
+    "ast_hash": "b59f5a3c54b63cf3ea4eb2523151f617",
+    "semantic_hash": "b59f5a3c54b63cf3ea4eb2523151f617"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/calendar.tsx": {
+    "mtime": 1768257334.6443772,
+    "ast_hash": "1da7a387f28cdb11722da319c0295a6c",
+    "semantic_hash": "1da7a387f28cdb11722da319c0295a6c"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/card.tsx": {
+    "mtime": 1780778338.6115692,
+    "ast_hash": "244d4d6234791bd69fd32db69a0b7ed0",
+    "semantic_hash": "244d4d6234791bd69fd32db69a0b7ed0"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/carousel.tsx": {
+    "mtime": 1768257334.6445549,
+    "ast_hash": "63a7442a3088b58113c8a8cfc1defe26",
+    "semantic_hash": "63a7442a3088b58113c8a8cfc1defe26"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/chart.tsx": {
+    "mtime": 1768257334.6447558,
+    "ast_hash": "29cfd7470f3197deccd58b2b4f00fbae",
+    "semantic_hash": "29cfd7470f3197deccd58b2b4f00fbae"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/checkbox.tsx": {
+    "mtime": 1768257334.6454115,
+    "ast_hash": "cb12d2f3410761f7a678add95c90ac5d",
+    "semantic_hash": "cb12d2f3410761f7a678add95c90ac5d"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/collapsible.tsx": {
+    "mtime": 1768257334.6454754,
+    "ast_hash": "934b00582dae08af749fb55469081de6",
+    "semantic_hash": "934b00582dae08af749fb55469081de6"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/command.tsx": {
+    "mtime": 1768257334.6455956,
+    "ast_hash": "e911f182b4136a63c601c3fc48b2e9c7",
+    "semantic_hash": "e911f182b4136a63c601c3fc48b2e9c7"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/context-menu.tsx": {
+    "mtime": 1768257334.6457093,
+    "ast_hash": "9b8e8efdf0456cd542e32d341b071cac",
+    "semantic_hash": "9b8e8efdf0456cd542e32d341b071cac"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/dialog.tsx": {
+    "mtime": 1768257334.6457856,
+    "ast_hash": "fc3a9626ba52435552c93ac3a74374ec",
+    "semantic_hash": "fc3a9626ba52435552c93ac3a74374ec"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/drawer.tsx": {
+    "mtime": 1768257334.6458585,
+    "ast_hash": "05e2b536fe11649e9b4c6e73678e32a6",
+    "semantic_hash": "05e2b536fe11649e9b4c6e73678e32a6"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/dropdown-menu.tsx": {
+    "mtime": 1768257334.6459894,
+    "ast_hash": "f308eb98a2e21bf8bd1e30dbcb741dc0",
+    "semantic_hash": "f308eb98a2e21bf8bd1e30dbcb741dc0"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/form.tsx": {
+    "mtime": 1768257334.6460533,
+    "ast_hash": "4bb820d59aad3ee5bc78097596298ace",
+    "semantic_hash": "4bb820d59aad3ee5bc78097596298ace"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/hover-card.tsx": {
+    "mtime": 1768257334.6461155,
+    "ast_hash": "f77f80ed64ff8f3549e5d7e9d837e08e",
+    "semantic_hash": "f77f80ed64ff8f3549e5d7e9d837e08e"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/input-otp.tsx": {
+    "mtime": 1768257334.646179,
+    "ast_hash": "3fb5994635434d5168bee869689fc2aa",
+    "semantic_hash": "3fb5994635434d5168bee869689fc2aa"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/input.tsx": {
+    "mtime": 1768257334.6462383,
+    "ast_hash": "b8279d768c2a1ce78a05a369a0502877",
+    "semantic_hash": "b8279d768c2a1ce78a05a369a0502877"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/label.tsx": {
+    "mtime": 1768257334.6463006,
+    "ast_hash": "cd2b2255bbe519cb0865dfeaa6615797",
+    "semantic_hash": "cd2b2255bbe519cb0865dfeaa6615797"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/menubar.tsx": {
+    "mtime": 1768257334.6464198,
+    "ast_hash": "163c3fa58a2b4ea2caa00166f4d862c7",
+    "semantic_hash": "163c3fa58a2b4ea2caa00166f4d862c7"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/multi-select-drivers.tsx": {
+    "mtime": 1776289637.74903,
+    "ast_hash": "08b34adaf67fa5b7b42f7556f545b9b1",
+    "semantic_hash": "08b34adaf67fa5b7b42f7556f545b9b1"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/navigation-menu.tsx": {
+    "mtime": 1768257334.6465368,
+    "ast_hash": "77e94b0c299d10c3763d2755bf556916",
+    "semantic_hash": "77e94b0c299d10c3763d2755bf556916"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/pagination.tsx": {
+    "mtime": 1768257334.6466033,
+    "ast_hash": "a3ced9f9b19826b467d788b1bf01746f",
+    "semantic_hash": "a3ced9f9b19826b467d788b1bf01746f"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/popover.tsx": {
+    "mtime": 1768257334.6466725,
+    "ast_hash": "c056d22288a642b756b77c7691ad4532",
+    "semantic_hash": "c056d22288a642b756b77c7691ad4532"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/progress.tsx": {
+    "mtime": 1768257334.6467335,
+    "ast_hash": "9a8b05beca19e008a562a10e489f5968",
+    "semantic_hash": "9a8b05beca19e008a562a10e489f5968"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/radio-group.tsx": {
+    "mtime": 1768257334.646795,
+    "ast_hash": "3773798b5b2f334a5db0dc9c8d06f1b8",
+    "semantic_hash": "3773798b5b2f334a5db0dc9c8d06f1b8"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/resizable.tsx": {
+    "mtime": 1768257334.646866,
+    "ast_hash": "ec681e92cbe705b5571ded11b5227a2a",
+    "semantic_hash": "ec681e92cbe705b5571ded11b5227a2a"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/scroll-area.tsx": {
+    "mtime": 1768257334.646931,
+    "ast_hash": "cfbc224001af0e6daba676de225a2a47",
+    "semantic_hash": "cfbc224001af0e6daba676de225a2a47"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/select.tsx": {
+    "mtime": 1768257334.6470394,
+    "ast_hash": "25de64d0126624cbd8efa50cfb64bd21",
+    "semantic_hash": "25de64d0126624cbd8efa50cfb64bd21"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/separator.tsx": {
+    "mtime": 1768257334.647123,
+    "ast_hash": "ed1101f185e9dc801712593e3330a75d",
+    "semantic_hash": "ed1101f185e9dc801712593e3330a75d"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/sheet.tsx": {
+    "mtime": 1768257334.6472523,
+    "ast_hash": "3660be09e2e40467a22fd46b354c1b50",
+    "semantic_hash": "3660be09e2e40467a22fd46b354c1b50"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/sidebar.tsx": {
+    "mtime": 1768257334.6473722,
+    "ast_hash": "9eab1256b1ffe3f1336eebfd07b319c9",
+    "semantic_hash": "9eab1256b1ffe3f1336eebfd07b319c9"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/skeleton.tsx": {
+    "mtime": 1768257334.647537,
+    "ast_hash": "c55f76f4faa1d6e888dbc51d41eaa586",
+    "semantic_hash": "c55f76f4faa1d6e888dbc51d41eaa586"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/slider.tsx": {
+    "mtime": 1768257334.647615,
+    "ast_hash": "e3bf7b6116ddbdbe8c7b3597d07daee0",
+    "semantic_hash": "e3bf7b6116ddbdbe8c7b3597d07daee0"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/sonner.tsx": {
+    "mtime": 1768257334.647692,
+    "ast_hash": "88644703cc00886c56e0e3b7df0e21d8",
+    "semantic_hash": "88644703cc00886c56e0e3b7df0e21d8"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/switch.tsx": {
+    "mtime": 1768257334.647765,
+    "ast_hash": "eccd8c41c46e782eaaa1f8be0111e089",
+    "semantic_hash": "eccd8c41c46e782eaaa1f8be0111e089"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/table.tsx": {
+    "mtime": 1768257334.6478398,
+    "ast_hash": "d0ff87c4734c23839337811378ad07df",
+    "semantic_hash": "d0ff87c4734c23839337811378ad07df"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/tabs.tsx": {
+    "mtime": 1768257334.6479077,
+    "ast_hash": "26b15e1ffce0f831be4da95b8f8a43df",
+    "semantic_hash": "26b15e1ffce0f831be4da95b8f8a43df"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/textarea.tsx": {
+    "mtime": 1768257334.6479733,
+    "ast_hash": "29ab470ee59e9da5070d4fba251bce81",
+    "semantic_hash": "29ab470ee59e9da5070d4fba251bce81"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/toast.tsx": {
+    "mtime": 1768257334.6480944,
+    "ast_hash": "7c08b5cb6026058514672a4ebc53847e",
+    "semantic_hash": "7c08b5cb6026058514672a4ebc53847e"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/toaster.tsx": {
+    "mtime": 1768257334.648155,
+    "ast_hash": "1903846ab268620de6356ef667e3fa21",
+    "semantic_hash": "1903846ab268620de6356ef667e3fa21"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/toggle-group.tsx": {
+    "mtime": 1768257334.6482422,
+    "ast_hash": "e82bf234e3877ad708ea3d1dba614def",
+    "semantic_hash": "e82bf234e3877ad708ea3d1dba614def"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/toggle.tsx": {
+    "mtime": 1768257334.6483285,
+    "ast_hash": "ff7a7deebff23c3488e79ad72ee47e4b",
+    "semantic_hash": "ff7a7deebff23c3488e79ad72ee47e4b"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/tooltip.tsx": {
+    "mtime": 1768257334.6484158,
+    "ast_hash": "d7e923341b9e91d77db45ba5f2fa0cf9",
+    "semantic_hash": "d7e923341b9e91d77db45ba5f2fa0cf9"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/components/ui/use-toast.ts": {
+    "mtime": 1768257334.6484847,
+    "ast_hash": "4f094014a1315ca1081cbdc7f78d55cc",
+    "semantic_hash": "4f094014a1315ca1081cbdc7f78d55cc"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/hooks/use-mobile.tsx": {
+    "mtime": 1768257334.6486194,
+    "ast_hash": "c0a0bdd4638c391a1dd06ac82074e60b",
+    "semantic_hash": "c0a0bdd4638c391a1dd06ac82074e60b"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/hooks/use-toast.ts": {
+    "mtime": 1768257334.648687,
+    "ast_hash": "e706bc004c87e17db559a113637eddea",
+    "semantic_hash": "e706bc004c87e17db559a113637eddea"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/hooks/useAuth.tsx": {
+    "mtime": 1771665825.7805846,
+    "ast_hash": "445a43e356bf85cf6fd4ad86520f6b86",
+    "semantic_hash": "445a43e356bf85cf6fd4ad86520f6b86"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/hooks/useDriversCache.ts": {
+    "mtime": 1776289627.117314,
+    "ast_hash": "7438f5f1afd5151abe029d21f73d4f0e",
+    "semantic_hash": "7438f5f1afd5151abe029d21f73d4f0e"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/hooks/useIsAdmin.tsx": {
+    "mtime": 1771073335.8343496,
+    "ast_hash": "76d57087222e7dfc26bbec0b9b28e625",
+    "semantic_hash": "76d57087222e7dfc26bbec0b9b28e625"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/integrations/supabase/client.ts": {
+    "mtime": 1776289678.7366424,
+    "ast_hash": "f82249db85a286c99a02c27804268375",
+    "semantic_hash": "f82249db85a286c99a02c27804268375"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/integrations/supabase/types.ts": {
+    "mtime": 1774036858.1238713,
+    "ast_hash": "dbb97ee0f29eab333f0f2e1a55f94187",
+    "semantic_hash": "dbb97ee0f29eab333f0f2e1a55f94187"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/lib/utils.ts": {
+    "mtime": 1768257334.6493392,
+    "ast_hash": "d9837f38cc05303254571985e3164050",
+    "semantic_hash": "d9837f38cc05303254571985e3164050"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/main.tsx": {
+    "mtime": 1768257334.6494153,
+    "ast_hash": "092c6937f28c1dff19a7d561f5f98360",
+    "semantic_hash": "092c6937f28c1dff19a7d561f5f98360"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/AboutUs.tsx": {
+    "mtime": 1780778640.727319,
+    "ast_hash": "e940cca22b6448f4e0e3434741be995e",
+    "semantic_hash": "e940cca22b6448f4e0e3434741be995e"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/Admin.tsx": {
+    "mtime": 1776289667.9252498,
+    "ast_hash": "63ca78121fd5a14c084f672e948a040c",
+    "semantic_hash": "63ca78121fd5a14c084f672e948a040c"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/Calendario.tsx": {
+    "mtime": 1780778688.525988,
+    "ast_hash": "918ca065805913ad07fa2296314036d7",
+    "semantic_hash": "918ca065805913ad07fa2296314036d7"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/Classificacao.tsx": {
+    "mtime": 1780778736.639935,
+    "ast_hash": "f897d0bda7b4c83dc43ef33201572b4a",
+    "semantic_hash": "f897d0bda7b4c83dc43ef33201572b4a"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/Contacts.tsx": {
+    "mtime": 1780778515.1711156,
+    "ast_hash": "4745f4dbbf1ed49404f6cd03e0e098c6",
+    "semantic_hash": "4745f4dbbf1ed49404f6cd03e0e098c6"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/FAQ.tsx": {
+    "mtime": 1780778700.9451816,
+    "ast_hash": "adf3aeace38814192a0c338b9a26311f",
+    "semantic_hash": "adf3aeace38814192a0c338b9a26311f"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/ForgotPassword.tsx": {
+    "mtime": 1780778571.3396606,
+    "ast_hash": "a826b7b295aa75f4347ebc6c268b9300",
+    "semantic_hash": "a826b7b295aa75f4347ebc6c268b9300"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/Index.tsx": {
+    "mtime": 1780784364.9311557,
+    "ast_hash": "ec76c8feebbabfbe496a730c54f4837d",
+    "semantic_hash": "ec76c8feebbabfbe496a730c54f4837d"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/Landing copy.tsx": {
+    "mtime": 1776374565.5830078,
+    "ast_hash": "ad3351b34f6bf828b2edb343bad55437",
+    "semantic_hash": "ad3351b34f6bf828b2edb343bad55437"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/Landing.tsx": {
+    "mtime": 1780841174.3417046,
+    "ast_hash": "6fe7fc41ffe431f41db04a424a107410",
+    "semantic_hash": "6fe7fc41ffe431f41db04a424a107410"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/Login.tsx": {
+    "mtime": 1780778554.7587538,
+    "ast_hash": "1d99f1eafa91e4d5d4d61abf4763c55a",
+    "semantic_hash": "1d99f1eafa91e4d5d4d61abf4763c55a"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/NotFound.tsx": {
+    "mtime": 1780777577.5671182,
+    "ast_hash": "5ee678728ae69317d7f9d0e461646983",
+    "semantic_hash": "5ee678728ae69317d7f9d0e461646983"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/Palmares.tsx": {
+    "mtime": 1780778710.227616,
+    "ast_hash": "5afd8a7a9c520525c0a0afa14338e450",
+    "semantic_hash": "5afd8a7a9c520525c0a0afa14338e450"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/Pilotos.tsx": {
+    "mtime": 1780778678.7725646,
+    "ast_hash": "0f229e0b4b0add3f7536a089d05740e1",
+    "semantic_hash": "0f229e0b4b0add3f7536a089d05740e1"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/RedesSociais.tsx": {
+    "mtime": 1780778502.5868204,
+    "ast_hash": "fb0bacec2e2dee0f26fdf57cb34ef036",
+    "semantic_hash": "fb0bacec2e2dee0f26fdf57cb34ef036"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/pages/ResetPassword.tsx": {
+    "mtime": 1780778575.962929,
+    "ast_hash": "1994781e5da40fe8d59874d1e9b2496b",
+    "semantic_hash": "1994781e5da40fe8d59874d1e9b2496b"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/utils/pdfParser.ts": {
+    "mtime": 1771073335.8359206,
+    "ast_hash": "6022933ae5fb541a0f1b181e0abc72fb",
+    "semantic_hash": "6022933ae5fb541a0f1b181e0abc72fb"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/src/vite-env.d.ts": {
+    "mtime": 1768257334.650265,
+    "ast_hash": "0352474ba2918efe13895edbc3780d94",
+    "semantic_hash": "0352474ba2918efe13895edbc3780d94"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260111223052_d20ad857-589d-4eb6-8941-efbad7a1d5a8.sql": {
+    "mtime": 1769300710.402543,
+    "ast_hash": "679a9b51372e004b1b0840a70d5fa445",
+    "semantic_hash": "679a9b51372e004b1b0840a70d5fa445"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260128000000_create_achievement_positions.sql": {
+    "mtime": 1769549253.7326322,
+    "ast_hash": "8c0ef611d4ba8cc5b3b9278b6e94b90a",
+    "semantic_hash": "8c0ef611d4ba8cc5b3b9278b6e94b90a"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260129000000_add_color_to_categories.sql": {
+    "mtime": 1769941522.1472476,
+    "ast_hash": "f041ee266b7a3b9181506cd7f37bbba8",
+    "semantic_hash": "f041ee266b7a3b9181506cd7f37bbba8"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260130000000_add_tipo_to_races.sql": {
+    "mtime": 1769947349.2147217,
+    "ast_hash": "309b077c6839c2d5e27df809c7de06c0",
+    "semantic_hash": "309b077c6839c2d5e27df809c7de06c0"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260205000000_add_race_types.sql": {
+    "mtime": 1770470422.3380911,
+    "ast_hash": "5f8fc9333e6ca7584729f8316f48fe13",
+    "semantic_hash": "5f8fc9333e6ca7584729f8316f48fe13"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260205000001_add_storage_policies.sql": {
+    "mtime": 1770470422.3382416,
+    "ast_hash": "dac800d3d300e7626e8ec7b8836a230e",
+    "semantic_hash": "dac800d3d300e7626e8ec7b8836a230e"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260205000002_make_buckets_public.sql": {
+    "mtime": 1770470422.3384116,
+    "ast_hash": "2cdb0a40fb8b0f530a7918bb63b5f86b",
+    "semantic_hash": "2cdb0a40fb8b0f530a7918bb63b5f86b"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260207000010_create_championship_standings.sql": {
+    "mtime": 1770509848.8311696,
+    "ast_hash": "455695151330e5b1b3d444b02c5c39d3",
+    "semantic_hash": "455695151330e5b1b3d444b02c5c39d3"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260207000011_create_championship_bucket.sql": {
+    "mtime": 1770509857.5112827,
+    "ast_hash": "c56227e2e383172d0808aca45eb4e406",
+    "semantic_hash": "c56227e2e383172d0808aca45eb4e406"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260207000012_championship_initial_data.sql": {
+    "mtime": 1770509881.3402193,
+    "ast_hash": "3643c667e985cf8778eddb1fd61d3dd8",
+    "semantic_hash": "3643c667e985cf8778eddb1fd61d3dd8"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/supabase/migrations/20260213165239_add_admin_whitelist.sql": {
+    "mtime": 1771073335.8360627,
+    "ast_hash": "c4166c1266d163db62104779b4b14f9e",
+    "semantic_hash": "c4166c1266d163db62104779b4b14f9e"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/tailwind.config.ts": {
+    "mtime": 1780777306.8939219,
+    "ast_hash": "66c888829001b2420c9ccf3a57e27672",
+    "semantic_hash": "66c888829001b2420c9ccf3a57e27672"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/tsconfig.app.json": {
+    "mtime": 1768257334.6506736,
+    "ast_hash": "ffe0e5efeba4bb692e7cf562160c6c5e",
+    "semantic_hash": "ffe0e5efeba4bb692e7cf562160c6c5e"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/tsconfig.json": {
+    "mtime": 1768257334.6507514,
+    "ast_hash": "3951bfe500c7b5ca84cceded3c114a24",
+    "semantic_hash": "3951bfe500c7b5ca84cceded3c114a24"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/tsconfig.node.json": {
+    "mtime": 1768257334.6508338,
+    "ast_hash": "1417fb05378a1d1102f085e60b20db0e",
+    "semantic_hash": "1417fb05378a1d1102f085e60b20db0e"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/vercel.json": {
+    "mtime": 1770476683.509719,
+    "ast_hash": "61bd31a2b0ac08f10f13c932b32d6ca1",
+    "semantic_hash": "61bd31a2b0ac08f10f13c932b32d6ca1"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/vite.config.ts": {
+    "mtime": 1771073335.8362572,
+    "ast_hash": "9ad51b5ff8c4b91c45c6b0b03224335e",
+    "semantic_hash": "9ad51b5ff8c4b91c45c6b0b03224335e"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/ADMIN_SETUP.md": {
+    "mtime": 1771073335.821603,
+    "ast_hash": "3d58b39515048839548fb2adfbb0c438",
+    "semantic_hash": "3d58b39515048839548fb2adfbb0c438"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/SECURITY.md": {
+    "mtime": 1771073335.8218362,
+    "ast_hash": "ccf5bd5db64920ed78dbf1370aad49cd",
+    "semantic_hash": "ccf5bd5db64920ed78dbf1370aad49cd"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/docs/supabase-egress-checklist.md": {
+    "mtime": 1776289688.4420264,
+    "ast_hash": "0ce4ede30c0650de637f3851ddda4ffd",
+    "semantic_hash": "0ce4ede30c0650de637f3851ddda4ffd"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/index.html": {
+    "mtime": 1768505287.9088912,
+    "ast_hash": "c63f820aebe8d8f3a021820d2b2e8b5e",
+    "semantic_hash": "c63f820aebe8d8f3a021820d2b2e8b5e"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/robots.txt": {
+    "mtime": 1768257334.6425545,
+    "ast_hash": "f9dff89adf98833e676de2205921996a",
+    "semantic_hash": "f9dff89adf98833e676de2205921996a"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/android-chrome-192x192.png": {
+    "mtime": 1769301533.7130313,
+    "ast_hash": "ea7154827f4c321ecaa3d9b363f55276",
+    "semantic_hash": "ea7154827f4c321ecaa3d9b363f55276"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/android-chrome-512x512.png": {
+    "mtime": 1769301533.7173595,
+    "ast_hash": "6d4ec51e2c783524b9459e3bb5a93b7f",
+    "semantic_hash": "6d4ec51e2c783524b9459e3bb5a93b7f"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/apple-touch-icon.png": {
+    "mtime": 1769301533.7266657,
+    "ast_hash": "3e10acdf7b52c647037bfe73db1c92f9",
+    "semantic_hash": "3e10acdf7b52c647037bfe73db1c92f9"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/favicon-16x16.png": {
+    "mtime": 1769301533.729533,
+    "ast_hash": "b79fb286a06a35bb68607b4bf1f69c87",
+    "semantic_hash": "b79fb286a06a35bb68607b4bf1f69c87"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/favicon-32x32.png": {
+    "mtime": 1769301533.7382407,
+    "ast_hash": "c520cc129530ae74ea29175bfd2cdd72",
+    "semantic_hash": "c520cc129530ae74ea29175bfd2cdd72"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/images/instagram.png": {
+    "mtime": 1769381370.4531636,
+    "ast_hash": "59ce37415141ef2ebba7740fc715a9cc",
+    "semantic_hash": "59ce37415141ef2ebba7740fc715a9cc"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/images/kick.png": {
+    "mtime": 1770470422.3354592,
+    "ast_hash": "bb0f623a54b9909e2a03422f77520ee8",
+    "semantic_hash": "bb0f623a54b9909e2a03422f77520ee8"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/images/rtr_logo.png": {
+    "mtime": 1769380564.3498986,
+    "ast_hash": "dd7e5e2698b17dcd40d8b6a8140f11d8",
+    "semantic_hash": "dd7e5e2698b17dcd40d8b6a8140f11d8"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/images/site-bg.png": {
+    "mtime": 1774126794.219987,
+    "ast_hash": "f8fc26dcace6262b1a67c5e6677581d9",
+    "semantic_hash": "f8fc26dcace6262b1a67c5e6677581d9"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/placeholder.svg": {
+    "mtime": 1768257334.6424832,
+    "ast_hash": "35707bd9960ba5281c72af927b79291f",
+    "semantic_hash": "35707bd9960ba5281c72af927b79291f"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/images/parcerias/Logo pc componentes Glow cor.webm": {
+    "mtime": 1770468161.4662418,
+    "ast_hash": "a448975984207b8c1cccdc345f62fa22",
+    "semantic_hash": "a448975984207b8c1cccdc345f62fa22"
+  },
+  "/Users/eduazevedo/Developer/rtr_hub/public/images/parcerias/Skinlab.webm": {
+    "mtime": 1770591134.707479,
+    "ast_hash": "1ae2cf158fcbb06c47aa6200166a114a",
+    "semantic_hash": "1ae2cf158fcbb06c47aa6200166a114a"
+  }
+}

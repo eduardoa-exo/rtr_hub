@@ -1,12 +1,18 @@
 import { supabase } from "@/integrations/supabase/client";
+import { compressImage } from "@/lib/compressImage";
 import { uploadMedia } from "./r2Upload";
 
 export async function uploadRaceImage(raceId: string, file: File, type: "weather" | "map") {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) throw new Error("Não autenticado");
 
+  const { file: compressed } = await compressImage(file, {
+    maxEdge: type === "map" ? 1600 : 1920,
+    quality: 0.8,
+  });
+
   const { publicUrl, key } = await uploadMedia({
-    file,
+    file: compressed,
     type,
     authToken: session.access_token,
     entityId: raceId,
@@ -17,9 +23,9 @@ export async function uploadRaceImage(raceId: string, file: File, type: "weather
     .insert({
       storage_path: key,
       url: publicUrl,
-      filename: file.name,
-      mime_type: file.type,
-      size_bytes: file.size,
+      filename: compressed.name,
+      mime_type: compressed.type,
+      size_bytes: compressed.size,
       description: type === "weather" ? "Weather forecast" : "Track map",
       category: type === "weather" ? "weather" : "track-map",
     })

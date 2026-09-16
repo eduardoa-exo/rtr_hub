@@ -1,18 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { LANDING_IMAGES, type LandingImage } from "@/data/landingImages";
 import { queryKeys } from "./queryKeys";
 
+/** Landing heroes are static assets — no Supabase Storage / cached egress. */
 export function useLandingImages() {
   return useQuery({
     queryKey: queryKeys.images.landing(),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("images")
-        .select("*")
-        .eq("category", "landing")
-        .order("created_at", { ascending: true });
-      if (error) throw error;
-      return data;
-    },
+    queryFn: async (): Promise<LandingImage[]> => LANDING_IMAGES,
+    staleTime: Infinity,
   });
 }

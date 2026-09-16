@@ -4,6 +4,7 @@ import { Users, Loader2, User, Instagram, ExternalLink, Plus, Pencil, Trash2, Up
 import { useQueryClient } from "@tanstack/react-query";
 import { RacingLoader } from "@/components/RacingLoader";
 import { supabase } from "@/integrations/supabase/client";
+import { compressImage } from "@/lib/compressImage";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -121,60 +122,63 @@ export default function Pilotos() {
 
     setUploadingImage(true);
 
-    // Generate file path
-    const fileExt = file.name.split(".").pop();
-    const fileName = `profile.${fileExt}`;
-    
-    // If editing, use driver ID; if adding, use temp random ID
-    const driverId = editingDriver?.id || `temp-${Math.random().toString(36).substring(2)}`;
-    const filePath = `${driverId}/${fileName}`;
-
-    // If editing and has old image, try to delete it first
-    if (editingDriver?.image_url) {
-      try {
-        // Extract path from URL
-        const oldUrl = editingDriver.image_url;
-        const urlParts = oldUrl.split('/Pilotos/');
-        if (urlParts.length > 1) {
-          const oldPath = urlParts[1].split('?')[0]; // Remove query params
-          await supabase.storage
-            .from("Pilotos")
-            .remove([oldPath]);
-        }
-      } catch (err) {
-        // non-critical: old image cleanup failed
-        // Continue anyway
-      }
-    }
-
-    // Upload to Supabase Storage (bucket: Pilotos)
-    const { error: uploadError } = await supabase.storage
-      .from("Pilotos")
-      .upload(filePath, file, {
-        upsert: true, // Replace if exists
+    try {
+      const { file: compressed } = await compressImage(file, {
+        maxEdge: 800,
+        quality: 0.8,
       });
+      const fileExt = compressed.name.split(".").pop() || "webp";
+      // Unique filename invalidates CDN/browser cache without ?t= query params
+      const fileName = `profile-${Date.now()}.${fileExt}`;
+      const driverId =
+        editingDriver?.id || `temp-${Math.random().toString(36).substring(2)}`;
+      const filePath = `${driverId}/${fileName}`;
 
-    if (uploadError) {
+      if (editingDriver?.image_url) {
+        try {
+          const oldUrl = editingDriver.image_url;
+          const urlParts = oldUrl.split("/Pilotos/");
+          if (urlParts.length > 1) {
+            const oldPath = urlParts[1].split("?")[0];
+            await supabase.storage.from("Pilotos").remove([oldPath]);
+          }
+        } catch {
+          // non-critical: old image cleanup failed
+        }
+      }
+
+      const { error: uploadError } = await supabase.storage
+        .from("Pilotos")
+        .upload(filePath, compressed, {
+          cacheControl: "31536000",
+          upsert: false,
+        });
+
+      if (uploadError) {
+        toast({
+          title: "Erro ao enviar imagem",
+          description: uploadError.message,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from("Pilotos")
+        .getPublicUrl(filePath);
+
+      setForm({ ...form, image_url: publicUrlData.publicUrl });
+      toast({ title: "Imagem carregada!" });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Erro desconhecido";
       toast({
-        title: "Erro ao enviar imagem",
-        description: uploadError.message,
+        title: "Erro ao processar imagem",
+        description: message,
         variant: "destructive",
       });
+    } finally {
       setUploadingImage(false);
-      return;
     }
-
-    // Get public URL with cache-busting timestamp
-    const { data: publicUrlData } = supabase.storage
-      .from("Pilotos")
-      .getPublicUrl(filePath);
-
-    // Add timestamp to force browser to reload the image
-    const urlWithTimestamp = `${publicUrlData.publicUrl}?t=${Date.now()}`;
-    
-    setForm({ ...form, image_url: urlWithTimestamp });
-    setUploadingImage(false);
-    toast({ title: "Imagem carregada!" });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

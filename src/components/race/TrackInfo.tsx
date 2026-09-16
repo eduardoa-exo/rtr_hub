@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { uploadMedia } from "@/lib/r2Upload";
+import { compressImage } from "@/lib/compressImage";
 import type { Database } from "@/integrations/supabase/types";
 
 type TrackInfoRow = Database["public"]["Tables"]["track_info"]["Row"];
@@ -113,9 +114,17 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error("Não autenticado");
 
-      const uploadType = (type === "map" || type === "tempChart" || type === "precipChart") ? "map" : "weather";
+      const { file: compressed } = await compressImage(file, {
+        maxEdge: type === "map" ? 1600 : 1920,
+        quality: 0.8,
+      });
+
+      const uploadType =
+        type === "map" || type === "tempChart" || type === "precipChart"
+          ? "map"
+          : "weather";
       const { publicUrl, key } = await uploadMedia({
-        file,
+        file: compressed,
         type: uploadType,
         authToken: session.access_token,
         entityId: raceId,
@@ -145,9 +154,9 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
         .insert({
           storage_path: key,
           url: publicUrl,
-          filename: file.name,
-          mime_type: file.type,
-          size_bytes: file.size,
+          filename: compressed.name,
+          mime_type: compressed.type,
+          size_bytes: compressed.size,
           description: descriptions[type],
           category: categories[type],
         })

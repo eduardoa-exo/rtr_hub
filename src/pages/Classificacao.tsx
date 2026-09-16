@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { compressImage } from "@/lib/compressImage";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { uploadMedia } from "@/lib/r2Upload";
@@ -278,25 +279,30 @@ export default function Classificacao() {
         throw new Error("Não autenticado");
       }
 
-      // Use standing ID or car number as entity ID
+      const { file: compressed } = await compressImage(file, {
+        maxEdge: 400,
+        quality: 0.82,
+      });
+
       const entityId = editingStanding?.id || form.car_number;
 
       const { publicUrl } = await uploadMedia({
-        file,
+        file: compressed,
         type: "championship",
         authToken: session.access_token,
         entityId,
       });
 
       setForm({ ...form, car_logo_url: publicUrl });
-      setUploadingImage(false);
       toast({ title: "Imagem carregada!" });
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Erro desconhecido";
       toast({
         title: "Erro ao enviar imagem",
-        description: error.message,
+        description: message,
         variant: "destructive",
       });
+    } finally {
       setUploadingImage(false);
     }
   };

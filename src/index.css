@@ -77,7 +77,7 @@
         hsl(228 22% 7% / 0.45) 50%,
         hsl(228 20% 6% / 0.5) 100%
       ),
-      url(“/images/site-bg.png”);
+      url("/images/site-bg.webp");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
