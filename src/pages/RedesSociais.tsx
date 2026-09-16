@@ -56,6 +56,8 @@ function InstagramLogo({ className }: { className?: string }) {
     <img
       src="/images/instagram.png"
       alt="Instagram"
+      loading="lazy"
+      decoding="async"
       className={`object-contain ${className ?? ""}`}
       aria-hidden
     />

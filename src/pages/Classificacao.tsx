@@ -767,6 +767,8 @@ export default function Classificacao() {
                             <img
                               src={standing.car_logo_url}
                               alt="Car logo"
+                              loading="lazy"
+                              decoding="async"
                               className={`h-8 w-8 object-contain ${
                                 shouldInvertLogo(standing.car_logo_url)
                                   ? "brightness-0 invert"

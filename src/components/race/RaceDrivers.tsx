@@ -30,6 +30,8 @@ function DriverCard({ driver, onClick, compact = false }: { driver: Driver; onCl
           <img
             src={driver.image_url}
             alt={driver.name}
+            loading="lazy"
+            decoding="async"
             className="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border-2 border-primary/20"
           />
         ) : (
@@ -61,6 +63,8 @@ function DriverCard({ driver, onClick, compact = false }: { driver: Driver; onCl
         <img
           src={driver.image_url}
           alt={driver.name}
+          loading="lazy"
+          decoding="async"
           className="h-14 w-14 rounded-full object-cover border-2 border-primary/20"
         />
       ) : (
@@ -282,6 +286,8 @@ export function RaceDrivers({ driverIds, driverGroups }: RaceDriversProps) {
                   <img
                     src={selectedDriver.image_url}
                     alt={selectedDriver.name}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover"
                   />
                 ) : (

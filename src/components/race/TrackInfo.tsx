@@ -284,6 +284,8 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
               <img
                 src={info.weather_image.url}
                 alt={info.weather_image.description || "Weather forecast"}
+                loading="lazy"
+                decoding="async"
                 className="w-full rounded-lg cursor-zoom-in transition-transform hover:scale-[1.01]"
               />
             </button>
@@ -346,6 +348,8 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
             <img
               src={info.track_map.url}
               alt={info.track_map.description || "Track map"}
+              loading="lazy"
+              decoding="async"
               className="w-full rounded-lg cursor-zoom-in transition-transform hover:scale-[1.01]"
             />
           </button>
@@ -393,6 +397,8 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
             <img
               src={info.temperature_chart_image.url}
               alt="Gráfico de temperaturas"
+              loading="lazy"
+              decoding="async"
               className="w-full rounded-lg cursor-zoom-in transition-transform hover:scale-[1.01]"
             />
           </button>
@@ -440,6 +446,8 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
             <img
               src={info.precip_chart_image.url}
               alt="Gráfico de chuva e nuvens"
+              loading="lazy"
+              decoding="async"
               className="w-full rounded-lg cursor-zoom-in transition-transform hover:scale-[1.01]"
             />
           </button>
@@ -477,6 +485,8 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
                 <img
                   src={expandedImage.url}
                   alt={expandedImage.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full max-h-[85vh] object-contain rounded-lg"
                 />
               </div>
