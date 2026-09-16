@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 // Types
 type NavItemDirect = {
@@ -27,6 +28,7 @@ type NavItemDirect = {
   path: string;
   label: string;
   icon: React.ElementType;
+  conditional?: boolean;
 };
 
 type NavItemDropdown = {
@@ -42,8 +44,8 @@ type NavItemDropdown = {
 
 type NavItem = NavItemDirect | NavItemDropdown;
 
-// Navigation structure
-const navItems: NavItem[] = [
+// Navigation structure - without conditional items
+const baseNavItems: NavItem[] = [
   { type: "direct", path: "/live", label: "Live", icon: Flag },
   { type: "direct", path: "/calendario", label: "Calendário", icon: Calendar },
   {
@@ -82,6 +84,73 @@ export function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileOpenCategory, setMobileOpenCategory] = useState<string | null>(null);
+  const [scoreboardEnabled, setScoreboardEnabled] = useState(false);
+  const [navItems, setNavItems] = useState<NavItem[]>(baseNavItems);
+
+  // Fetch scoreboard config to check if it's enabled
+  useEffect(() => {
+    const fetchScoreboardConfig = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("scoreboard_live_config")
+          .select("enabled")
+          .eq("id", 1)
+          .maybeSingle();
+
+        if (data && !error) {
+          setScoreboardEnabled(data.enabled);
+        }
+      } catch (error) {
+        console.log("Scoreboard config not available yet");
+      }
+    };
+
+    fetchScoreboardConfig();
+
+    const channel = supabase
+      .channel("scoreboard-config-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "scoreboard_live_config",
+        },
+        (payload) => {
+          if (payload.new && typeof payload.new === "object" && "enabled" in payload.new) {
+            setScoreboardEnabled(payload.new.enabled as boolean);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  // Update nav items when scoreboard status changes
+  useEffect(() => {
+    if (scoreboardEnabled) {
+      const scoreboardItem: NavItemDirect = {
+        type: "direct",
+        path: "/scoreboard-live",
+        label: "Scoreboard Live",
+        icon: Trophy,
+        conditional: true,
+      };
+
+      const liveIndex = baseNavItems.findIndex(
+        (item) => item.type === "direct" && item.path === "/live"
+      );
+
+      const newNavItems = [...baseNavItems];
+      newNavItems.splice(liveIndex + 1, 0, scoreboardItem);
+      setNavItems(newNavItems);
+    } else {
+      setNavItems(baseNavItems);
+    }
+  }, [scoreboardEnabled]);
 
   // Check if any path in dropdown is active
   const isDropdownActive = (items: { path: string }[]) => {
