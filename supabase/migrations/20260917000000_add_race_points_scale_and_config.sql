@@ -19,7 +19,7 @@
 CREATE TABLE IF NOT EXISTS public.race_points_scale (
   class TEXT NOT NULL CHECK (class IN ('LMP2', 'GT3 PRO')),
   position INT NOT NULL CHECK (position >= 1 AND position <= 30),
-  points INT NOT NULL CHECK (points >= 0),
+  points INT NOT NULL CHECK (points >= 0 AND points <= 1000),
   PRIMARY KEY (class, position)
 );
 
@@ -97,8 +97,8 @@ INSERT INTO public.race_points_scale (class, position, points) VALUES
 
 ALTER TABLE public.scoreboard_live_config
   ADD COLUMN championship_class TEXT NOT NULL DEFAULT 'BOTH' CHECK (championship_class IN ('LMP2', 'GT3 PRO', 'BOTH')),
-  ADD COLUMN focus_car_number TEXT,
-  ADD COLUMN rival_car_numbers TEXT[] NOT NULL DEFAULT '{}';
+  ADD COLUMN focus_car_number TEXT CHECK (focus_car_number IS NULL OR char_length(focus_car_number) <= 16),
+  ADD COLUMN rival_car_numbers TEXT[] NOT NULL DEFAULT '{}' CHECK (cardinality(rival_car_numbers) <= 32);
 
 -- =============================================
 -- RLS: Enable row-level security on race_points_scale
