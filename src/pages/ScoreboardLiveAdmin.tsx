@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Loader2, Trophy, Save, X } from "lucide-react";
+import { Loader2, Trophy, Save, X, RefreshCw, GripVertical } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { pointsForPosition, RacePointsScale } from "@/domain/scoreboard/livePoints";
 
 interface ScoreboardConfig {
   id: number;
@@ -30,6 +31,29 @@ interface ScoreboardConfig {
   updated_at: string;
 }
 
+interface LiveSession {
+  id: number;
+  enabled: boolean;
+  championship_class: "BOTH" | "LMP2" | "GT3 PRO";
+  updated_at: string;
+}
+
+interface LiveGridEntry {
+  id: string;
+  car_number: string;
+  class: "LMP2" | "GT3 PRO";
+  sort_order: number;
+}
+
+interface Standing {
+  id: string;
+  car_number: string;
+  team_name: string;
+  country_code: string;
+  class: string;
+  rank: number;
+}
+
 export default function ScoreboardLiveAdmin() {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useIsAdmin();
@@ -40,6 +64,11 @@ export default function ScoreboardLiveAdmin() {
   const [config, setConfig] = useState<ScoreboardConfig | null>(null);
   const [availableCarNumbers, setAvailableCarNumbers] = useState<string[]>([]);
   const [rivalInput, setRivalInput] = useState("");
+  const [liveSession, setLiveSession] = useState<LiveSession | null>(null);
+  const [liveGrid, setLiveGrid] = useState<LiveGridEntry[]>([]);
+  const [pointsScale, setPointsScale] = useState<RacePointsScale[]>([]);
+  const [standings, setStandings] = useState<Standing[]>([]);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
   const [configForm, setConfigForm] = useState({
     enabled: false,
@@ -48,6 +77,11 @@ export default function ScoreboardLiveAdmin() {
     championship_class: "BOTH" as "LMP2" | "GT3 PRO" | "BOTH",
     focus_car_number: "",
     rival_car_numbers: [] as string[],
+  });
+
+  const [liveSessionForm, setLiveSessionForm] = useState({
+    enabled: false,
+    championship_class: "BOTH" as "BOTH" | "LMP2" | "GT3 PRO",
   });
 
   useEffect(() => {
@@ -84,17 +118,49 @@ export default function ScoreboardLiveAdmin() {
         });
       }
 
-      const { data: standings, error: standingsError } = await supabase
+      const { data: standingsData, error: standingsError } = await supabase
         .from("championship_standings")
-        .select("car_number, class")
+        .select("*")
         .order("rank", { ascending: true });
 
-      if (!standingsError && standings) {
+      if (!standingsError && standingsData) {
         const uniqueCarNumbers = Array.from(
-          new Set(standings.map((s) => s.car_number))
+          new Set(standingsData.map((s) => s.car_number))
         ).sort();
         setAvailableCarNumbers(uniqueCarNumbers);
+        setStandings(standingsData);
       }
+
+      // Fetch live session
+      const { data: sessionData } = await supabase
+        .from("scoreboard_live_session")
+        .select("*")
+        .eq("id", 1)
+        .maybeSingle();
+
+      if (sessionData) {
+        setLiveSession(sessionData);
+        setLiveSessionForm({
+          enabled: sessionData.enabled,
+          championship_class: sessionData.championship_class,
+        });
+      }
+
+      // Fetch live grid
+      const { data: gridData } = await supabase
+        .from("scoreboard_live_grid")
+        .select("*")
+        .order("sort_order", { ascending: true });
+
+      setLiveGrid(gridData || []);
+
+      // Fetch points scale
+      const { data: scaleData } = await supabase
+        .from("race_points_scale")
+        .select("*")
+        .order("position", { ascending: true });
+
+      setPointsScale(scaleData || []);
     } catch (error) {
       console.error("Error fetching scoreboard data:", error);
       toast({
@@ -253,6 +319,143 @@ export default function ScoreboardLiveAdmin() {
     }
   };
 
+
+  const handleSaveLiveSession = async () => {
+    setSubmitting(true);
+
+    try {
+      const sessionData = {
+        id: 1,
+        enabled: liveSessionForm.enabled,
+        championship_class: liveSessionForm.championship_class,
+      };
+
+      const { error } = await supabase
+        .from("scoreboard_live_session")
+        .upsert(sessionData);
+
+      if (error) throw error;
+
+      toast({ title: "Sessão live guardada!" });
+      await fetchData();
+    } catch (error: any) {
+      console.error("Error saving live session:", error);
+      toast({
+        title: "Erro ao guardar sessão live",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleInitializeGrid = async () => {
+    setSubmitting(true);
+
+    try {
+      // Filter standings by class if needed
+      const filteredStandings =
+        liveSessionForm.championship_class === "BOTH"
+          ? standings
+          : standings.filter((s) => s.class === liveSessionForm.championship_class);
+
+      if (filteredStandings.length === 0) {
+        toast({
+          title: "Erro",
+          description: "Nenhuma equipa encontrada para a classe selecionada.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      // Delete existing grid
+      await supabase.from("scoreboard_live_grid").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+
+      // Insert new grid entries based on current standings, with class per row
+      const gridEntries = filteredStandings.map((standing, index) => ({
+        car_number: standing.car_number,
+        class: standing.class as "LMP2" | "GT3 PRO",
+        sort_order: index + 1,
+      }));
+
+      const { error } = await supabase
+        .from("scoreboard_live_grid")
+        .insert(gridEntries);
+
+      if (error) throw error;
+
+      toast({ title: "Grelha inicializada com sucesso!" });
+      await fetchData();
+    } catch (error: any) {
+      console.error("Error initializing grid:", error);
+      toast({
+        title: "Erro ao inicializar grelha",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === index) return;
+
+    const newGrid = [...liveGrid];
+    const draggedItem = newGrid[draggedIndex];
+    newGrid.splice(draggedIndex, 1);
+    newGrid.splice(index, 0, draggedItem);
+
+    setLiveGrid(newGrid);
+    setDraggedIndex(index);
+  };
+
+  const handleDragEnd = async () => {
+    if (draggedIndex === null) return;
+
+    try {
+      // Update sort_order for all entries
+      const updates = liveGrid.map((entry, index) =>
+        supabase
+          .from("scoreboard_live_grid")
+          .update({ sort_order: index + 1 })
+          .eq("id", entry.id)
+      );
+
+      await Promise.all(updates);
+
+      toast({ title: "Ordem atualizada!" });
+      await fetchData();
+    } catch (error: any) {
+      console.error("Error updating grid order:", error);
+      toast({
+        title: "Erro ao atualizar ordem",
+        description: error.message,
+        variant: "destructive",
+      });
+      await fetchData();
+    } finally {
+      setDraggedIndex(null);
+    }
+  };
+
+  const getTeamInfo = (carNumber: string) => {
+    return standings.find((s) => s.car_number === carNumber);
+  };
+
+  const getFilteredGrid = () => {
+    if (!liveSession || liveSession.championship_class === "BOTH") {
+      return liveGrid;
+    }
+    return liveGrid.filter((entry) => entry.class === liveSession.championship_class);
+  };
 
   if (authLoading || adminLoading) {
     return (
@@ -519,6 +722,132 @@ export default function ScoreboardLiveAdmin() {
                     </Button>
                   </div>
                 </div>
+              </div>
+
+              <div className="card-racing p-4 sm:p-6">
+                <h2 className="font-racing text-lg mb-4">Live Grid</h2>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="live-enabled" className="text-base">
+                        Live Ativo
+                      </Label>
+                      <p className="text-sm text-muted-foreground">
+                        Mostrar modo live no scoreboard público
+                      </p>
+                    </div>
+                    <Switch
+                      id="live-enabled"
+                      checked={liveSessionForm.enabled}
+                      onCheckedChange={(checked) =>
+                        setLiveSessionForm({ ...liveSessionForm, enabled: checked })
+                      }
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="live-class">Classe Live</Label>
+                    <Select
+                      value={liveSessionForm.championship_class}
+                      onValueChange={(value) =>
+                        setLiveSessionForm({
+                          ...liveSessionForm,
+                          championship_class: value as "BOTH" | "LMP2" | "GT3 PRO",
+                        })
+                      }
+                    >
+                      <SelectTrigger id="live-class" className="bg-secondary">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="BOTH">Ambas as Classes</SelectItem>
+                        <SelectItem value="LMP2">LMP2</SelectItem>
+                        <SelectItem value="GT3 PRO">GT3 PRO</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground">
+                      Filtro de classe para a grelha live (independente dos cenários)
+                    </p>
+                  </div>
+
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      onClick={handleInitializeGrid}
+                      disabled={submitting}
+                      variant="outline"
+                      className="gap-2"
+                    >
+                      {submitting ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <RefreshCw className="h-4 w-4" />
+                      )}
+                      Inicializar Grelha
+                    </Button>
+                    <Button
+                      onClick={handleSaveLiveSession}
+                      disabled={submitting}
+                      className="gap-2"
+                    >
+                      {submitting ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Save className="h-4 w-4" />
+                      )}
+                      Guardar Sessão Live
+                    </Button>
+                  </div>
+                </div>
+
+                {liveGrid.length > 0 && (
+                  <div className="mt-6">
+                    <h3 className="font-racing text-base mb-3">
+                      Grelha Atual (Arrastar para reordenar)
+                    </h3>
+                    <div className="space-y-2">
+                      {getFilteredGrid().map((entry, index) => {
+                        const team = getTeamInfo(entry.car_number);
+                        const points = pointsForPosition(
+                          entry.sort_order,
+                          pointsScale,
+                          entry.class
+                        );
+
+                        return (
+                          <div
+                            key={entry.id}
+                            draggable
+                            onDragStart={() => handleDragStart(index)}
+                            onDragOver={(e) => handleDragOver(e, index)}
+                            onDragEnd={handleDragEnd}
+                            className={`flex items-center gap-3 p-3 rounded-lg border cursor-move transition-colors ${
+                              draggedIndex === index
+                                ? "border-primary bg-primary/10"
+                                : "border-border bg-secondary/50 hover:bg-secondary"
+                            }`}
+                          >
+                            <GripVertical className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                            <div className="flex-1 flex items-center gap-3">
+                              <div className="font-bold text-primary min-w-[3rem]">
+                                P{entry.sort_order}
+                              </div>
+                              <div className="font-racing">#{entry.car_number}</div>
+                              <div className="flex-1">
+                                {team?.team_name || entry.car_number}
+                              </div>
+                              <div className="text-xs text-muted-foreground min-w-[4rem]">
+                                {entry.class}
+                              </div>
+                              <div className="font-bold text-green-400 min-w-[4rem] text-right">
+                                {points} pts
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             </>
           )}

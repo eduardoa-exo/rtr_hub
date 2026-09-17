@@ -6,14 +6,16 @@ import { Header } from "@/components/layout/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { RacingLoader } from "@/components/RacingLoader";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import {
   calculateAllScenarios,
   type ChampionshipStanding,
-  type RacePointsScale,
+  type RacePointsScale as ScenarioRacePointsScale,
   type ScenarioLine,
   type ClassScenarios,
 } from "@/domain/scoreboard/calculateScenarios";
+import { pointsForPosition, RacePointsScale } from "@/domain/scoreboard/livePoints";
 
 interface ScoreboardConfig {
   id: number;
@@ -26,12 +28,38 @@ interface ScoreboardConfig {
   updated_at: string;
 }
 
+interface LiveSession {
+  id: number;
+  enabled: boolean;
+  championship_class: "BOTH" | "LMP2" | "GT3 PRO";
+  updated_at: string;
+}
+
+interface LiveGridEntry {
+  id: string;
+  car_number: string;
+  class: "LMP2" | "GT3 PRO";
+  sort_order: number;
+}
+
+interface Standing {
+  id: string;
+  car_number: string;
+  team_name: string;
+  country_code: string;
+  class: string;
+}
+
 export default function ScoreboardLive() {
   const navigate = useNavigate();
   const { isAdmin } = useIsAdmin();
   const [loading, setLoading] = useState(true);
   const [config, setConfig] = useState<ScoreboardConfig | null>(null);
   const [classScenarios, setClassScenarios] = useState<ClassScenarios[]>([]);
+  const [liveSession, setLiveSession] = useState<LiveSession | null>(null);
+  const [liveGrid, setLiveGrid] = useState<LiveGridEntry[]>([]);
+  const [pointsScale, setPointsScale] = useState<RacePointsScale[]>([]);
+  const [standings, setStandings] = useState<Standing[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,10 +119,37 @@ export default function ScoreboardLive() {
             focus_car_number: focusCarNumber,
             rival_car_numbers: rivalCarNumbers,
           },
-          scaleData as RacePointsScale[] | undefined
+          scaleData as ScenarioRacePointsScale[] | undefined
         );
 
         setClassScenarios(scenarios);
+
+        // Fetch live session and grid
+        const { data: sessionData } = await supabase
+          .from("scoreboard_live_session")
+          .select("*")
+          .eq("id", 1)
+          .maybeSingle();
+
+        if (sessionData) {
+          setLiveSession(sessionData);
+
+          if (sessionData.enabled) {
+            // Fetch live grid
+            const { data: gridData } = await supabase
+              .from("scoreboard_live_grid")
+              .select("*")
+              .order("sort_order", { ascending: true });
+
+            setLiveGrid(gridData || []);
+
+            // Store points scale for live view
+            setPointsScale((scaleData as RacePointsScale[]) || []);
+
+            // Store standings for team names
+            setStandings(standings || []);
+          }
+        }
       } catch (error) {
         console.error("Error fetching scoreboard data:", error);
       } finally {
@@ -199,7 +254,9 @@ export default function ScoreboardLive() {
           </div>
         )}
 
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto">
+          {!liveSession?.enabled || liveGrid.length === 0 ? (
+            <div className="space-y-8">
           {classScenarios.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground">
@@ -291,6 +348,177 @@ export default function ScoreboardLive() {
                 )}
               </div>
             ))
+          )}
+            </div>
+          ) : (
+            <Tabs defaultValue="scenarios" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="scenarios">Cenários</TabsTrigger>
+                <TabsTrigger value="live">Live</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="scenarios" className="space-y-8">
+                {classScenarios.length === 0 ? (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground">
+                      Nenhum cenário disponível no momento.
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Verifique se o carro e rivais foram configurados.
+                    </p>
+                  </div>
+                ) : (
+                  classScenarios.map((classData) => (
+                    <div key={classData.class} className="space-y-4">
+                      {classScenarios.length > 1 && (
+                        <h2 className="font-racing text-xl font-bold text-center">
+                          {classData.class}
+                        </h2>
+                      )}
+
+                      {classData.gaps.length > 0 && (
+                        <div className="card-racing p-4 border border-border/50">
+                          <h3 className="font-racing text-sm mb-2 text-muted-foreground">
+                            Situação atual
+                          </h3>
+                          <div className="space-y-1 text-sm">
+                            {classData.focusStanding && (
+                              <div>
+                                <span className="font-bold">
+                                  #{classData.focusStanding.car_number}
+                                </span>{" "}
+                                - {classData.focusStanding.points} pontos (P
+                                {classData.focusStanding.rank})
+                              </div>
+                            )}
+                            {classData.gaps.map((gap) => (
+                              <div key={gap.rival.car_number}>
+                                <span className="font-bold">
+                                  #{gap.rival.car_number}
+                                </span>{" "}
+                                - {gap.rival.points} pontos (P{gap.rival.rank}) -{" "}
+                                <span
+                                  className={
+                                    gap.pointsGap > 0
+                                      ? "text-red-400"
+                                      : "text-green-400"
+                                  }
+                                >
+                                  {gap.pointsGap > 0 ? "+" : ""}
+                                  {gap.pointsGap} pts
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {classData.scenarios.length === 0 ? (
+                        <div className="text-center py-8">
+                          <p className="text-muted-foreground text-sm">
+                            Carros não encontrados na classificação de {classData.class}
+                            .
+                          </p>
+                        </div>
+                      ) : (
+                        classData.scenarios.map((line, index) => (
+                          <motion.div
+                            key={`${classData.class}-${index}`}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                            className={`card-racing p-4 sm:p-6 border-2 ${getVariantStyles(
+                              line.result_variant
+                            )}`}
+                          >
+                            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                              <div className="flex-shrink-0 text-2xl sm:text-3xl font-bold">
+                                {getVariantIcon(line.result_variant)}
+                              </div>
+                              <div className="flex-1 space-y-2">
+                                <div className="font-racing text-sm sm:text-base text-muted-foreground">
+                                  {line.condition_label}
+                                </div>
+                                <div className="text-base sm:text-lg font-bold">
+                                  {line.result_label}
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))
+                      )}
+                    </div>
+                  ))
+                )}
+              </TabsContent>
+
+              <TabsContent value="live" className="space-y-4">
+                {liveGrid.length === 0 ? (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground">
+                      Grelha live ainda não está disponível.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="card-racing overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-border">
+                            <th className="text-left p-3 font-racing text-sm">Pos</th>
+                            <th className="text-left p-3 font-racing text-sm">Nº</th>
+                            <th className="text-left p-3 font-racing text-sm">Equipa</th>
+                            <th className="text-left p-3 font-racing text-sm">Classe</th>
+                            <th className="text-right p-3 font-racing text-sm">Pontos</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {liveGrid
+                            .filter((entry) => {
+                              if (liveSession!.championship_class === "BOTH") return true;
+                              return entry.class === liveSession!.championship_class;
+                            })
+                            .map((entry, index) => {
+                              const team = standings.find((s) => s.car_number === entry.car_number);
+                              const points = pointsForPosition(
+                                entry.sort_order,
+                                pointsScale,
+                                entry.class
+                              );
+
+                              return (
+                                <motion.tr
+                                  key={entry.id}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: index * 0.05 }}
+                                  className="border-b border-border/50 hover:bg-secondary/50"
+                                >
+                                  <td className="p-3 font-bold text-primary">
+                                    P{entry.sort_order}
+                                  </td>
+                                  <td className="p-3 font-racing">
+                                    #{entry.car_number}
+                                  </td>
+                                  <td className="p-3">
+                                    {team?.team_name || entry.car_number}
+                                  </td>
+                                  <td className="p-3 text-sm text-muted-foreground">
+                                    {entry.class}
+                                  </td>
+                                  <td className="p-3 text-right font-bold text-green-400">
+                                    {points}
+                                  </td>
+                                </motion.tr>
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
           )}
         </div>
       </main>

@@ -563,6 +563,54 @@ export type Database = {
         }
         Relationships: []
       }
+      scoreboard_live_session: {
+        Row: {
+          id: number
+          enabled: boolean
+          championship_class: "BOTH" | "LMP2" | "GT3 PRO"
+          updated_at: string
+        }
+        Insert: {
+          id: number
+          enabled?: boolean
+          championship_class?: "BOTH" | "LMP2" | "GT3 PRO"
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          enabled?: boolean
+          championship_class?: "BOTH" | "LMP2" | "GT3 PRO"
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      scoreboard_live_grid: {
+        Row: {
+          id: string
+          car_number: string
+          class: "LMP2" | "GT3 PRO"
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          car_number: string
+          class: "LMP2" | "GT3 PRO"
+          sort_order: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          car_number?: string
+          class?: "LMP2" | "GT3 PRO"
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
