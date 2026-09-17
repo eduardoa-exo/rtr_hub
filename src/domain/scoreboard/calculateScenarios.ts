@@ -74,7 +74,8 @@ function normalizeCarNumber(carNumber: string): string {
 
 function getPointsForPosition(position: number, scale: RacePointsScale[]): number {
   const entry = scale.find((s) => s.position === position);
-  return entry ? entry.points : 0;
+  if (entry) return entry.points;
+  return position > 30 ? 10 : 0;
 }
 
 function findCarInStandings(
@@ -205,7 +206,7 @@ export function calculateScenariosForClass(
 }
 
 export function calculateAllScenarios(
-  championshipClass: "LMP2" | "GT3 PRO" | "ambas",
+  championshipClass: "LMP2" | "GT3 PRO" | "BOTH",
   standings: ChampionshipStanding[],
   context: ScenarioContext,
   scale?: RacePointsScale[]
@@ -213,7 +214,7 @@ export function calculateAllScenarios(
   const effectiveScale = scale && scale.length > 0 ? scale : DEFAULT_POINTS_SCALE;
 
   const classes: string[] =
-    championshipClass === "ambas" ? ["LMP2", "GT3 PRO"] : [championshipClass];
+    championshipClass === "BOTH" ? ["LMP2", "GT3 PRO"] : [championshipClass];
 
   return classes.map((cls) =>
     calculateScenariosForClass(cls, standings, context, effectiveScale)

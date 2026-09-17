@@ -20,7 +20,7 @@ interface ScoreboardConfig {
   enabled: boolean;
   title: string;
   intro: string | null;
-  championship_class?: "LMP2" | "GT3 PRO" | "ambas" | null;
+  championship_class?: "LMP2" | "GT3 PRO" | "BOTH" | null;
   focus_car_number?: string | null;
   rival_car_numbers?: string[] | null;
   updated_at: string;
@@ -58,7 +58,7 @@ export default function ScoreboardLive() {
 
         setConfig(configData);
 
-        const championshipClass = configData.championship_class || "ambas";
+        const championshipClass = configData.championship_class || "BOTH";
         const focusCarNumber = configData.focus_car_number;
         const rivalCarNumbers = configData.rival_car_numbers || [];
 
@@ -85,7 +85,7 @@ export default function ScoreboardLive() {
         }
 
         const scenarios = calculateAllScenarios(
-          championshipClass as "LMP2" | "GT3 PRO" | "ambas",
+          championshipClass as "LMP2" | "GT3 PRO" | "BOTH",
           standings as ChampionshipStanding[],
           {
             focus_car_number: focusCarNumber,

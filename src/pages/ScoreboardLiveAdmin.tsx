@@ -24,7 +24,7 @@ interface ScoreboardConfig {
   enabled: boolean;
   title: string;
   intro: string | null;
-  championship_class?: "LMP2" | "GT3 PRO" | "ambas" | null;
+  championship_class?: "LMP2" | "GT3 PRO" | "BOTH" | null;
   focus_car_number?: string | null;
   rival_car_numbers?: string[] | null;
   updated_at: string;
@@ -45,7 +45,7 @@ export default function ScoreboardLiveAdmin() {
     enabled: false,
     title: "Scoreboard Live",
     intro: "",
-    championship_class: "ambas" as "LMP2" | "GT3 PRO" | "ambas",
+    championship_class: "BOTH" as "LMP2" | "GT3 PRO" | "BOTH",
     focus_car_number: "",
     rival_car_numbers: [] as string[],
   });
@@ -78,7 +78,7 @@ export default function ScoreboardLiveAdmin() {
           enabled: configData.enabled,
           title: configData.title,
           intro: configData.intro || "",
-          championship_class: (configData.championship_class as "LMP2" | "GT3 PRO" | "ambas") || "ambas",
+          championship_class: (configData.championship_class as "LMP2" | "GT3 PRO" | "BOTH") || "BOTH",
           focus_car_number: configData.focus_car_number || "",
           rival_car_numbers: configData.rival_car_numbers || [],
         });
@@ -318,7 +318,7 @@ export default function ScoreboardLiveAdmin() {
                       onValueChange={(value) =>
                         setConfigForm({
                           ...configForm,
-                          championship_class: value as "LMP2" | "GT3 PRO" | "ambas",
+                          championship_class: value as "LMP2" | "GT3 PRO" | "BOTH",
                         })
                       }
                     >
@@ -328,7 +328,7 @@ export default function ScoreboardLiveAdmin() {
                       <SelectContent>
                         <SelectItem value="LMP2">LMP2</SelectItem>
                         <SelectItem value="GT3 PRO">GT3 PRO</SelectItem>
-                        <SelectItem value="ambas">Ambas</SelectItem>
+                        <SelectItem value="BOTH">Ambas</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

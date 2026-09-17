@@ -503,7 +503,7 @@ export type Database = {
           enabled: boolean
           title: string
           intro: string | null
-          championship_class?: "LMP2" | "GT3 PRO" | "ambas" | null
+          championship_class?: "BOTH" | "LMP2" | "GT3 PRO" | null
           focus_car_number?: string | null
           rival_car_numbers?: string[] | null
           updated_at: string
@@ -516,7 +516,7 @@ export type Database = {
           enabled?: boolean
           title?: string
           intro?: string | null
-          championship_class?: "LMP2" | "GT3 PRO" | "ambas" | null
+          championship_class?: "BOTH" | "LMP2" | "GT3 PRO" | null
           focus_car_number?: string | null
           rival_car_numbers?: string[] | null
           updated_at?: string
@@ -529,7 +529,7 @@ export type Database = {
           enabled?: boolean
           title?: string
           intro?: string | null
-          championship_class?: "LMP2" | "GT3 PRO" | "ambas" | null
+          championship_class?: "BOTH" | "LMP2" | "GT3 PRO" | null
           focus_car_number?: string | null
           rival_car_numbers?: string[] | null
           updated_at?: string
