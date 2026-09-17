@@ -479,35 +479,14 @@ export type Database = {
         }
         Relationships: []
       }
-      race_points_scale: {
-        Row: {
-          class: string
-          position: number
-          points: number
-        }
-        Insert: {
-          class: string
-          position: number
-          points: number
-        }
-        Update: {
-          class?: string
-          position?: number
-          points?: number
-        }
-        Relationships: []
-      }
       scoreboard_live_config: {
         Row: {
           id: number
           enabled: boolean
           title: string
           intro: string | null
-          championship_class?: "BOTH" | "LMP2" | "GT3 PRO" | null
-          focus_car_number?: string | null
-          rival_car_numbers?: string[] | null
           updated_at: string
-          championship_class: string
+          championship_class: "BOTH" | "LMP2" | "GT3 PRO"
           focus_car_number: string | null
           rival_car_numbers: string[]
         }
@@ -516,11 +495,8 @@ export type Database = {
           enabled?: boolean
           title?: string
           intro?: string | null
-          championship_class?: "BOTH" | "LMP2" | "GT3 PRO" | null
-          focus_car_number?: string | null
-          rival_car_numbers?: string[] | null
           updated_at?: string
-          championship_class?: string
+          championship_class?: "BOTH" | "LMP2" | "GT3 PRO"
           focus_car_number?: string | null
           rival_car_numbers?: string[]
         }
@@ -529,11 +505,8 @@ export type Database = {
           enabled?: boolean
           title?: string
           intro?: string | null
-          championship_class?: "BOTH" | "LMP2" | "GT3 PRO" | null
-          focus_car_number?: string | null
-          rival_car_numbers?: string[] | null
           updated_at?: string
-          championship_class?: string
+          championship_class?: "BOTH" | "LMP2" | "GT3 PRO"
           focus_car_number?: string | null
           rival_car_numbers?: string[]
         }

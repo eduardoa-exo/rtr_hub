@@ -24,9 +24,9 @@ interface ScoreboardConfig {
   enabled: boolean;
   title: string;
   intro: string | null;
-  championship_class?: "LMP2" | "GT3 PRO" | "BOTH" | null;
-  focus_car_number?: string | null;
-  rival_car_numbers?: string[] | null;
+  championship_class: "LMP2" | "GT3 PRO" | "BOTH";
+  focus_car_number: string | null;
+  rival_car_numbers: string[];
   updated_at: string;
 }
 
@@ -78,9 +78,9 @@ export default function ScoreboardLiveAdmin() {
           enabled: configData.enabled,
           title: configData.title,
           intro: configData.intro || "",
-          championship_class: (configData.championship_class as "LMP2" | "GT3 PRO" | "BOTH") || "BOTH",
+          championship_class: configData.championship_class,
           focus_car_number: configData.focus_car_number || "",
-          rival_car_numbers: configData.rival_car_numbers || [],
+          rival_car_numbers: configData.rival_car_numbers,
         });
       }
 
@@ -189,7 +189,7 @@ export default function ScoreboardLiveAdmin() {
         intro: trimmedIntro || null,
         championship_class: configForm.championship_class,
         focus_car_number: configForm.focus_car_number || null,
-        rival_car_numbers: configForm.rival_car_numbers.length > 0 ? configForm.rival_car_numbers : null,
+        rival_car_numbers: configForm.rival_car_numbers,
       };
 
       const { error } = await supabase
