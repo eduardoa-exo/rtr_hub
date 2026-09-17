@@ -479,6 +479,24 @@ export type Database = {
         }
         Relationships: []
       }
+      race_points_scale: {
+        Row: {
+          class: string
+          position: number
+          points: number
+        }
+        Insert: {
+          class: string
+          position: number
+          points: number
+        }
+        Update: {
+          class?: string
+          position?: number
+          points?: number
+        }
+        Relationships: []
+      }
       scoreboard_live_config: {
         Row: {
           id: number
@@ -486,6 +504,9 @@ export type Database = {
           title: string
           intro: string | null
           updated_at: string
+          championship_class: string
+          focus_car_number: string | null
+          rival_car_numbers: string[]
         }
         Insert: {
           id: number
@@ -493,6 +514,9 @@ export type Database = {
           title?: string
           intro?: string | null
           updated_at?: string
+          championship_class?: string
+          focus_car_number?: string | null
+          rival_car_numbers?: string[]
         }
         Update: {
           id?: number
@@ -500,6 +524,9 @@ export type Database = {
           title?: string
           intro?: string | null
           updated_at?: string
+          championship_class?: string
+          focus_car_number?: string | null
+          rival_car_numbers?: string[]
         }
         Relationships: []
       }
