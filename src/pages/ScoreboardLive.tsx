@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Trophy, Loader2, Settings } from "lucide-react";
+import { Trophy, Settings } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { RacingLoader } from "@/components/RacingLoader";
 import { Button } from "@/components/ui/button";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
+import {
+  calculateAllScenarios,
+  type ChampionshipStanding,
+  type RacePointsScale,
+  type ScenarioLine,
+  type ClassScenarios,
+} from "@/domain/scoreboard/calculateScenarios";
 
 interface ScoreboardConfig {
   id: number;
   enabled: boolean;
   title: string;
   intro: string | null;
+  championship_class?: "LMP2" | "GT3 PRO" | "ambas" | null;
+  focus_car_number?: string | null;
+  rival_car_numbers?: string[] | null;
   updated_at: string;
-}
-
-interface ScoreboardLine {
-  id: string;
-  sort_order: number;
-  condition_label: string;
-  result_label: string;
-  result_variant: "win" | "lose" | "neutral";
-  visible: boolean;
 }
 
 export default function ScoreboardLive() {
@@ -30,7 +31,7 @@ export default function ScoreboardLive() {
   const { isAdmin } = useIsAdmin();
   const [loading, setLoading] = useState(true);
   const [config, setConfig] = useState<ScoreboardConfig | null>(null);
-  const [lines, setLines] = useState<ScoreboardLine[]>([]);
+  const [classScenarios, setClassScenarios] = useState<ClassScenarios[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,21 +58,43 @@ export default function ScoreboardLive() {
 
         setConfig(configData);
 
-        const { data: linesData, error: linesError } = await supabase
-          .from("scoreboard_live_lines")
-          .select("*")
-          .eq("visible", true)
-          .order("sort_order", { ascending: true });
+        const championshipClass = configData.championship_class || "ambas";
+        const focusCarNumber = configData.focus_car_number;
+        const rivalCarNumbers = configData.rival_car_numbers || [];
 
-        if (linesError) {
-          if (linesError.code === "42P01") {
-            console.log("Scoreboard lines table not found (may not exist yet)");
-          } else {
-            throw linesError;
-          }
+        if (!focusCarNumber || rivalCarNumbers.length === 0) {
+          console.log("Focus or rival cars not configured yet");
+          setLoading(false);
+          return;
         }
 
-        setLines(linesData || []);
+        const { data: standings, error: standingsError } = await supabase
+          .from("championship_standings")
+          .select("*")
+          .order("rank", { ascending: true });
+
+        if (standingsError) throw standingsError;
+
+        const { data: scaleData, error: scaleError } = await supabase
+          .from("race_points_scale")
+          .select("*")
+          .order("position", { ascending: true });
+
+        if (scaleError && scaleError.code !== "42P01") {
+          console.warn("Error loading points scale, using fallback:", scaleError);
+        }
+
+        const scenarios = calculateAllScenarios(
+          championshipClass as "LMP2" | "GT3 PRO" | "ambas",
+          standings as ChampionshipStanding[],
+          {
+            focus_car_number: focusCarNumber,
+            rival_car_numbers: rivalCarNumbers,
+          },
+          scaleData as RacePointsScale[] | undefined
+        );
+
+        setClassScenarios(scenarios);
       } catch (error) {
         console.error("Error fetching scoreboard data:", error);
       } finally {
@@ -176,38 +199,97 @@ export default function ScoreboardLive() {
           </div>
         )}
 
-        <div className="max-w-4xl mx-auto space-y-4">
-          {lines.length === 0 ? (
+        <div className="max-w-4xl mx-auto space-y-8">
+          {classScenarios.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground">
                 Nenhum cenário disponível no momento.
               </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Verifique se o carro e rivais foram configurados.
+              </p>
             </div>
           ) : (
-            lines.map((line, index) => (
-              <motion.div
-                key={line.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className={`card-racing p-4 sm:p-6 border-2 ${getVariantStyles(
-                  line.result_variant
-                )}`}
-              >
-                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                  <div className="flex-shrink-0 text-2xl sm:text-3xl font-bold">
-                    {getVariantIcon(line.result_variant)}
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <div className="font-racing text-sm sm:text-base text-muted-foreground">
-                      {line.condition_label}
+            classScenarios.map((classData) => (
+              <div key={classData.class} className="space-y-4">
+                {classScenarios.length > 1 && (
+                  <h2 className="font-racing text-xl font-bold text-center">
+                    {classData.class}
+                  </h2>
+                )}
+
+                {classData.gaps.length > 0 && (
+                  <div className="card-racing p-4 border border-border/50">
+                    <h3 className="font-racing text-sm mb-2 text-muted-foreground">
+                      Situação atual
+                    </h3>
+                    <div className="space-y-1 text-sm">
+                      {classData.focusStanding && (
+                        <div>
+                          <span className="font-bold">
+                            #{classData.focusStanding.car_number}
+                          </span>{" "}
+                          - {classData.focusStanding.points} pontos (P
+                          {classData.focusStanding.rank})
+                        </div>
+                      )}
+                      {classData.gaps.map((gap) => (
+                        <div key={gap.rival.car_number}>
+                          <span className="font-bold">
+                            #{gap.rival.car_number}
+                          </span>{" "}
+                          - {gap.rival.points} pontos (P{gap.rival.rank}) -{" "}
+                          <span
+                            className={
+                              gap.pointsGap > 0
+                                ? "text-red-400"
+                                : "text-green-400"
+                            }
+                          >
+                            {gap.pointsGap > 0 ? "+" : ""}
+                            {gap.pointsGap} pts
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                    <div className="text-base sm:text-lg font-bold">
-                      {line.result_label}
-                    </div>
                   </div>
-                </div>
-              </motion.div>
+                )}
+
+                {classData.scenarios.length === 0 ? (
+                  <div className="text-center py-8">
+                    <p className="text-muted-foreground text-sm">
+                      Carros não encontrados na classificação de {classData.class}
+                      .
+                    </p>
+                  </div>
+                ) : (
+                  classData.scenarios.map((line, index) => (
+                    <motion.div
+                      key={`${classData.class}-${index}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className={`card-racing p-4 sm:p-6 border-2 ${getVariantStyles(
+                        line.result_variant
+                      )}`}
+                    >
+                      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                        <div className="flex-shrink-0 text-2xl sm:text-3xl font-bold">
+                          {getVariantIcon(line.result_variant)}
+                        </div>
+                        <div className="flex-1 space-y-2">
+                          <div className="font-racing text-sm sm:text-base text-muted-foreground">
+                            {line.condition_label}
+                          </div>
+                          <div className="text-base sm:text-lg font-bold">
+                            {line.result_label}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
+                )}
+              </div>
             ))
           )}
         </div>

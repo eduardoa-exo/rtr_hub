@@ -503,6 +503,9 @@ export type Database = {
           enabled: boolean
           title: string
           intro: string | null
+          championship_class?: "LMP2" | "GT3 PRO" | "ambas" | null
+          focus_car_number?: string | null
+          rival_car_numbers?: string[] | null
           updated_at: string
           championship_class: string
           focus_car_number: string | null
@@ -513,6 +516,9 @@ export type Database = {
           enabled?: boolean
           title?: string
           intro?: string | null
+          championship_class?: "LMP2" | "GT3 PRO" | "ambas" | null
+          focus_car_number?: string | null
+          rival_car_numbers?: string[] | null
           updated_at?: string
           championship_class?: string
           focus_car_number?: string | null
@@ -523,10 +529,31 @@ export type Database = {
           enabled?: boolean
           title?: string
           intro?: string | null
+          championship_class?: "LMP2" | "GT3 PRO" | "ambas" | null
+          focus_car_number?: string | null
+          rival_car_numbers?: string[] | null
           updated_at?: string
           championship_class?: string
           focus_car_number?: string | null
           rival_car_numbers?: string[]
+        }
+        Relationships: []
+      }
+      race_points_scale: {
+        Row: {
+          class: string
+          position: number
+          points: number
+        }
+        Insert: {
+          class: string
+          position: number
+          points: number
+        }
+        Update: {
+          class?: string
+          position?: number
+          points?: number
         }
         Relationships: []
       }
