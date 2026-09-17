@@ -479,6 +479,39 @@ export type Database = {
         }
         Relationships: []
       }
+      scoreboard_live_config: {
+        Row: {
+          id: number
+          enabled: boolean
+          title: string
+          intro: string | null
+          updated_at: string
+          championship_class: "BOTH" | "LMP2" | "GT3 PRO"
+          focus_car_number: string | null
+          rival_car_numbers: string[]
+        }
+        Insert: {
+          id: number
+          enabled?: boolean
+          title?: string
+          intro?: string | null
+          updated_at?: string
+          championship_class?: "BOTH" | "LMP2" | "GT3 PRO"
+          focus_car_number?: string | null
+          rival_car_numbers?: string[]
+        }
+        Update: {
+          id?: number
+          enabled?: boolean
+          title?: string
+          intro?: string | null
+          updated_at?: string
+          championship_class?: "BOTH" | "LMP2" | "GT3 PRO"
+          focus_car_number?: string | null
+          rival_car_numbers?: string[]
+        }
+        Relationships: []
+      }
       race_points_scale: {
         Row: {
           class: string
@@ -494,39 +527,6 @@ export type Database = {
           class?: string
           position?: number
           points?: number
-        }
-        Relationships: []
-      }
-      scoreboard_live_config: {
-        Row: {
-          id: number
-          enabled: boolean
-          title: string
-          intro: string | null
-          updated_at: string
-          championship_class: string
-          focus_car_number: string | null
-          rival_car_numbers: string[]
-        }
-        Insert: {
-          id: number
-          enabled?: boolean
-          title?: string
-          intro?: string | null
-          updated_at?: string
-          championship_class?: string
-          focus_car_number?: string | null
-          rival_car_numbers?: string[]
-        }
-        Update: {
-          id?: number
-          enabled?: boolean
-          title?: string
-          intro?: string | null
-          updated_at?: string
-          championship_class?: string
-          focus_car_number?: string | null
-          rival_car_numbers?: string[]
         }
         Relationships: []
       }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Plus, Trash2, GripVertical, Loader2, Trophy, Save } from "lucide-react";
+import { Loader2, Trophy, Save, X } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -18,39 +18,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 
 interface ScoreboardConfig {
   id: number;
   enabled: boolean;
   title: string;
   intro: string | null;
+  championship_class: "LMP2" | "GT3 PRO" | "BOTH";
+  focus_car_number: string | null;
+  rival_car_numbers: string[];
   updated_at: string;
-}
-
-interface ScoreboardLine {
-  id: string;
-  sort_order: number;
-  condition_label: string;
-  result_label: string;
-  result_variant: "win" | "lose" | "neutral";
-  visible: boolean;
-}
-
-interface LineForm {
-  condition_label: string;
-  result_label: string;
-  result_variant: "win" | "lose" | "neutral";
-  visible: boolean;
 }
 
 export default function ScoreboardLiveAdmin() {
@@ -61,22 +38,16 @@ export default function ScoreboardLiveAdmin() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [config, setConfig] = useState<ScoreboardConfig | null>(null);
-  const [lines, setLines] = useState<ScoreboardLine[]>([]);
-  const [editingLineId, setEditingLineId] = useState<string | null>(null);
-  const [lineToDelete, setLineToDelete] = useState<ScoreboardLine | null>(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [availableCarNumbers, setAvailableCarNumbers] = useState<string[]>([]);
+  const [rivalInput, setRivalInput] = useState("");
 
   const [configForm, setConfigForm] = useState({
     enabled: false,
     title: "Scoreboard Live",
     intro: "",
-  });
-
-  const [lineForm, setLineForm] = useState<LineForm>({
-    condition_label: "",
-    result_label: "",
-    result_variant: "neutral",
-    visible: true,
+    championship_class: "BOTH" as "LMP2" | "GT3 PRO" | "BOTH",
+    focus_car_number: "",
+    rival_car_numbers: [] as string[],
   });
 
   useEffect(() => {
@@ -107,19 +78,23 @@ export default function ScoreboardLiveAdmin() {
           enabled: configData.enabled,
           title: configData.title,
           intro: configData.intro || "",
+          championship_class: configData.championship_class,
+          focus_car_number: configData.focus_car_number || "",
+          rival_car_numbers: configData.rival_car_numbers,
         });
       }
 
-      const { data: linesData, error: linesError } = await supabase
-        .from("scoreboard_live_lines")
-        .select("*")
-        .order("sort_order", { ascending: true });
+      const { data: standings, error: standingsError } = await supabase
+        .from("championship_standings")
+        .select("car_number, class")
+        .order("rank", { ascending: true });
 
-      if (linesError && linesError.code !== "42P01") {
-        throw linesError;
+      if (!standingsError && standings) {
+        const uniqueCarNumbers = Array.from(
+          new Set(standings.map((s) => s.car_number))
+        ).sort();
+        setAvailableCarNumbers(uniqueCarNumbers);
       }
-
-      setLines(linesData || []);
     } catch (error) {
       console.error("Error fetching scoreboard data:", error);
       toast({
@@ -130,6 +105,45 @@ export default function ScoreboardLiveAdmin() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAddRival = () => {
+    const trimmed = rivalInput.trim();
+    
+    if (!trimmed) return;
+    
+    if (trimmed.length > 16) {
+      toast({
+        title: "Erro",
+        description: "O número do carro não pode ter mais de 16 caracteres.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (configForm.rival_car_numbers.length >= 32) {
+      toast({
+        title: "Erro",
+        description: "Não pode ter mais de 32 carros rivais.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (configForm.rival_car_numbers.includes(trimmed)) return;
+    
+    setConfigForm({
+      ...configForm,
+      rival_car_numbers: [...configForm.rival_car_numbers, trimmed],
+    });
+    setRivalInput("");
+  };
+
+  const handleRemoveRival = (carNumber: string) => {
+    setConfigForm({
+      ...configForm,
+      rival_car_numbers: configForm.rival_car_numbers.filter((r) => r !== carNumber),
+    });
   };
 
   const handleSaveConfig = async () => {
@@ -169,11 +183,54 @@ export default function ScoreboardLiveAdmin() {
         return;
       }
 
+      if (configForm.enabled && !configForm.focus_car_number) {
+        toast({
+          title: "Erro",
+          description: "Selecione o carro a acompanhar (focus).",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      if (configForm.focus_car_number && configForm.focus_car_number.length > 16) {
+        toast({
+          title: "Erro",
+          description: "O número do carro não pode ter mais de 16 caracteres.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      if (configForm.enabled && configForm.rival_car_numbers.length === 0) {
+        toast({
+          title: "Erro",
+          description: "Adicione pelo menos um carro rival.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      if (configForm.rival_car_numbers.length > 32) {
+        toast({
+          title: "Erro",
+          description: "Não pode ter mais de 32 carros rivais.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+
       const configData = {
         id: 1,
         enabled: configForm.enabled,
         title: trimmedTitle,
         intro: trimmedIntro || null,
+        championship_class: configForm.championship_class,
+        focus_car_number: configForm.focus_car_number || null,
+        rival_car_numbers: configForm.rival_car_numbers,
       };
 
       const { error } = await supabase
@@ -196,187 +253,6 @@ export default function ScoreboardLiveAdmin() {
     }
   };
 
-  const handleSaveLine = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const trimmedCondition = lineForm.condition_label.trim();
-    const trimmedResult = lineForm.result_label.trim();
-
-    if (!trimmedCondition || trimmedCondition.length === 0) {
-      toast({
-        title: "Erro",
-        description: "A condição não pode estar vazia.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (trimmedCondition.length > 200) {
-      toast({
-        title: "Erro",
-        description: "A condição não pode ter mais de 200 caracteres.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!trimmedResult || trimmedResult.length === 0) {
-      toast({
-        title: "Erro",
-        description: "O resultado não pode estar vazio.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (trimmedResult.length > 80) {
-      toast({
-        title: "Erro",
-        description: "O resultado não pode ter mais de 80 caracteres.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setSubmitting(true);
-
-    try {
-      const lineData = {
-        condition_label: trimmedCondition,
-        result_label: trimmedResult,
-        result_variant: lineForm.result_variant,
-        visible: lineForm.visible,
-      };
-
-      if (editingLineId) {
-        const { error } = await supabase
-          .from("scoreboard_live_lines")
-          .update(lineData)
-          .eq("id", editingLineId);
-
-        if (error) throw error;
-
-        toast({ title: "Linha atualizada!" });
-      } else {
-        const maxOrder =
-          lines.length > 0 ? Math.max(...lines.map((l) => l.sort_order)) : 0;
-
-        const { error } = await supabase
-          .from("scoreboard_live_lines")
-          .insert([
-            {
-              ...lineData,
-              sort_order: maxOrder + 1,
-            },
-          ]);
-
-        if (error) throw error;
-
-        toast({ title: "Linha adicionada!" });
-      }
-
-      setEditingLineId(null);
-      setLineForm({
-        condition_label: "",
-        result_label: "",
-        result_variant: "neutral",
-        visible: true,
-      });
-
-      await fetchData();
-    } catch (error: any) {
-      console.error("Error saving line:", error);
-      toast({
-        title: "Erro ao guardar linha",
-        description: error.message || "Tabela pode não existir ainda.",
-        variant: "destructive",
-      });
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleEditLine = (line: ScoreboardLine) => {
-    setEditingLineId(line.id);
-    setLineForm({
-      condition_label: line.condition_label,
-      result_label: line.result_label,
-      result_variant: line.result_variant,
-      visible: line.visible,
-    });
-  };
-
-  const handleCancelEdit = () => {
-    setEditingLineId(null);
-    setLineForm({
-      condition_label: "",
-      result_label: "",
-      result_variant: "neutral",
-      visible: true,
-    });
-  };
-
-  const handleDeleteLine = async () => {
-    if (!lineToDelete) return;
-
-    try {
-      const { error } = await supabase
-        .from("scoreboard_live_lines")
-        .delete()
-        .eq("id", lineToDelete.id);
-
-      if (error) throw error;
-
-      toast({ title: "Linha removida!" });
-      setDeleteDialogOpen(false);
-      setLineToDelete(null);
-      await fetchData();
-    } catch (error: any) {
-      console.error("Error deleting line:", error);
-      toast({
-        title: "Erro ao remover linha",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleReorder = async (lineId: string, direction: "up" | "down") => {
-    const currentIndex = lines.findIndex((l) => l.id === lineId);
-    if (currentIndex === -1) return;
-
-    const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
-    if (targetIndex < 0 || targetIndex >= lines.length) return;
-
-    const newLines = [...lines];
-    [newLines[currentIndex], newLines[targetIndex]] = [
-      newLines[targetIndex],
-      newLines[currentIndex],
-    ];
-
-    setLines(newLines);
-
-    try {
-      const updates = newLines.map((line, index) =>
-        supabase
-          .from("scoreboard_live_lines")
-          .update({ sort_order: index + 1 })
-          .eq("id", line.id)
-      );
-
-      await Promise.all(updates);
-
-      toast({ title: "Ordem atualizada!" });
-    } catch (error: any) {
-      console.error("Error reordering lines:", error);
-      toast({
-        title: "Erro ao reordenar",
-        description: error.message,
-        variant: "destructive",
-      });
-      await fetchData();
-    }
-  };
 
   if (authLoading || adminLoading) {
     return (
@@ -417,7 +293,7 @@ export default function ScoreboardLiveAdmin() {
           ) : (
             <>
               <div className="card-racing p-4 sm:p-6">
-                <h2 className="font-racing text-lg mb-4">Configuração Geral</h2>
+                <h2 className="font-racing text-lg mb-4">Configuração</h2>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
@@ -476,6 +352,158 @@ export default function ScoreboardLiveAdmin() {
                     />
                   </div>
 
+                  <div className="space-y-2">
+                    <Label htmlFor="class">Classe do Campeonato</Label>
+                    <Select
+                      value={configForm.championship_class}
+                      onValueChange={(value) =>
+                        setConfigForm({
+                          ...configForm,
+                          championship_class: value as "LMP2" | "GT3 PRO" | "BOTH",
+                        })
+                      }
+                    >
+                      <SelectTrigger id="class" className="bg-secondary">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="LMP2">LMP2</SelectItem>
+                        <SelectItem value="GT3 PRO">GT3 PRO</SelectItem>
+                        <SelectItem value="BOTH">Ambas</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="focus">
+                      Carro a Acompanhar (Focus)
+                      <span className="text-xs text-muted-foreground ml-2">
+                        (máx. 16 caracteres)
+                      </span>
+                    </Label>
+                    {availableCarNumbers.length > 0 ? (
+                      <Select
+                        value={configForm.focus_car_number}
+                        onValueChange={(value) =>
+                          setConfigForm({
+                            ...configForm,
+                            focus_car_number: value,
+                          })
+                        }
+                      >
+                        <SelectTrigger id="focus" className="bg-secondary">
+                          <SelectValue placeholder="Selecione o carro" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableCarNumbers.map((carNumber) => (
+                            <SelectItem key={carNumber} value={carNumber}>
+                              #{carNumber}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <Input
+                        id="focus"
+                        value={configForm.focus_car_number}
+                        onChange={(e) =>
+                          setConfigForm({
+                            ...configForm,
+                            focus_car_number: e.target.value,
+                          })
+                        }
+                        placeholder="Ex: 87"
+                        className="bg-secondary"
+                        maxLength={16}
+                      />
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="rivals">
+                      Carros Rivais
+                      <span className="text-xs text-muted-foreground ml-2">
+                        ({configForm.rival_car_numbers.length}/32)
+                      </span>
+                    </Label>
+                    <div className="flex gap-2">
+                      {availableCarNumbers.length > 0 ? (
+                        <Select
+                          value={rivalInput}
+                          onValueChange={(value) => {
+                            setRivalInput(value);
+                            const trimmed = value.trim();
+                            if (trimmed && !configForm.rival_car_numbers.includes(trimmed)) {
+                              setConfigForm({
+                                ...configForm,
+                                rival_car_numbers: [...configForm.rival_car_numbers, trimmed],
+                              });
+                              setRivalInput("");
+                            }
+                          }}
+                        >
+                          <SelectTrigger id="rivals" className="bg-secondary flex-1">
+                            <SelectValue placeholder="Adicionar rival" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableCarNumbers
+                              .filter((cn) => !configForm.rival_car_numbers.includes(cn) && cn !== configForm.focus_car_number)
+                              .map((carNumber) => (
+                                <SelectItem key={carNumber} value={carNumber}>
+                                  #{carNumber}
+                                </SelectItem>
+                              ))}
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <>
+                          <Input
+                            id="rivals"
+                            value={rivalInput}
+                            onChange={(e) => setRivalInput(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                handleAddRival();
+                              }
+                            }}
+                            placeholder="Ex: 63"
+                            className="bg-secondary flex-1"
+                            maxLength={16}
+                            disabled={configForm.rival_car_numbers.length >= 32}
+                          />
+                          <Button
+                            type="button"
+                            onClick={handleAddRival}
+                            variant="outline"
+                            disabled={configForm.rival_car_numbers.length >= 32}
+                          >
+                            Adicionar
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                    {configForm.rival_car_numbers.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {configForm.rival_car_numbers.map((carNumber) => (
+                          <div
+                            key={carNumber}
+                            className="flex items-center gap-1 bg-secondary px-2 py-1 rounded-md"
+                          >
+                            <span className="text-sm">#{carNumber}</span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveRival(carNumber)}
+                              className="text-muted-foreground hover:text-destructive"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
                   <div className="flex justify-end">
                     <Button
                       onClick={handleSaveConfig}
@@ -492,238 +520,10 @@ export default function ScoreboardLiveAdmin() {
                   </div>
                 </div>
               </div>
-
-              <div className="card-racing p-4 sm:p-6">
-                <h2 className="font-racing text-lg mb-4">
-                  {editingLineId ? "Editar Linha" : "Adicionar Linha"}
-                </h2>
-                <form onSubmit={handleSaveLine} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="condition">
-                      Condição
-                      <span className="text-xs text-muted-foreground ml-2">
-                        ({lineForm.condition_label.length}/200)
-                      </span>
-                    </Label>
-                    <Input
-                      id="condition"
-                      value={lineForm.condition_label}
-                      onChange={(e) =>
-                        setLineForm({
-                          ...lineForm,
-                          condition_label: e.target.value,
-                        })
-                      }
-                      placeholder="Ex: Se o piloto A vencer..."
-                      className="bg-secondary"
-                      maxLength={200}
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="result">
-                      Resultado
-                      <span className="text-xs text-muted-foreground ml-2">
-                        ({lineForm.result_label.length}/80)
-                      </span>
-                    </Label>
-                    <Input
-                      id="result"
-                      value={lineForm.result_label}
-                      onChange={(e) =>
-                        setLineForm({
-                          ...lineForm,
-                          result_label: e.target.value,
-                        })
-                      }
-                      placeholder="Ex: Piloto A é campeão"
-                      className="bg-secondary"
-                      maxLength={80}
-                      required
-                    />
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="variant">Variante</Label>
-                      <Select
-                        value={lineForm.result_variant}
-                        onValueChange={(value) =>
-                          setLineForm({
-                            ...lineForm,
-                            result_variant: value as "win" | "lose" | "neutral",
-                          })
-                        }
-                      >
-                        <SelectTrigger id="variant" className="bg-secondary">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="win">Vitória (Verde)</SelectItem>
-                          <SelectItem value="lose">Derrota (Vermelho)</SelectItem>
-                          <SelectItem value="neutral">Neutro (Azul)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="visible">Visibilidade</Label>
-                      <div className="flex items-center h-10 px-3 rounded-md border border-input bg-secondary">
-                        <Switch
-                          id="visible"
-                          checked={lineForm.visible}
-                          onCheckedChange={(checked) =>
-                            setLineForm({ ...lineForm, visible: checked })
-                          }
-                        />
-                        <span className="ml-2 text-sm">
-                          {lineForm.visible ? "Visível" : "Oculto"}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end gap-2">
-                    {editingLineId && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={handleCancelEdit}
-                      >
-                        Cancelar
-                      </Button>
-                    )}
-                    <Button type="submit" disabled={submitting}>
-                      {submitting ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : editingLineId ? (
-                        "Atualizar Linha"
-                      ) : (
-                        <>
-                          <Plus className="h-4 w-4 mr-2" />
-                          Adicionar Linha
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </form>
-              </div>
-
-              <div className="card-racing p-4 sm:p-6">
-                <h2 className="font-racing text-lg mb-4">Linhas Existentes</h2>
-                {lines.length === 0 ? (
-                  <p className="text-muted-foreground text-center py-8">
-                    Nenhuma linha criada ainda.
-                  </p>
-                ) : (
-                  <div className="space-y-2">
-                    {lines.map((line, index) => (
-                      <div
-                        key={line.id}
-                        className={`flex items-start gap-2 p-3 rounded-lg border ${
-                          line.visible
-                            ? "border-border bg-secondary/50"
-                            : "border-border/50 bg-secondary/20 opacity-60"
-                        }`}
-                      >
-                        <div className="flex flex-col gap-1 pt-1">
-                          <button
-                            onClick={() => handleReorder(line.id, "up")}
-                            disabled={index === 0}
-                            className="text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-                          >
-                            <GripVertical className="h-4 w-4" />
-                          </button>
-                          <button
-                            onClick={() => handleReorder(line.id, "down")}
-                            disabled={index === lines.length - 1}
-                            className="text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-                          >
-                            <GripVertical className="h-4 w-4" />
-                          </button>
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm text-muted-foreground mb-1">
-                            {line.condition_label}
-                          </div>
-                          <div className="font-medium">{line.result_label}</div>
-                          <div className="flex items-center gap-2 mt-1">
-                            <span
-                              className={`text-xs px-2 py-0.5 rounded ${
-                                line.result_variant === "win"
-                                  ? "bg-green-500/20 text-green-400"
-                                  : line.result_variant === "lose"
-                                  ? "bg-red-500/20 text-red-400"
-                                  : "bg-blue-500/20 text-blue-400"
-                              }`}
-                            >
-                              {line.result_variant === "win"
-                                ? "Vitória"
-                                : line.result_variant === "lose"
-                                ? "Derrota"
-                                : "Neutro"}
-                            </span>
-                            {!line.visible && (
-                              <span className="text-xs text-muted-foreground">
-                                (Oculto)
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex gap-1 shrink-0">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleEditLine(line)}
-                            className="h-8 w-8"
-                          >
-                            <span className="text-xs">✏️</span>
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                              setLineToDelete(line);
-                              setDeleteDialogOpen(true);
-                            }}
-                            className="h-8 w-8 text-destructive hover:text-destructive"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
             </>
           )}
         </motion.div>
       </main>
-
-      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirmar remoção</AlertDialogTitle>
-            <AlertDialogDescription>
-              Tem certeza que deseja remover esta linha? Esta ação não pode ser
-              desfeita.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteLine}
-              className="bg-destructive"
-            >
-              Remover
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }

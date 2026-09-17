@@ -1,1 +1,0 @@
-import{x as t,y as n,s as o}from"./index-BH4Hp8sP.js";function i(r=!1){return t({queryKey:n.categories.list(r),queryFn:async()=>{let e=o.from("categories").select("*").order("name",{ascending:!0});r&&(e=e.neq("name","GERAL"));const{data:a,error:s}=await e;if(s)throw s;return a}})}export{i as u};

@@ -1,1 +1,0 @@
-import{x as r,y as t,s as u}from"./index-BH4Hp8sP.js";function n(e="asc"){return r({queryKey:t.races.list(e),queryFn:async()=>{const{data:a,error:s}=await u.from("races").select("*").order("date",{ascending:e==="asc"});if(s)throw s;return a}})}export{n as u};

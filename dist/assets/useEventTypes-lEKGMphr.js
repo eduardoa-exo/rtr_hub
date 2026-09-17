@@ -1,1 +1,0 @@
-import{x as s,y as t,s as n}from"./index-BH4Hp8sP.js";function u(){return s({queryKey:t.eventTypes.list(),queryFn:async()=>{const{data:r,error:e}=await n.from("event_types").select("*").order("order_index",{ascending:!0});if(e)throw e;return r}})}export{u};

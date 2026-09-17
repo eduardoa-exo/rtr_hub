@@ -1,1 +1,0 @@
-import{x as s,y as a,s as t}from"./index-BH4Hp8sP.js";function n(){return s({queryKey:a.drivers.list(),queryFn:async()=>{const{data:e,error:r}=await t.from("drivers").select("*").order("name",{ascending:!0});if(r)throw r;return e}})}export{n as u};
