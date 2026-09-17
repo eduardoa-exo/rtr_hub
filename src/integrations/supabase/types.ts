@@ -563,6 +563,63 @@ export type Database = {
         }
         Relationships: []
       }
+      scoreboard_live_session: {
+        Row: {
+          id: number
+          enabled: boolean
+          championship_class: string
+          updated_at: string
+        }
+        Insert: {
+          id: number
+          enabled?: boolean
+          championship_class?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          enabled?: boolean
+          championship_class?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      scoreboard_live_grid: {
+        Row: {
+          id: string
+          class: string
+          car_number: string
+          sort_order: number
+          team_name: string | null
+          country_code: string | null
+          car_logo_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          class: string
+          car_number: string
+          sort_order: number
+          team_name?: string | null
+          country_code?: string | null
+          car_logo_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          class?: string
+          car_number?: string
+          sort_order?: number
+          team_name?: string | null
+          country_code?: string | null
+          car_logo_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
