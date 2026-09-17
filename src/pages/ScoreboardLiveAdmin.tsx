@@ -109,13 +109,34 @@ export default function ScoreboardLiveAdmin() {
 
   const handleAddRival = () => {
     const trimmed = rivalInput.trim();
-    if (trimmed && !configForm.rival_car_numbers.includes(trimmed)) {
-      setConfigForm({
-        ...configForm,
-        rival_car_numbers: [...configForm.rival_car_numbers, trimmed],
+    
+    if (!trimmed) return;
+    
+    if (trimmed.length > 16) {
+      toast({
+        title: "Erro",
+        description: "O número do carro não pode ter mais de 16 caracteres.",
+        variant: "destructive",
       });
-      setRivalInput("");
+      return;
     }
+    
+    if (configForm.rival_car_numbers.length >= 32) {
+      toast({
+        title: "Erro",
+        description: "Não pode ter mais de 32 carros rivais.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (configForm.rival_car_numbers.includes(trimmed)) return;
+    
+    setConfigForm({
+      ...configForm,
+      rival_car_numbers: [...configForm.rival_car_numbers, trimmed],
+    });
+    setRivalInput("");
   };
 
   const handleRemoveRival = (carNumber: string) => {
@@ -172,10 +193,30 @@ export default function ScoreboardLiveAdmin() {
         return;
       }
 
+      if (configForm.focus_car_number && configForm.focus_car_number.length > 16) {
+        toast({
+          title: "Erro",
+          description: "O número do carro não pode ter mais de 16 caracteres.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+
       if (configForm.enabled && configForm.rival_car_numbers.length === 0) {
         toast({
           title: "Erro",
           description: "Adicione pelo menos um carro rival.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      if (configForm.rival_car_numbers.length > 32) {
+        toast({
+          title: "Erro",
+          description: "Não pode ter mais de 32 carros rivais.",
           variant: "destructive",
         });
         setSubmitting(false);
@@ -336,6 +377,9 @@ export default function ScoreboardLiveAdmin() {
                   <div className="space-y-2">
                     <Label htmlFor="focus">
                       Carro a Acompanhar (Focus)
+                      <span className="text-xs text-muted-foreground ml-2">
+                        (máx. 16 caracteres)
+                      </span>
                     </Label>
                     {availableCarNumbers.length > 0 ? (
                       <Select
@@ -370,12 +414,18 @@ export default function ScoreboardLiveAdmin() {
                         }
                         placeholder="Ex: 87"
                         className="bg-secondary"
+                        maxLength={16}
                       />
                     )}
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="rivals">Carros Rivais</Label>
+                    <Label htmlFor="rivals">
+                      Carros Rivais
+                      <span className="text-xs text-muted-foreground ml-2">
+                        ({configForm.rival_car_numbers.length}/32)
+                      </span>
+                    </Label>
                     <div className="flex gap-2">
                       {availableCarNumbers.length > 0 ? (
                         <Select
@@ -419,11 +469,14 @@ export default function ScoreboardLiveAdmin() {
                             }}
                             placeholder="Ex: 63"
                             className="bg-secondary flex-1"
+                            maxLength={16}
+                            disabled={configForm.rival_car_numbers.length >= 32}
                           />
                           <Button
                             type="button"
                             onClick={handleAddRival}
                             variant="outline"
+                            disabled={configForm.rival_car_numbers.length >= 32}
                           >
                             Adicionar
                           </Button>
