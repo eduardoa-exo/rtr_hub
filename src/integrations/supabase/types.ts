@@ -568,18 +568,21 @@ export type Database = {
           id: number
           enabled: boolean
           championship_class: string
+          grid_version: number
           updated_at: string
         }
         Insert: {
           id: number
           enabled?: boolean
           championship_class?: string
+          grid_version?: number
           updated_at?: string
         }
         Update: {
           id?: number
           enabled?: boolean
           championship_class?: string
+          grid_version?: number
           updated_at?: string
         }
         Relationships: []
@@ -590,6 +593,7 @@ export type Database = {
           class: string
           car_number: string
           sort_order: number
+          participates: boolean
           team_name: string | null
           country_code: string | null
           car_logo_url: string | null
@@ -601,6 +605,7 @@ export type Database = {
           class: string
           car_number: string
           sort_order: number
+          participates?: boolean
           team_name?: string | null
           country_code?: string | null
           car_logo_url?: string | null
@@ -612,6 +617,7 @@ export type Database = {
           class?: string
           car_number?: string
           sort_order?: number
+          participates?: boolean
           team_name?: string | null
           country_code?: string | null
           car_logo_url?: string | null
@@ -625,7 +631,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      reorder_scoreboard_live_grid: {
+        Args: {
+          p_class: string
+          p_ordered_car_numbers: string[]
+        }
+        Returns: undefined
+      }
+      reset_scoreboard_live_grid: {
+        Args: {
+          p_class: string
+        }
+        Returns: undefined
+      }
+      set_scoreboard_live_participates: {
+        Args: {
+          p_id: string
+          p_participates: boolean
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       race_event_type:

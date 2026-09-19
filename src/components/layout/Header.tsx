@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
+import { useScoreboardLiveSession } from "@/hooks/queries/useScoreboardLive";
 
 // Types
 type NavItemDirect = {
@@ -84,52 +84,11 @@ export function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileOpenCategory, setMobileOpenCategory] = useState<string | null>(null);
-  const [scoreboardEnabled, setScoreboardEnabled] = useState(false);
   const [navItems, setNavItems] = useState<NavItem[]>(baseNavItems);
+  const { data: liveSession } = useScoreboardLiveSession();
+  const scoreboardEnabled = Boolean(liveSession?.enabled);
 
-  // Fetch scoreboard config to check if it's enabled
-  useEffect(() => {
-    const fetchScoreboardConfig = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("scoreboard_live_config")
-          .select("enabled")
-          .eq("id", 1)
-          .maybeSingle();
-
-        if (data && !error) {
-          setScoreboardEnabled(data.enabled);
-        }
-      } catch (error) {
-        console.log("Scoreboard config not available yet");
-      }
-    };
-
-    fetchScoreboardConfig();
-
-    const channel = supabase
-      .channel("scoreboard-config-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "scoreboard_live_config",
-        },
-        (payload) => {
-          if (payload.new && typeof payload.new === "object" && "enabled" in payload.new) {
-            setScoreboardEnabled(payload.new.enabled as boolean);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  // Update nav items when scoreboard status changes
+  // Update nav items when scoreboard session.enabled changes
   useEffect(() => {
     if (scoreboardEnabled) {
       const scoreboardItem: NavItemDirect = {

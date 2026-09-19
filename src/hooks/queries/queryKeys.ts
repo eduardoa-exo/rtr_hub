@@ -20,6 +20,13 @@ export const queryKeys = {
     all: ["standings"] as const,
     byClass: (cls: string) => ["standings", cls] as const,
   },
+  racePointsScale: {
+    all: ["racePointsScale"] as const,
+  },
+  scoreboardLive: {
+    session: () => ["scoreboardLive", "session"] as const,
+    grid: (cls: string) => ["scoreboardLive", "grid", cls] as const,
+  },
   achievements: {
     all: ["achievements"] as const,
   },

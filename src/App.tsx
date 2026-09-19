@@ -26,7 +26,6 @@ const Pilotos = lazy(() => import("./pages/Pilotos"));
 const Calendario = lazy(() => import("./pages/Calendario"));
 const Classificacao = lazy(() => import("./pages/Classificacao"));
 const ScoreboardLive = lazy(() => import("./pages/ScoreboardLive"));
-const ScoreboardLiveAdmin = lazy(() => import("./pages/ScoreboardLiveAdmin"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,7 +56,6 @@ const App = () => (
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
                 <Route path="/scoreboard-live" element={<ScoreboardLive />} />
-                <Route path="/scoreboard-live-admin" element={<ProtectedRoute><ScoreboardLiveAdmin /></ProtectedRoute>} />
                 <Route path="/palmares" element={<Palmares />} />
                 <Route path="/pilotos" element={<Pilotos />} />
                 <Route path="/classificacao" element={<Classificacao />} />
