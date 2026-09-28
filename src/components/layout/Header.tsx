@@ -309,12 +309,16 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-[hsl(228_22%_5%/0.65)] backdrop-blur-xl supports-[backdrop-filter]:bg-[hsl(228_22%_5%/0.55)]">
       <div className="container relative flex h-16 items-center justify-between py-1 sm:h-20 md:min-h-24">
-        {/* Brand */}
-        <Link to="/" className="flex shrink-0 items-center">
-          <span className="font-racing text-sm sm:text-base md:text-lg uppercase tracking-[0.15em] text-foreground">
-            <span className="text-gradient-racing">RTR</span>{" "}
-            <span className="hidden sm:inline font-light tracking-[0.2em] text-foreground/80">Racing</span>
-          </span>
+        {/* Brand — static asset (no Supabase egress) */}
+        <Link to="/" className="flex shrink-0 items-center" aria-label="Ric Team Racing">
+          <img
+            src="/images/ric-team-racing-wordmark.png"
+            alt="Ric Team Racing"
+            width={350}
+            height={34}
+            className="h-5 w-auto sm:h-6 md:h-7"
+            decoding="async"
+          />
         </Link>
 
         {/* Desktop Navigation */}
