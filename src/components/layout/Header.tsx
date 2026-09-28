@@ -331,13 +331,15 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-[hsl(228_22%_5%/0.65)] backdrop-blur-xl supports-[backdrop-filter]:bg-[hsl(228_22%_5%/0.55)]">
       <div className="container relative flex h-16 items-center justify-between py-1 sm:h-20 md:min-h-24">
-        <Link to="/" className="flex shrink-0 items-center">
-          <span className="font-racing text-sm sm:text-base md:text-lg uppercase tracking-[0.15em] text-foreground">
-            <span className="text-gradient-racing">RTR</span>{" "}
-            <span className="hidden sm:inline font-light tracking-[0.2em] text-foreground/80">
-              Racing
-            </span>
-          </span>
+        <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="RTR Racing">
+          <img
+            src="/images/rtr_logo.png"
+            alt="RTR Racing"
+            width={140}
+            height={40}
+            className="h-7 w-auto sm:h-8 md:h-9 object-contain"
+            decoding="async"
+          />
         </Link>
 
         <nav
