@@ -61,7 +61,7 @@ export default function Landing() {
       )}
       <div className="pointer-events-none fixed inset-0 z-0 bg-black/45" />
       <div className="pointer-events-none fixed inset-0 z-0 bg-gradient-to-b from-black/20 via-transparent to-black/55" />
-      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(24_50%_20%_/_0.25),_transparent_60%)]" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(306_50%_25%_/_0.28),_transparent_60%)]" />
 
       <div className="relative z-10">
         <section className="relative overflow-hidden h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)]">
@@ -86,7 +86,7 @@ export default function Landing() {
                 <Link to="/live">
                   <Button
                     size="lg"
-                    className="btn-racing text-sm gap-2.5 px-8 py-3.5 bg-primary hover:bg-primary/90"
+                    className="btn-racing text-sm gap-2.5 px-8 py-3.5"
                   >
                     <Flag className="h-5 w-5" />
                     Ver corrida em direto

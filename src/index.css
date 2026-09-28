@@ -6,6 +6,7 @@
 
 @layer base {
   :root {
+    /* Sampled from public/images/rtr_logo.png — magenta T, cyan tip, lime wordmark */
     --background: 228 22% 5%;
     --foreground: 0 0% 97%;
 
@@ -15,7 +16,8 @@
     --popover: 228 20% 9%;
     --popover-foreground: 0 0% 97%;
 
-    --primary: 24 100% 50%;
+    /* Brand primary: vibrant magenta / hot pink */
+    --primary: 306 79% 57%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 228 16% 14%;
@@ -24,20 +26,22 @@
     --muted: 228 12% 16%;
     --muted-foreground: 228 12% 52%;
 
-    --accent: 228 14% 16%;
-    --accent-foreground: 24 30% 92%;
+    --accent: 300 18% 16%;
+    --accent-foreground: 304 40% 92%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 228 12% 18%;
-    --input: 228 12% 14%;
-    --ring: 24 100% 50%;
+    --border: 280 12% 18%;
+    --input: 280 12% 14%;
+    --ring: 306 79% 57%;
 
     --radius: 1rem;
 
     --racing-red: 4 90% 58%;
     --racing-red-glow: 4 100% 65%;
+    --racing-cyan: 197 100% 59%;
+    --racing-lime: 68 100% 45%;
     --carbon: 228 20% 9%;
     --carbon-light: 228 16% 14%;
     --pit-yellow: 48 100% 50%;
@@ -45,15 +49,19 @@
     --green-flag: 155 72% 40%;
     --checkered: 0 0% 100%;
 
-    --gradient-racing: linear-gradient(135deg, hsl(24 95% 52%) 0%, hsl(24 80% 38%) 100%);
+    --gradient-racing: linear-gradient(
+      135deg,
+      hsl(306 79% 57%) 0%,
+      hsl(197 100% 55%) 100%
+    );
     --gradient-carbon: linear-gradient(180deg, hsl(228 20% 11%) 0%, hsl(228 22% 5%) 100%);
     --gradient-glow: radial-gradient(
       ellipse at center,
-      hsl(24 90% 52% / 0.12) 0%,
+      hsl(306 79% 57% / 0.14) 0%,
       transparent 68%
     );
 
-    --shadow-racing: 0 4px 40px -8px hsl(24 90% 48% / 0.32);
+    --shadow-racing: 0 4px 40px -8px hsl(306 79% 50% / 0.35);
     --shadow-card: 0 1px 0 0 hsl(0 0% 100% / 0.03) inset, 0 8px 40px -12px hsl(0 0% 0% / 0.6);
   }
 }
@@ -67,7 +75,7 @@
     min-height: 100%;
     background-color: hsl(228 22% 7%);
     background-image:
-      radial-gradient(ellipse 120% 55% at 50% 0%, hsl(24 40% 18% / 0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 120% 55% at 50% 0%, hsl(306 40% 22% / 0.22) 0%, transparent 70%),
       linear-gradient(
         180deg,
         hsl(228 26% 8% / 0.4) 0%,
@@ -131,7 +139,7 @@
   }
 
   .card-racing:hover {
-    border-color: hsl(228 12% 26%);
+    border-color: hsl(280 14% 28%);
     box-shadow:
       0 1px 0 0 hsl(0 0% 100% / 0.06) inset,
       0 12px 48px -12px hsl(0 0% 0% / 0.6);
@@ -143,15 +151,22 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     border-radius: 0.875rem;
-    box-shadow: var(--shadow-racing), 0 0 0 1px hsl(24 100% 50% / 0.3);
+    box-shadow: var(--shadow-racing), 0 0 0 1px hsl(var(--primary) / 0.35);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .btn-racing:hover {
     transform: translateY(-2px);
+    background: hsl(var(--racing-cyan));
+    color: hsl(228 22% 5%);
     box-shadow:
-      0 8px 40px -6px hsl(24 90% 48% / 0.45),
-      0 0 0 1px hsl(24 100% 55% / 0.5);
+      0 8px 40px -6px hsl(var(--racing-cyan) / 0.45),
+      0 0 0 1px hsl(var(--racing-cyan) / 0.55);
+  }
+
+  .btn-racing:focus-visible {
+    outline: 2px solid hsl(var(--racing-cyan));
+    outline-offset: 2px;
   }
 
   .event-fcy {
@@ -196,8 +211,9 @@
     @apply w-12 h-12 text-base;
   }
 
+  /* Medal metals (not brand accents) */
   .position-badge.p1 {
-    background: linear-gradient(135deg, hsl(48 100% 50%) 0%, hsl(36 100% 42%) 100%);
+    background: linear-gradient(135deg, hsl(48 100% 50%) 0%, hsl(42 95% 40%) 100%);
     color: hsl(228 22% 5%);
     box-shadow: 0 2px 12px hsl(48 100% 50% / 0.2);
   }
@@ -208,7 +224,7 @@
   }
 
   .position-badge.p3 {
-    background: linear-gradient(135deg, hsl(25 80% 50%) 0%, hsl(15 70% 38%) 100%);
+    background: linear-gradient(135deg, hsl(18 45% 48%) 0%, hsl(12 40% 36%) 100%);
     color: hsl(0 0% 100%);
   }
 
@@ -222,7 +238,7 @@
   .page-hero-wash {
     background: radial-gradient(
       ellipse 80% 50% at 50% 0%,
-      hsl(24 90% 50% / 0.1) 0%,
+      hsl(306 70% 50% / 0.12) 0%,
       transparent 70%
     );
   }
@@ -245,18 +261,22 @@
   @keyframes pulse-racing {
     0%, 100% {
       opacity: 1;
-      box-shadow: 0 0 16px hsl(24 90% 52% / 0.28);
+      box-shadow: 0 0 16px hsl(306 79% 57% / 0.3);
     }
     50% {
       opacity: 0.88;
-      box-shadow: 0 0 24px hsl(24 90% 52% / 0.18);
+      box-shadow: 0 0 24px hsl(197 100% 59% / 0.22);
     }
   }
 
   .text-gradient-racing {
-    background: linear-gradient(135deg, hsl(24 95% 55%) 0%, hsl(24 85% 42%) 100%);
+    background: linear-gradient(135deg, hsl(306 85% 62%) 0%, hsl(197 100% 58%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .text-racing-lime {
+    color: hsl(var(--racing-lime));
   }
 }
