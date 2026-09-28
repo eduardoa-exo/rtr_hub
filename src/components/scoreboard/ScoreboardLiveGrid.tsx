@@ -21,6 +21,7 @@ import * as Flags from "country-flag-icons/react/3x2";
 import { Switch } from "@/components/ui/switch";
 import type { ProjectedLiveRow } from "@/domain/scoreboard/projectLiveGrid";
 import { cn } from "@/lib/utils";
+import { mediaUrl } from "@/lib/mediaUrl";
 
 const FLAG_COMPONENTS = Flags as Record<
   string,
@@ -136,7 +137,7 @@ function SortableRow({
           </span>
           {row.car_logo_url ? (
             <img
-              src={row.car_logo_url}
+              src={mediaUrl(row.car_logo_url)}
               alt=""
               loading="lazy"
               decoding="async"

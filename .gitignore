@@ -21,3 +21,5 @@ sketch
 .env.*.local
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#react
+# Migration reports (may contain paths)
+scripts/out/
