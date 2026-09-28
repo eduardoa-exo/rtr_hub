@@ -3,6 +3,10 @@
   "git": {
     "deploymentEnabled": false
   },
+  "github": {
+    "enabled": false,
+    "autoAlias": false
+  },
   "rewrites": [
     {
       "source": "/(.*)",
