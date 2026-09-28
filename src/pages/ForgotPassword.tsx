@@ -50,7 +50,7 @@ export default function ForgotPassword() {
   if (emailSent) {
     return (
       <div className="page-shell flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,_hsl(24_90%_50%_/_0.08)_0%,_hsl(268_40%_30%_/_0.04)_40%,_transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,_hsl(24_90%_50%_/_0.1)_0%,_transparent_70%)]" />
         
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -96,7 +96,7 @@ export default function ForgotPassword() {
 
   return (
     <div className="page-shell flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,_hsl(24_90%_50%_/_0.08)_0%,_hsl(268_40%_30%_/_0.04)_40%,_transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,_hsl(24_90%_50%_/_0.1)_0%,_transparent_70%)]" />
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}

@@ -149,10 +149,12 @@ function SortableRow({
           <span className="hidden sm:inline-flex items-center shrink-0">
             {renderFlag(row.country_code)}
           </span>
-          <span className="text-sm truncate">{row.teamDisplay}</span>
+          <span className="text-xs sm:text-sm truncate max-w-[8rem] sm:max-w-[14rem]">
+            {row.teamDisplay}
+          </span>
         </div>
       </td>
-      <td className="py-2 px-2 text-center">
+      <td className="hidden sm:table-cell py-2 px-2 text-center">
         {isAdmin ? (
           <Switch
             checked={row.participates}
@@ -168,19 +170,19 @@ function SortableRow({
           </span>
         )}
       </td>
-      <td className="py-2 px-2 text-center font-bold text-sm tabular-nums">
+      <td className="hidden md:table-cell py-2 px-2 text-center font-bold text-sm tabular-nums">
         {row.pontosAtuais}
       </td>
-      <td className="hidden md:table-cell py-2 px-2 text-center text-sm tabular-nums">
+      <td className="hidden lg:table-cell py-2 px-2 text-center text-sm tabular-nums">
         {row.posCampeonato || "—"}
       </td>
-      <td className="py-2 px-2 text-center text-sm tabular-nums">
+      <td className="hidden md:table-cell py-2 px-2 text-center text-sm tabular-nums">
         {row.ptsCorrida}
       </td>
       <td className="py-2 px-2 text-center font-bold text-sm tabular-nums">
         {row.projetado}
       </td>
-      <td className="py-2 px-2 text-center text-sm">{diff}</td>
+      <td className="hidden sm:table-cell py-2 px-2 text-center text-sm">{diff}</td>
     </tr>
   );
 }
@@ -219,34 +221,34 @@ export function ScoreboardLiveGridTable({
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <table className="w-full border-collapse min-w-[720px]">
+        <table className="w-full border-collapse min-w-0 md:min-w-[720px]">
           <thead>
             <tr className="border-b border-border bg-card/30">
               {isAdmin && (
                 <th className="w-8 py-3 px-1 text-xs font-racing uppercase tracking-wider" />
               )}
-              <th className="text-left py-3 px-2 text-xs font-racing uppercase tracking-wider">
-                Pos. pista
+              <th className="text-left py-2.5 px-2 text-[10px] sm:text-xs font-racing uppercase tracking-wider">
+                Pos
               </th>
-              <th className="text-left py-3 px-2 text-xs font-racing uppercase tracking-wider">
-                Carro / Equipa
+              <th className="text-left py-2.5 px-2 text-[10px] sm:text-xs font-racing uppercase tracking-wider">
+                Equipa
               </th>
-              <th className="text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
+              <th className="hidden sm:table-cell text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
                 Participa
               </th>
-              <th className="text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
+              <th className="hidden md:table-cell text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
                 Pontos atuais
               </th>
-              <th className="hidden md:table-cell text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
+              <th className="hidden lg:table-cell text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
                 Pos. campeonato
               </th>
-              <th className="text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
+              <th className="hidden md:table-cell text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
                 Pts. corrida
               </th>
-              <th className="text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
-                Projetado
+              <th className="text-center py-2.5 px-2 text-[10px] sm:text-xs font-racing uppercase tracking-wider">
+                Proj.
               </th>
-              <th className="text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
+              <th className="hidden sm:table-cell text-center py-3 px-2 text-xs font-racing uppercase tracking-wider">
                 Diferença
               </th>
             </tr>

@@ -1,28 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Flag, 
-  Trophy, 
-  HelpCircle, 
-  Settings, 
-  LogIn, 
-  LogOut, 
-  Mail, 
-  Users, 
-  Globe, 
-  Calendar, 
-  BarChart3, 
+import {
+  Flag,
+  Trophy,
+  HelpCircle,
+  Settings,
+  LogIn,
+  LogOut,
+  Mail,
+  Users,
+  Globe,
+  Calendar,
+  BarChart3,
   Info,
   ChevronDown,
   Menu,
-  X
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { useScoreboardLiveSession } from "@/hooks/queries/useScoreboardLive";
 
-// Types
 type NavItemDirect = {
   type: "direct";
   path: string;
@@ -44,7 +44,6 @@ type NavItemDropdown = {
 
 type NavItem = NavItemDirect | NavItemDropdown;
 
-// Navigation structure - without conditional items
 const baseNavItems: NavItem[] = [
   { type: "direct", path: "/live", label: "Live", icon: Flag },
   { type: "direct", path: "/calendario", label: "Calendário", icon: Calendar },
@@ -55,7 +54,7 @@ const baseNavItems: NavItem[] = [
     items: [
       { path: "/classificacao", label: "Classificação", icon: BarChart3 },
       { path: "/palmares", label: "Palmarés", icon: Trophy },
-    ]
+    ],
   },
   {
     type: "dropdown",
@@ -64,7 +63,7 @@ const baseNavItems: NavItem[] = [
     items: [
       { path: "/pilotos", label: "Pilotos", icon: Users },
       { path: "/about", label: "Sobre Nós", icon: Info },
-    ]
+    ],
   },
   {
     type: "dropdown",
@@ -74,27 +73,28 @@ const baseNavItems: NavItem[] = [
       { path: "/redes", label: "Redes Sociais", icon: Globe },
       { path: "/faq", label: "FAQ", icon: HelpCircle },
       { path: "/contacts", label: "Contactos", icon: Mail },
-    ]
+    ],
   },
 ];
 
 export function Header() {
   const location = useLocation();
   const { user, signOut } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileOpenCategory, setMobileOpenCategory] = useState<string | null>(null);
   const [navItems, setNavItems] = useState<NavItem[]>(baseNavItems);
   const { data: liveSession } = useScoreboardLiveSession();
   const scoreboardEnabled = Boolean(liveSession?.enabled);
+  const navRef = useRef<HTMLElement>(null);
 
-  // Update nav items when scoreboard session.enabled changes
   useEffect(() => {
     if (scoreboardEnabled) {
       const scoreboardItem: NavItemDirect = {
         type: "direct",
         path: "/scoreboard-live",
-        label: "Scoreboard Live",
+        label: "Scoreboard",
         icon: Trophy,
         conditional: true,
       };
@@ -111,12 +111,34 @@ export function Header() {
     }
   }, [scoreboardEnabled]);
 
-  // Check if any path in dropdown is active
-  const isDropdownActive = (items: { path: string }[]) => {
-    return items.some(item => location.pathname === item.path);
-  };
+  useEffect(() => {
+    setOpenDropdown(null);
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
 
-  // Direct Link Component
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenDropdown(null);
+        setMobileMenuOpen(false);
+      }
+    };
+    const onPointerDown = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("mousedown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("mousedown", onPointerDown);
+    };
+  }, []);
+
+  const isDropdownActive = (items: { path: string }[]) =>
+    items.some((item) => location.pathname === item.path);
+
   const DirectNavLink = ({ item }: { item: NavItemDirect }) => {
     const isActive = location.pathname === item.path;
     const isLive = item.path === "/live";
@@ -142,71 +164,73 @@ export function Header() {
           <Icon className="h-4 w-4" />
           {item.label}
           {isActive && (
-            <span
-              className={`absolute bottom-0 left-0 right-0 h-0.5 ${underlineClass}`}
-            />
+            <span className={`absolute bottom-0 left-0 right-0 h-0.5 ${underlineClass}`} />
           )}
         </motion.div>
       </Link>
     );
   };
 
-  // Dropdown Component
   const DropdownNavLink = ({ item }: { item: NavItemDropdown }) => {
     const isActive = isDropdownActive(item.items);
     const Icon = item.icon;
     const isOpen = openDropdown === item.label;
+    const menuId = `nav-menu-${item.label}`;
 
     const colorClasses = isActive
       ? "text-primary"
-      : "text-muted-foreground hover:text-foreground";
-
-    const handleMouseEnter = () => {
-      setOpenDropdown(item.label);
-    };
-
-    const handleMouseLeave = () => {
-      setOpenDropdown(null);
-    };
+      : "text-muted-foreground hover:text-foreground focus-visible:text-foreground";
 
     return (
       <div
         className="relative"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={() => setOpenDropdown(item.label)}
+        onMouseLeave={() => setOpenDropdown(null)}
       >
-        <motion.div
-          className={`relative flex items-center gap-1 px-4 py-2 font-racing text-sm uppercase tracking-wider transition-colors cursor-pointer ${colorClasses}`}
-          whileHover={{ y: -2 }}
-          whileTap={{ y: 0 }}
+        <button
+          type="button"
+          className={`relative flex items-center gap-1 px-4 py-2 font-racing text-sm uppercase tracking-wider transition-colors ${colorClasses}`}
+          aria-expanded={isOpen}
+          aria-haspopup="menu"
+          aria-controls={menuId}
+          onClick={() => setOpenDropdown(isOpen ? null : item.label)}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              setOpenDropdown(item.label);
+            }
+          }}
         >
           <Icon className="h-4 w-4" />
           {item.label}
-          <ChevronDown className={`h-3 w-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`h-3 w-3 transition-transform ${isOpen ? "rotate-180" : ""}`} />
           {isActive && (
             <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
           )}
-        </motion.div>
+        </button>
 
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
+              id={menuId}
+              role="menu"
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.15 }}
               className="absolute top-full left-0 pt-2 z-50"
             >
               <div className="min-w-[200px] bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-lg overflow-hidden">
                 {item.items.map((subItem) => {
                   const SubIcon = subItem.icon;
                   const isSubActive = location.pathname === subItem.path;
-                  
+
                   return (
                     <Link
                       key={subItem.path}
                       to={subItem.path}
-                      className={`flex items-center gap-3 px-4 py-3 text-sm transition-colors ${
+                      role="menuitem"
+                      className={`flex items-center gap-3 px-4 py-3 text-sm transition-colors outline-none focus-visible:bg-primary/10 focus-visible:text-primary ${
                         isSubActive
                           ? "bg-primary/10 text-primary"
                           : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
@@ -225,7 +249,6 @@ export function Header() {
     );
   };
 
-  // Mobile Menu Item
   const MobileMenuItem = ({ item }: { item: NavItem }) => {
     if (item.type === "direct") {
       const isActive = location.pathname === item.path;
@@ -250,7 +273,6 @@ export function Header() {
       );
     }
 
-    // Dropdown in mobile
     const isActive = isDropdownActive(item.items);
     const Icon = item.icon;
     const isOpen = mobileOpenCategory === item.label;
@@ -267,9 +289,9 @@ export function Header() {
             <Icon className="h-4 w-4" />
             {item.label}
           </div>
-          <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
         </button>
-        
+
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -282,7 +304,7 @@ export function Header() {
               {item.items.map((subItem) => {
                 const SubIcon = subItem.icon;
                 const isSubActive = location.pathname === subItem.path;
-                
+
                 return (
                   <Link
                     key={subItem.path}
@@ -309,16 +331,19 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-[hsl(228_22%_5%/0.65)] backdrop-blur-xl supports-[backdrop-filter]:bg-[hsl(228_22%_5%/0.55)]">
       <div className="container relative flex h-16 items-center justify-between py-1 sm:h-20 md:min-h-24">
-        {/* Brand */}
         <Link to="/" className="flex shrink-0 items-center">
           <span className="font-racing text-sm sm:text-base md:text-lg uppercase tracking-[0.15em] text-foreground">
             <span className="text-gradient-racing">RTR</span>{" "}
-            <span className="hidden sm:inline font-light tracking-[0.2em] text-foreground/80">Racing</span>
+            <span className="hidden sm:inline font-light tracking-[0.2em] text-foreground/80">
+              Racing
+            </span>
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:flex items-center gap-1">
+        <nav
+          ref={navRef}
+          className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:flex items-center gap-1"
+        >
           {navItems.map((item, index) => (
             <div key={index}>
               {item.type === "direct" ? (
@@ -330,32 +355,29 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Right Section */}
         <div className="flex shrink-0 items-center gap-2">
-          {/* Mobile Menu Toggle */}
           <Button
             variant="ghost"
             size="icon"
             className="md:hidden h-11 w-11"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-expanded={mobileMenuOpen}
+            aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
           >
-            {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
 
-          {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-2">
             {user ? (
               <>
-                <Link to="/admin">
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <Settings className="h-4 w-4" />
-                    <span className="hidden sm:inline">Admin</span>
-                  </Button>
-                </Link>
+                {isAdmin && (
+                  <Link to="/admin">
+                    <Button variant="ghost" size="sm" className="gap-2">
+                      <Settings className="h-4 w-4" />
+                      <span className="hidden sm:inline">Admin</span>
+                    </Button>
+                  </Link>
+                )}
                 <Button variant="ghost" size="sm" onClick={signOut} className="gap-2">
                   <LogOut className="h-4 w-4" />
                   <span className="hidden sm:inline">Sair</span>
@@ -373,7 +395,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -388,18 +409,19 @@ export function Header() {
                 <MobileMenuItem key={index} item={item} />
               ))}
 
-              {/* Mobile Auth Section */}
               <div className="pt-4 mt-4 border-t border-border space-y-1">
                 {user ? (
                   <>
-                    <Link
-                      to="/admin"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3.5 min-h-[44px] text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-                    >
-                      <Settings className="h-4 w-4" />
-                      Admin
-                    </Link>
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-3.5 min-h-[44px] text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                      >
+                        <Settings className="h-4 w-4" />
+                        Admin
+                      </Link>
+                    )}
                     <button
                       onClick={() => {
                         signOut();

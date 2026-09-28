@@ -15,7 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MultiSelectDrivers } from "@/components/ui/multi-select-drivers";
-import { Header } from "@/components/layout/Header";
+import { PageShell } from "@/components/layout/PageShell";
+import { RacingLoader } from "@/components/RacingLoader";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { useToast } from "@/hooks/use-toast";
@@ -397,9 +398,9 @@ export default function Admin() {
 
   if (authLoading || adminLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageShell hideFooter>
+        <RacingLoader className="min-h-[50vh]" />
+      </PageShell>
     );
   }
 
@@ -411,9 +412,7 @@ export default function Admin() {
   }
 
   return (
-    <div className="page-shell">
-      <Header />
-
+    <PageShell>
       <main className="container py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -1065,6 +1064,6 @@ export default function Admin() {
           </div>
         </motion.div>
       </main>
-    </div>
+    </PageShell>
   );
 }

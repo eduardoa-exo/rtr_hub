@@ -21,25 +21,23 @@
     --secondary: 228 16% 14%;
     --secondary-foreground: 0 0% 94%;
 
-    --muted: 260 10% 16%;
+    --muted: 228 12% 16%;
     --muted-foreground: 228 12% 52%;
 
-    --accent: 262 18% 18%;
+    --accent: 228 14% 16%;
     --accent-foreground: 24 30% 92%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 260 10% 18%;
-    --input: 260 10% 14%;
+    --border: 228 12% 18%;
+    --input: 228 12% 14%;
     --ring: 24 100% 50%;
 
     --radius: 1rem;
 
     --racing-red: 4 90% 58%;
     --racing-red-glow: 4 100% 65%;
-    --racing-purple: 268 52% 58%;
-    --racing-purple-glow: 272 40% 70%;
     --carbon: 228 20% 9%;
     --carbon-light: 228 16% 14%;
     --pit-yellow: 48 100% 50%;
@@ -47,13 +45,12 @@
     --green-flag: 155 72% 40%;
     --checkered: 0 0% 100%;
 
-    --gradient-racing: linear-gradient(135deg, hsl(24 95% 52%) 0%, hsl(268 50% 52%) 100%);
+    --gradient-racing: linear-gradient(135deg, hsl(24 95% 52%) 0%, hsl(24 80% 38%) 100%);
     --gradient-carbon: linear-gradient(180deg, hsl(228 20% 11%) 0%, hsl(228 22% 5%) 100%);
     --gradient-glow: radial-gradient(
       ellipse at center,
-      hsl(24 90% 52% / 0.14) 0%,
-      hsl(268 42% 50% / 0.08) 48%,
-      transparent 72%
+      hsl(24 90% 52% / 0.12) 0%,
+      transparent 68%
     );
 
     --shadow-racing: 0 4px 40px -8px hsl(24 90% 48% / 0.32);
@@ -70,7 +67,7 @@
     min-height: 100%;
     background-color: hsl(228 22% 7%);
     background-image:
-      radial-gradient(ellipse 120% 60% at 50% 0%, hsl(268 30% 14% / 0.3) 0%, transparent 70%),
+      radial-gradient(ellipse 120% 55% at 50% 0%, hsl(24 40% 18% / 0.18) 0%, transparent 70%),
       linear-gradient(
         180deg,
         hsl(228 26% 8% / 0.4) 0%,
@@ -115,9 +112,7 @@
   }
 
   .racing-glow {
-    text-shadow:
-      0 0 24px hsl(24 90% 52% / 0.35),
-      0 0 64px hsl(268 50% 52% / 0.18);
+    text-shadow: 0 1px 0 hsl(0 0% 0% / 0.35);
   }
 
   .card-racing {
@@ -136,7 +131,7 @@
   }
 
   .card-racing:hover {
-    border-color: hsl(260 10% 26%);
+    border-color: hsl(228 12% 26%);
     box-shadow:
       0 1px 0 0 hsl(0 0% 100% / 0.06) inset,
       0 12px 48px -12px hsl(0 0% 0% / 0.6);
@@ -204,7 +199,7 @@
   .position-badge.p1 {
     background: linear-gradient(135deg, hsl(48 100% 50%) 0%, hsl(36 100% 42%) 100%);
     color: hsl(228 22% 5%);
-    box-shadow: 0 0 20px hsl(48 100% 50% / 0.3);
+    box-shadow: 0 2px 12px hsl(48 100% 50% / 0.2);
   }
 
   .position-badge.p2 {
@@ -222,6 +217,14 @@
     background-color: hsl(228 22% 7% / 0.35);
     backdrop-filter: blur(4px);
     animation: page-enter 0.4s ease-out;
+  }
+
+  .page-hero-wash {
+    background: radial-gradient(
+      ellipse 80% 50% at 50% 0%,
+      hsl(24 90% 50% / 0.1) 0%,
+      transparent 70%
+    );
   }
 
   @keyframes page-enter {
@@ -242,16 +245,16 @@
   @keyframes pulse-racing {
     0%, 100% {
       opacity: 1;
-      box-shadow: 0 0 20px hsl(24 90% 52% / 0.35);
+      box-shadow: 0 0 16px hsl(24 90% 52% / 0.28);
     }
     50% {
       opacity: 0.88;
-      box-shadow: 0 0 32px hsl(268 50% 52% / 0.25);
+      box-shadow: 0 0 24px hsl(24 90% 52% / 0.18);
     }
   }
 
   .text-gradient-racing {
-    background: linear-gradient(135deg, hsl(24 95% 55%) 0%, hsl(268 48% 60%) 100%);
+    background: linear-gradient(135deg, hsl(24 95% 55%) 0%, hsl(24 85% 42%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

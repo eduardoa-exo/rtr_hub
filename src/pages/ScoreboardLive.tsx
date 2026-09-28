@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { motion } from "framer-motion";
-import { Trophy, RotateCcw } from "lucide-react";
-import { Header } from "@/components/layout/Header";
+import { RotateCcw } from "lucide-react";
+import { PageShell } from "@/components/layout/PageShell";
+import { PageHero } from "@/components/layout/PageHero";
 import { RacingLoader } from "@/components/RacingLoader";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -297,17 +297,15 @@ export default function ScoreboardLive() {
 
   if (loading) {
     return (
-      <div className="page-shell">
-        <Header />
+      <PageShell>
         <RacingLoader className="min-h-[50vh]" />
-      </div>
+      </PageShell>
     );
   }
 
   if (!session && !isAdmin) {
     return (
-      <div className="page-shell">
-        <Header />
+      <PageShell>
         <main className="container py-8">
           <div className="text-center py-12">
             <p className="text-muted-foreground">
@@ -315,42 +313,29 @@ export default function ScoreboardLive() {
             </p>
           </div>
         </main>
-      </div>
+      </PageShell>
     );
   }
 
   if (session && !session.enabled && !isAdmin) {
     return (
-      <div className="page-shell">
-        <Header />
+      <PageShell>
         <RacingLoader className="min-h-[50vh]" />
-      </div>
+      </PageShell>
     );
   }
 
   return (
-    <div className="page-shell">
-      <Header />
-
-      <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(24_90%_50%_/_0.12)_0%,_hsl(268_40%_30%_/_0.06)_40%,_transparent_70%)]" />
-        <div className="container py-10 md:py-14">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center"
-          >
-            <h1 className="font-racing text-2xl sm:text-4xl md:text-5xl font-bold mb-2 racing-glow">
-              <Trophy className="inline-block h-7 w-7 sm:h-10 sm:w-10 mr-2 sm:mr-3 text-primary" />
-              <span className="text-gradient-racing">Scoreboard Live</span>
-            </h1>
-            <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-              Projeção de pontos em tempo real com base na ordem de pista.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <PageShell>
+      <PageHero
+        compact
+        title={
+          <>
+            <span className="text-gradient-racing">Scoreboard Live</span>
+          </>
+        }
+        subtitle="Projeção de pontos em tempo real com base na ordem de pista."
+      />
 
       <main className="container py-6 md:py-8">
         {isAdmin && (
@@ -463,6 +448,6 @@ export default function ScoreboardLive() {
           />
         )}
       </main>
-    </div>
+    </PageShell>
   );
 }

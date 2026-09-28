@@ -18,7 +18,8 @@ import {
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Header } from "@/components/layout/Header";
+import { PageShell } from "@/components/layout/PageShell";
+import { PageHero } from "@/components/layout/PageHero";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useRaces } from "@/hooks/queries/useRaces";
@@ -448,36 +449,11 @@ export default function Calendario() {
   };
 
   return (
-    <div className="page-shell">
-      <Header />
-
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(24_90%_50%_/_0.08)_0%,_hsl(268_40%_30%_/_0.04)_40%,_transparent_70%)]" />
-        <div className="container py-12 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center"
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="inline-flex items-center justify-center w-16 h-16 rounded-3xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 mb-4 shadow-lg shadow-primary/10"
-            >
-              <CalendarIcon className="h-8 w-8 text-primary" />
-            </motion.div>
-            <h1 className="font-racing text-2xl sm:text-4xl md:text-5xl font-bold mb-4">
-              Calendário
-            </h1>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Datas e horários das próximas corridas da Ric Team Racing.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <PageShell>
+      <PageHero
+        title="Calendário"
+        subtitle="Datas e horários das próximas corridas da Ric Team Racing."
+      />
 
       {/* Content */}
       <main className="container py-12">
@@ -539,15 +515,16 @@ export default function Calendario() {
               </div>
 
               {/* Calendar grid */}
-              <div className="card-racing overflow-hidden p-4">
+              <div className="card-racing overflow-hidden p-2 sm:p-4">
                 {/* Day names row */}
-                <div className="grid grid-cols-7 gap-px mb-2">
+                <div className="grid grid-cols-7 gap-px mb-1 sm:mb-2">
                   {DAY_NAMES_PT.map((day) => (
                     <div
                       key={day}
-                      className="py-2 text-center text-xs font-racing uppercase tracking-wider text-muted-foreground"
+                      className="py-1.5 sm:py-2 text-center text-[10px] sm:text-xs font-racing uppercase tracking-wider text-muted-foreground"
                     >
-                      {day}
+                      <span className="sm:hidden">{day.charAt(0)}</span>
+                      <span className="hidden sm:inline">{day}</span>
                     </div>
                   ))}
                 </div>
@@ -567,7 +544,7 @@ export default function Calendario() {
                         animate={{ opacity: 1 }}
                         transition={{ delay: i * 0.008 }}
                         onClick={() => setSelectedDate(cell.date)}
-                        className={`min-h-[52px] sm:min-h-[64px] flex flex-col items-center justify-start pt-2 text-left transition-colors rounded-md ${
+                        className={`min-h-[44px] sm:min-h-[64px] flex flex-col items-center justify-start pt-1.5 sm:pt-2 text-left transition-colors rounded-md ${
                           !cell.isCurrentMonth
                             ? "text-muted-foreground/60"
                             : "text-foreground hover:bg-secondary/50"
@@ -578,7 +555,7 @@ export default function Calendario() {
                         }`}
                       >
                         <span
-                          className={`inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-racing tabular-nums ${
+                          className={`inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full text-xs sm:text-sm font-racing tabular-nums ${
                             cell.isToday
                               ? "bg-primary text-white font-bold"
                               : ""
@@ -587,15 +564,15 @@ export default function Calendario() {
                           {cell.date.getDate()}
                         </span>
                         {hasRaces && (
-                          <span className="mt-1 flex gap-0.5 items-center justify-center">
+                          <span className="mt-0.5 sm:mt-1 flex gap-0.5 items-center justify-center">
                             {dayRaces.slice(0, 3).map((r) => (
                               <span
                                 key={r.id}
-                                className="h-1.5 w-1.5 rounded-full bg-primary shrink-0"
+                                className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary shrink-0"
                               />
                             ))}
                             {dayRaces.length > 3 && (
-                              <span className="text-xs font-racing text-muted-foreground">
+                              <span className="text-[10px] sm:text-xs font-racing text-muted-foreground">
                                 +{dayRaces.length - 3}
                               </span>
                             )}
@@ -606,6 +583,56 @@ export default function Calendario() {
                   })}
                 </div>
               </div>
+
+              {/* Mobile agenda: upcoming races this month when no day selected */}
+              {!selectedDate && (
+                <div className="md:hidden space-y-3">
+                  <h3 className="font-racing text-sm uppercase tracking-widest text-muted-foreground">
+                    Agenda do mês
+                  </h3>
+                  {Object.entries(racesByDate)
+                    .filter(([key]) => {
+                      const [y, m] = key.split("-").map(Number);
+                      return (
+                        y === viewDate.getFullYear() &&
+                        m === viewDate.getMonth() + 1
+                      );
+                    })
+                    .sort(([a], [b]) => a.localeCompare(b))
+                    .flatMap(([, dayRaces]) => dayRaces)
+                    .length === 0 ? (
+                    <p className="text-muted-foreground text-sm py-2">
+                      Sem corridas neste mês.
+                    </p>
+                  ) : (
+                    <div className="space-y-3">
+                      {Object.entries(racesByDate)
+                        .filter(([key]) => {
+                          const [y, m] = key.split("-").map(Number);
+                          return (
+                            y === viewDate.getFullYear() &&
+                            m === viewDate.getMonth() + 1
+                          );
+                        })
+                        .sort(([a], [b]) => a.localeCompare(b))
+                        .flatMap(([, dayRaces]) => dayRaces)
+                        .map((race) => (
+                          <RaceCard
+                            key={`agenda-${race.id}`}
+                            race={race}
+                            index={0}
+                            isUpcoming={new Date(race.date) >= new Date()}
+                            isAdmin={!!user}
+                            isActive={race.is_active}
+                            onEdit={() => openEdit(race)}
+                            onDelete={() => openDelete(race)}
+                            onSetLive={() => handleSetLive(race)}
+                          />
+                        ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Selected day races */}
               <AnimatePresence mode="wait">
@@ -1172,7 +1199,7 @@ export default function Calendario() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </PageShell>
   );
 }
 

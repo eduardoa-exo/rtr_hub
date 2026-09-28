@@ -1,9 +1,9 @@
 import { useMemo, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Flag, Clock, Users, Trophy, Car, Layers, Cloud, Sun, CloudRain, Edit, Loader2, Map, Upload, X, Plus } from "lucide-react";
+import { Flag, Clock, Car, Layers, Cloud, Sun, CloudRain, Edit, Loader2, Map, Upload, X, Plus } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Header } from "@/components/layout/Header";
+import { PageShell } from "@/components/layout/PageShell";
 import { RaceEventsList } from "@/components/race/RaceEventsList";
 import { QualifyingTable } from "@/components/race/QualifyingTable";
 import { TrackInfo } from "@/components/race/TrackInfo";
@@ -168,33 +168,31 @@ const Index = () => {
   };
 
   return (
-    <div className="page-shell">
-      <Header />
-      
+    <PageShell>
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(24_90%_50%_/_0.12)_0%,_hsl(268_40%_30%_/_0.06)_40%,_transparent_70%)]" />
-        <div className="container py-12 md:py-20">
+        <div className="absolute inset-0 page-hero-wash" />
+        <div className="container py-10 md:py-14">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.4 }}
             className="text-center"
           >
-            <div className="inline-flex items-center gap-2 mb-4 px-5 py-2.5 rounded-2xl bg-primary/8 border border-primary/15 backdrop-blur-sm">
-              <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-racing uppercase tracking-widest text-primary">
-                {activeRace ? "Corrida em Direto" : "Próxima Corrida"}
-              </span>
-            </div>
-            
-            <h1 className="font-racing text-2xl sm:text-4xl md:text-6xl font-bold mb-4 racing-glow">
-              <span className="text-gradient-racing">RIC TEAM</span>{" "}
-              <span className="text-foreground">RACING</span>
+            <p className="mb-3 text-xs font-racing uppercase tracking-widest text-racing-red">
+              {activeRace ? "Corrida em Direto" : "Próxima Corrida"}
+            </p>
+
+            <h1 className="font-racing text-2xl sm:text-4xl md:text-5xl font-bold mb-3 tracking-tight">
+              {activeRace ? activeRace.name : nextRace?.name ?? "Sem corrida agendada"}
             </h1>
-            
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              Acompanha em tempo real todas as ocorrências das corridas da equipa RTR no iRacing.
+
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+              {activeRace
+                ? activeRace.track
+                : nextRace?.track
+                  ? nextRace.track
+                  : "Acompanha em tempo real as ocorrências das corridas da RTR no iRacing."}
             </p>
 
             {/* Countdown for next race (when no active race) */}
@@ -203,12 +201,7 @@ const Index = () => {
             )}
 
             {activeRace && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2 }}
-                className="relative inline-flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 px-5 sm:px-8 py-5 rounded-2xl bg-card/50 backdrop-blur-md border border-border/50 w-full sm:w-auto text-left"
-              >
+              <div className="relative inline-flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 px-5 sm:px-8 py-4 rounded-2xl bg-card/50 backdrop-blur-md border border-border/50 w-full sm:w-auto text-left">
                 {user && (
                   <Button
                     variant="ghost"
@@ -221,21 +214,21 @@ const Index = () => {
                   </Button>
                 )}
                 <div className="text-left">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Corrida</p>
-                  <p className="font-racing font-bold">{activeRace.name}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Estado</p>
+                  <p className="font-racing font-bold text-racing-red">Ao vivo</p>
                 </div>
                 <div className="hidden sm:block h-8 w-px bg-border" />
                 <div className="text-left">
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Pista</p>
                   <p className="font-racing font-bold">{activeRace.track}</p>
                 </div>
-              </motion.div>
+              </div>
             )}
           </motion.div>
         </div>
       </section>
 
-      {/* Stats Bar */}
+      {/* Stats Bar — below first viewport */}
       <section className="border-b border-border bg-card/50">
         <div className="container py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -335,15 +328,6 @@ const Index = () => {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="border-t border-border py-8">
-        <div className="container text-center">
-          <p className="text-sm text-muted-foreground">
-            © 2026 RTR Sempre a puxar croquetes
-          </p>
-        </div>
-      </footer>
 
       {/* Edit Race Dialog */}
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
@@ -575,7 +559,7 @@ const Index = () => {
           </form>
         </DialogContent>
       </Dialog>
-    </div>
+    </PageShell>
   );
 };
 
