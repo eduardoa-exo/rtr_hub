@@ -6,44 +6,44 @@
 
 @layer base {
   :root {
-    /* Sampled from public/images/rtr_logo.png — magenta T, cyan tip, lime wordmark */
-    --background: 228 22% 5%;
+    /* Official RTR palette: lilac #c119f5, dark blue #1a0443, neon #ffff00 */
+    --background: 261 70% 7%;
     --foreground: 0 0% 97%;
 
-    --card: 228 20% 9%;
+    --card: 261 55% 10%;
     --card-foreground: 0 0% 97%;
 
-    --popover: 228 20% 9%;
+    --popover: 261 55% 10%;
     --popover-foreground: 0 0% 97%;
 
-    /* Brand primary: vibrant magenta / hot pink */
-    --primary: 306 79% 57%;
+    /* Lilac primary #c119f5 */
+    --primary: 286 92% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 228 16% 14%;
+    --secondary: 261 45% 14%;
     --secondary-foreground: 0 0% 94%;
 
-    --muted: 228 12% 16%;
-    --muted-foreground: 228 12% 52%;
+    --muted: 261 35% 14%;
+    --muted-foreground: 261 15% 58%;
 
-    --accent: 300 18% 16%;
-    --accent-foreground: 304 40% 92%;
+    --accent: 261 40% 16%;
+    --accent-foreground: 286 40% 92%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 280 12% 18%;
-    --input: 280 12% 14%;
-    --ring: 306 79% 57%;
+    --border: 261 30% 18%;
+    --input: 261 30% 14%;
+    --ring: 286 92% 53%;
 
     --radius: 1rem;
 
     --racing-red: 4 90% 58%;
     --racing-red-glow: 4 100% 65%;
-    --racing-cyan: 197 100% 59%;
-    --racing-lime: 68 100% 45%;
-    --carbon: 228 20% 9%;
-    --carbon-light: 228 16% 14%;
+    /* Neon highlight #ffff00 */
+    --racing-neon: 60 100% 50%;
+    --carbon: 261 89% 14%;
+    --carbon-light: 261 55% 18%;
     --pit-yellow: 48 100% 50%;
     --safety-car: 48 90% 55%;
     --green-flag: 155 72% 40%;
@@ -51,17 +51,17 @@
 
     --gradient-racing: linear-gradient(
       135deg,
-      hsl(306 79% 57%) 0%,
-      hsl(197 100% 55%) 100%
+      hsl(286 92% 53%) 0%,
+      hsl(286 85% 42%) 100%
     );
-    --gradient-carbon: linear-gradient(180deg, hsl(228 20% 11%) 0%, hsl(228 22% 5%) 100%);
+    --gradient-carbon: linear-gradient(180deg, hsl(261 70% 12%) 0%, hsl(261 70% 6%) 100%);
     --gradient-glow: radial-gradient(
       ellipse at center,
-      hsl(306 79% 57% / 0.14) 0%,
+      hsl(286 92% 53% / 0.14) 0%,
       transparent 68%
     );
 
-    --shadow-racing: 0 4px 40px -8px hsl(306 79% 50% / 0.35);
+    --shadow-racing: 0 4px 40px -8px hsl(286 92% 45% / 0.38);
     --shadow-card: 0 1px 0 0 hsl(0 0% 100% / 0.03) inset, 0 8px 40px -12px hsl(0 0% 0% / 0.6);
   }
 }
@@ -73,14 +73,14 @@
 
   html {
     min-height: 100%;
-    background-color: hsl(228 22% 7%);
+    background-color: hsl(261 70% 7%);
     background-image:
-      radial-gradient(ellipse 120% 55% at 50% 0%, hsl(306 40% 22% / 0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 120% 55% at 50% 0%, hsl(286 50% 28% / 0.22) 0%, transparent 70%),
       linear-gradient(
         180deg,
-        hsl(228 26% 8% / 0.4) 0%,
-        hsl(228 22% 7% / 0.45) 50%,
-        hsl(228 20% 6% / 0.5) 100%
+        hsl(261 70% 10% / 0.45) 0%,
+        hsl(261 70% 7% / 0.5) 50%,
+        hsl(261 80% 5% / 0.55) 100%
       ),
       url("/images/site-bg.webp");
     background-size: cover;
@@ -126,7 +126,7 @@
   .card-racing {
     @apply border border-border;
     border-radius: 1.25rem;
-    background: hsl(228 20% 10% / 0.6);
+    background: hsl(261 55% 10% / 0.65);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     box-shadow:
@@ -139,7 +139,7 @@
   }
 
   .card-racing:hover {
-    border-color: hsl(280 14% 28%);
+    border-color: hsl(261 35% 28%);
     box-shadow:
       0 1px 0 0 hsl(0 0% 100% / 0.06) inset,
       0 12px 48px -12px hsl(0 0% 0% / 0.6);
@@ -157,15 +157,14 @@
 
   .btn-racing:hover {
     transform: translateY(-2px);
-    background: hsl(var(--racing-cyan));
-    color: hsl(228 22% 5%);
+    background: hsl(286 92% 62%);
     box-shadow:
-      0 8px 40px -6px hsl(var(--racing-cyan) / 0.45),
-      0 0 0 1px hsl(var(--racing-cyan) / 0.55);
+      0 8px 40px -6px hsl(286 92% 50% / 0.5),
+      0 0 0 1px hsl(286 92% 65% / 0.55);
   }
 
   .btn-racing:focus-visible {
-    outline: 2px solid hsl(var(--racing-cyan));
+    outline: 2px solid hsl(var(--racing-neon));
     outline-offset: 2px;
   }
 
@@ -184,7 +183,7 @@
   .event-pit {
     @apply border-l-4;
     border-color: hsl(var(--muted-foreground));
-    background: linear-gradient(90deg, hsl(228 12% 52% / 0.08) 0%, transparent 50%);
+    background: linear-gradient(90deg, hsl(261 15% 58% / 0.08) 0%, transparent 50%);
   }
 
   .event-green {
@@ -214,13 +213,13 @@
   /* Medal metals (not brand accents) */
   .position-badge.p1 {
     background: linear-gradient(135deg, hsl(48 100% 50%) 0%, hsl(42 95% 40%) 100%);
-    color: hsl(228 22% 5%);
+    color: hsl(261 70% 7%);
     box-shadow: 0 2px 12px hsl(48 100% 50% / 0.2);
   }
 
   .position-badge.p2 {
     background: linear-gradient(135deg, hsl(220 10% 78%) 0%, hsl(220 10% 56%) 100%);
-    color: hsl(228 22% 5%);
+    color: hsl(261 70% 7%);
   }
 
   .position-badge.p3 {
@@ -230,7 +229,7 @@
 
   .page-shell {
     @apply min-h-screen;
-    background-color: hsl(228 22% 7% / 0.35);
+    background-color: hsl(261 70% 7% / 0.4);
     backdrop-filter: blur(4px);
     animation: page-enter 0.4s ease-out;
   }
@@ -238,7 +237,7 @@
   .page-hero-wash {
     background: radial-gradient(
       ellipse 80% 50% at 50% 0%,
-      hsl(306 70% 50% / 0.12) 0%,
+      hsl(286 80% 45% / 0.14) 0%,
       transparent 70%
     );
   }
@@ -261,22 +260,18 @@
   @keyframes pulse-racing {
     0%, 100% {
       opacity: 1;
-      box-shadow: 0 0 16px hsl(306 79% 57% / 0.3);
+      box-shadow: 0 0 16px hsl(286 92% 53% / 0.32);
     }
     50% {
       opacity: 0.88;
-      box-shadow: 0 0 24px hsl(197 100% 59% / 0.22);
+      box-shadow: 0 0 24px hsl(286 92% 53% / 0.18);
     }
   }
 
   .text-gradient-racing {
-    background: linear-gradient(135deg, hsl(306 85% 62%) 0%, hsl(197 100% 58%) 100%);
+    background: linear-gradient(135deg, hsl(286 95% 62%) 0%, hsl(286 90% 48%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-  }
-
-  .text-racing-lime {
-    color: hsl(var(--racing-lime));
   }
 }

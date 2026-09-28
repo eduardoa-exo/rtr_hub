@@ -61,7 +61,7 @@ export default function Landing() {
       )}
       <div className="pointer-events-none fixed inset-0 z-0 bg-black/45" />
       <div className="pointer-events-none fixed inset-0 z-0 bg-gradient-to-b from-black/20 via-transparent to-black/55" />
-      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(306_50%_25%_/_0.28),_transparent_60%)]" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(286_55%_28%_/_0.3),_transparent_60%)]" />
 
       <div className="relative z-10">
         <section className="relative overflow-hidden h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)]">

@@ -152,7 +152,7 @@ export function Header() {
         ? "text-primary"
         : "text-muted-foreground hover:text-foreground";
 
-    const underlineClass = isLive ? "bg-red-500" : "bg-primary";
+    const underlineClass = isLive ? "bg-red-500" : "bg-racing-neon";
 
     return (
       <Link to={item.path}>
@@ -205,7 +205,7 @@ export function Header() {
           {item.label}
           <ChevronDown className={`h-3 w-3 transition-transform ${isOpen ? "rotate-180" : ""}`} />
           {isActive && (
-            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
+            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-racing-neon" />
           )}
         </button>
 
@@ -329,7 +329,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-[hsl(228_22%_5%/0.65)] backdrop-blur-xl supports-[backdrop-filter]:bg-[hsl(228_22%_5%/0.55)]">
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-[hsl(261_89%_14%/0.78)] backdrop-blur-xl supports-[backdrop-filter]:bg-[hsl(261_89%_14%/0.68)]">
       <div className="container relative flex h-16 items-center justify-between py-1 sm:h-20 md:min-h-24">
         <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="RTR Racing">
           <img
@@ -337,7 +337,7 @@ export function Header() {
             alt="RTR Racing"
             width={140}
             height={40}
-            className="h-7 w-auto sm:h-8 md:h-9 object-contain"
+            className="h-7 w-auto sm:h-8 md:h-9 object-contain mix-blend-lighten"
             decoding="async"
           />
         </Link>
@@ -404,7 +404,7 @@ export function Header() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden overflow-hidden border-t border-border/60 bg-[hsl(228_22%_5%/0.88)] backdrop-blur-xl"
+            className="md:hidden overflow-hidden border-t border-border/60 bg-[hsl(261_89%_14%/0.92)] backdrop-blur-xl"
           >
             <div className="container py-4 space-y-1">
               {navItems.map((item, index) => (
