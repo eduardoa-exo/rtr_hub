@@ -146,7 +146,7 @@ export default function ResetPassword() {
   if (success) {
     return (
       <div className="page-shell flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,_hsl(286_80%_45%_/_0.14)_0%,_transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,_hsl(60_100%_50%_/_0.08)_0%,_transparent_70%)]" />
         
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -166,7 +166,7 @@ export default function ResetPassword() {
 
   return (
     <div className="page-shell flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,_hsl(286_80%_45%_/_0.14)_0%,_transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,_hsl(60_100%_50%_/_0.08)_0%,_transparent_70%)]" />
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}

@@ -61,7 +61,7 @@ export default function Landing() {
       )}
       <div className="pointer-events-none fixed inset-0 z-0 bg-black/45" />
       <div className="pointer-events-none fixed inset-0 z-0 bg-gradient-to-b from-black/20 via-transparent to-black/55" />
-      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(286_55%_28%_/_0.3),_transparent_60%)]" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(60_100%_50%_/_0.08),_transparent_60%)]" />
 
       <div className="relative z-10">
         <section className="relative overflow-hidden h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)]">
@@ -97,7 +97,7 @@ export default function Landing() {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="font-racing uppercase tracking-wider gap-2 border-white/20 text-white hover:bg-white/10 hover:border-white/30 backdrop-blur-sm"
+                    className="btn-racing-secondary text-sm gap-2 px-8 py-3.5 backdrop-blur-sm"
                   >
                     <Calendar className="h-4 w-4" />
                     Calendário

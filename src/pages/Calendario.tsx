@@ -557,7 +557,7 @@ export default function Calendario() {
                         <span
                           className={`inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full text-xs sm:text-sm font-racing tabular-nums ${
                             cell.isToday
-                              ? "bg-primary text-white font-bold"
+                              ? "bg-primary text-primary-foreground font-bold"
                               : ""
                           }`}
                         >

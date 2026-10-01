@@ -595,7 +595,7 @@ export default function Classificacao() {
               onClick={() => setSelectedClass("LMP2")}
               className={`font-racing text-sm uppercase tracking-wider px-6 py-2.5 rounded-xl transition-all ${
                 selectedClass === "LMP2"
-                  ? "bg-primary text-white shadow-md shadow-primary/30"
+                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/30"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -605,7 +605,7 @@ export default function Classificacao() {
               onClick={() => setSelectedClass("GT3 PRO")}
               className={`font-racing text-sm uppercase tracking-wider px-6 py-2.5 rounded-xl transition-all ${
                 selectedClass === "GT3 PRO"
-                  ? "bg-primary text-white shadow-md shadow-primary/30"
+                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/30"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -708,7 +708,7 @@ export default function Classificacao() {
                           <span className="font-bold text-sm">{standing.rank}</span>
                         </td>
                         <td className="py-2.5 px-2 sm:py-3 sm:px-3">
-                          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-primary rounded">
+                          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-primary-foreground bg-primary rounded">
                             {standing.car_number}
                           </span>
                         </td>
@@ -1108,7 +1108,7 @@ export default function Classificacao() {
                           >
                             <td className="py-2 px-4">{standing.rank}</td>
                             <td className="py-2 px-4">
-                              <span className="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold text-white bg-primary rounded">
+                              <span className="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold text-primary-foreground bg-primary rounded">
                                 {standing.car_number}
                               </span>
                             </td>

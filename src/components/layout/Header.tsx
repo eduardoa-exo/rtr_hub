@@ -149,7 +149,7 @@ export function Header() {
         ? "text-red-500"
         : "text-red-500/80 hover:text-red-500"
       : isActive
-        ? "text-primary"
+        ? "text-racing-neon"
         : "text-muted-foreground hover:text-foreground";
 
     const underlineClass = isLive ? "bg-red-500" : "bg-racing-neon";
@@ -178,7 +178,7 @@ export function Header() {
     const menuId = `nav-menu-${item.label}`;
 
     const colorClasses = isActive
-      ? "text-primary"
+      ? "text-racing-neon"
       : "text-muted-foreground hover:text-foreground focus-visible:text-foreground";
 
     return (
@@ -230,10 +230,10 @@ export function Header() {
                       key={subItem.path}
                       to={subItem.path}
                       role="menuitem"
-                      className={`flex items-center gap-3 px-4 py-3 text-sm transition-colors outline-none focus-visible:bg-primary/10 focus-visible:text-primary ${
+                      className={`flex items-center gap-3 px-4 py-3 text-sm transition-colors outline-none focus-visible:bg-racing-lilac/10 focus-visible:text-racing-lilac ${
                         isSubActive
-                          ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                          ? "bg-racing-neon/10 text-racing-neon"
+                          : "text-muted-foreground hover:bg-racing-lilac/10 hover:text-racing-lilac"
                       }`}
                     >
                       <SubIcon className="h-4 w-4" />
@@ -258,7 +258,7 @@ export function Header() {
       const colorClasses = isLive
         ? "text-red-500"
         : isActive
-          ? "text-primary"
+          ? "text-racing-neon"
           : "text-muted-foreground";
 
       return (
@@ -282,7 +282,7 @@ export function Header() {
         <button
           onClick={() => setMobileOpenCategory(isOpen ? null : item.label)}
           className={`flex w-full items-center justify-between gap-3 px-4 py-3.5 min-h-[44px] font-racing text-sm uppercase tracking-wider transition-colors ${
-            isActive ? "text-primary" : "text-muted-foreground"
+            isActive ? "text-racing-neon" : "text-muted-foreground"
           } hover:bg-secondary`}
         >
           <div className="flex items-center gap-3">
@@ -312,8 +312,8 @@ export function Header() {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-3 pl-12 pr-4 py-3.5 min-h-[44px] text-sm transition-colors ${
                       isSubActive
-                        ? "text-primary"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "text-racing-neon"
+                        : "text-muted-foreground hover:text-racing-lilac"
                     }`}
                   >
                     <SubIcon className="h-4 w-4" />

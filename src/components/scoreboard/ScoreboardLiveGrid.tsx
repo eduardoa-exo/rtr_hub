@@ -131,7 +131,7 @@ function SortableRow({
       </td>
       <td className="py-2 px-2">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-primary rounded shrink-0">
+          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-primary-foreground bg-primary rounded shrink-0">
             {row.car_number}
           </span>
           {row.car_logo_url ? (
