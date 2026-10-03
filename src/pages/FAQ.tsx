@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { HelpCircle, Loader2, Plus, Pencil, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { Header } from "@/components/layout/Header";
+import { PageShell } from "@/components/layout/PageShell";
+import { PageHero } from "@/components/layout/PageHero";
 import {
   Accordion,
   AccordionContent,
@@ -179,45 +180,11 @@ export default function FAQ() {
   };
 
   return (
-    <div className="page-shell">
-      <Header />
-
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(24_90%_50%_/_0.1)_0%,_hsl(268_40%_30%_/_0.05)_40%,_transparent_70%)]" />
-        <div className="container py-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <motion.div
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 12 }}
-            >
-              <HelpCircle className="h-12 w-12 mx-auto mb-4 text-primary" />
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="font-racing text-2xl sm:text-4xl md:text-5xl font-bold mb-4"
-            >
-              FAQ
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.35, duration: 0.5 }}
-              className="text-muted-foreground max-w-xl mx-auto"
-            >
-              Perguntas frequentes sobre a Ric Team Racing e o mundo do sim racing.
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+    <PageShell>
+      <PageHero
+        title="FAQ"
+        subtitle="Perguntas frequentes sobre a Ric Team Racing e o mundo do sim racing."
+      />
 
       {/* Content */}
       <main className="container py-12 max-w-3xl">
@@ -395,6 +362,6 @@ export default function FAQ() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </PageShell>
   );
 }

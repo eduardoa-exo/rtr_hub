@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState, type ComponentType } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQueryClient } from "@tanstack/react-query";
-import { Header } from "@/components/layout/Header";
+import { PageShell } from "@/components/layout/PageShell";
+import { PageHero } from "@/components/layout/PageHero";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { compressImage } from "@/lib/compressImage";
-import { useAuth } from "@/hooks/useAuth";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { useToast } from "@/hooks/use-toast";
 import { uploadMedia } from "@/lib/r2Upload";
 import { useStandings } from "@/hooks/queries/useStandings";
@@ -164,7 +165,7 @@ export default function Classificacao() {
   const [standingToDelete, setStandingToDelete] = useState<Standing | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
-  const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const { toast } = useToast();
 
   // PDF Import states
@@ -574,39 +575,16 @@ export default function Classificacao() {
   };
 
   return (
-    <div className="page-shell">
-      <Header />
-
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(24_90%_50%_/_0.12)_0%,_hsl(268_40%_30%_/_0.06)_40%,_transparent_70%)]" />
-        <div className="container py-12 md:py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.6 }}
-              className="font-racing text-2xl sm:text-4xl md:text-6xl font-bold mb-4 racing-glow"
-            >
-              <span className="text-gradient-racing">Classificação</span>{" "}
-              <span className="text-foreground">do Campeonato</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.35, duration: 0.5 }}
-              className="text-lg text-muted-foreground max-w-2xl mx-auto"
-            >
-              Acompanha a classificação das equipas nas classes LMP2 e GT3 PRO
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+    <PageShell>
+      <PageHero
+        title={
+          <>
+            <span className="text-gradient-racing">Classificação</span>{" "}
+            <span className="text-foreground">do Campeonato</span>
+          </>
+        }
+        subtitle="Acompanha a classificação das equipas nas classes LMP2 e GT3 PRO"
+      />
 
       {/* Main Content */}
       <main className="container py-8">
@@ -617,7 +595,7 @@ export default function Classificacao() {
               onClick={() => setSelectedClass("LMP2")}
               className={`font-racing text-sm uppercase tracking-wider px-6 py-2.5 rounded-xl transition-all ${
                 selectedClass === "LMP2"
-                  ? "bg-primary text-white shadow-md shadow-primary/30"
+                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/30"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -627,7 +605,7 @@ export default function Classificacao() {
               onClick={() => setSelectedClass("GT3 PRO")}
               className={`font-racing text-sm uppercase tracking-wider px-6 py-2.5 rounded-xl transition-all ${
                 selectedClass === "GT3 PRO"
-                  ? "bg-primary text-white shadow-md shadow-primary/30"
+                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/30"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -637,7 +615,7 @@ export default function Classificacao() {
         </div>
 
         {/* Add Team Button (Admin Only) */}
-        {user && (
+        {isAdmin && (
           <div className="flex justify-end gap-2 mb-4">
             <Button onClick={() => setImportDialogOpen(true)} variant="outline" className="gap-2">
               <Upload className="h-4 w-4" />
@@ -660,7 +638,7 @@ export default function Classificacao() {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -670,19 +648,19 @@ export default function Classificacao() {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="text-left py-3 px-3 text-xs font-racing uppercase tracking-wider">
+                    <th className="text-left py-2.5 px-2 sm:py-3 sm:px-3 text-[10px] sm:text-xs font-racing uppercase tracking-wider sticky left-0 bg-[hsl(228_22%_7%/0.92)] z-[1]">
                       Rank
                     </th>
-                    <th className="text-left py-3 px-3 text-xs font-racing uppercase tracking-wider">
+                    <th className="text-left py-2.5 px-2 sm:py-3 sm:px-3 text-[10px] sm:text-xs font-racing uppercase tracking-wider">
                       No.
                     </th>
                     <th className="hidden sm:table-cell text-left py-3 px-3 text-xs font-racing uppercase tracking-wider">
                       Car
                     </th>
-                    <th className="text-left py-3 px-3 text-xs font-racing uppercase tracking-wider">
+                    <th className="text-left py-2.5 px-2 sm:py-3 sm:px-3 text-[10px] sm:text-xs font-racing uppercase tracking-wider min-w-[7rem]">
                       Team
                     </th>
-                    <th className="text-center py-3 px-3 text-xs font-racing uppercase tracking-wider">
+                    <th className="text-center py-2.5 px-2 sm:py-3 sm:px-3 text-[10px] sm:text-xs font-racing uppercase tracking-wider">
                       Pts
                     </th>
                     <th className="hidden md:table-cell text-center py-3 px-3 text-xs font-racing uppercase tracking-wider">
@@ -703,7 +681,7 @@ export default function Classificacao() {
                     <th className="hidden lg:table-cell text-center py-3 px-3 text-xs font-racing uppercase tracking-wider">
                       Top 10
                     </th>
-                    {user && <th className="w-16 sm:w-20"></th>}
+                    {isAdmin && <th className="w-16 sm:w-20"></th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -721,16 +699,16 @@ export default function Classificacao() {
                           homeTeam
                             ? "relative bg-accent/50 border-l-2 border-l-primary shadow-[inset_0_0_0_1px_hsl(var(--primary)/0.12)] hover:from-primary/16 hover:via-primary/10"
                             : "hover:bg-accent/50"
-                        } ${user ? "cursor-pointer" : ""}`}
+                        } ${isAdmin ? "cursor-pointer" : ""}`}
                         onClick={() => {
-                          if (user) openEdit(standing);
+                          if (isAdmin) openEdit(standing);
                         }}
                       >
-                        <td className="py-3 px-3">
-                          <span className="font-bold">{standing.rank}</span>
+                        <td className="py-2.5 px-2 sm:py-3 sm:px-3 sticky left-0 bg-[hsl(228_22%_7%/0.92)] z-[1]">
+                          <span className="font-bold text-sm">{standing.rank}</span>
                         </td>
-                        <td className="py-3 px-3">
-                          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-primary rounded">
+                        <td className="py-2.5 px-2 sm:py-3 sm:px-3">
+                          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-primary-foreground bg-primary rounded">
                             {standing.car_number}
                           </span>
                         </td>
@@ -751,15 +729,17 @@ export default function Classificacao() {
                             <div className="h-8 w-8 bg-muted rounded" />
                           )}
                         </td>
-                        <td className="py-3 px-3">
-                          <div className="flex items-center gap-2">
-                            <span className="hidden sm:inline-flex items-center">
+                        <td className="py-2.5 px-2 sm:py-3 sm:px-3">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="hidden sm:inline-flex items-center shrink-0">
                               {renderFlag(standing.country_code)}
                             </span>
-                            <span className="text-sm">{standing.team_name}</span>
+                            <span className="text-xs sm:text-sm truncate max-w-[9rem] sm:max-w-none">
+                              {standing.team_name}
+                            </span>
                           </div>
                         </td>
-                        <td className="text-center py-3 px-3 font-bold text-sm">
+                        <td className="text-center py-2.5 px-2 sm:py-3 sm:px-3 font-bold text-sm tabular-nums">
                           {standing.points}
                         </td>
                         <td className="hidden md:table-cell text-center py-3 px-3 text-sm">
@@ -780,7 +760,7 @@ export default function Classificacao() {
                         <td className="hidden lg:table-cell text-center py-3 px-3 text-sm">
                           {standing.top10}
                         </td>
-                        {user && (
+                        {isAdmin && (
                           <td className="py-3 px-3">
                             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                               <Button
@@ -1128,7 +1108,7 @@ export default function Classificacao() {
                           >
                             <td className="py-2 px-4">{standing.rank}</td>
                             <td className="py-2 px-4">
-                              <span className="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold text-white bg-primary rounded">
+                              <span className="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold text-primary-foreground bg-primary rounded">
                                 {standing.car_number}
                               </span>
                             </td>
@@ -1196,6 +1176,6 @@ export default function Classificacao() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </PageShell>
   );
 }

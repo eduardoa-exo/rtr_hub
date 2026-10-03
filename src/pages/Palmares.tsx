@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { Trophy, Calendar, Loader2, Trash2, PlayCircle, Link2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Header } from "@/components/layout/Header";
+import { PageShell } from "@/components/layout/PageShell";
+import { PageHero } from "@/components/layout/PageHero";
 import { RaceEventsList } from "@/components/race/RaceEventsList";
 import {
   Dialog,
@@ -164,45 +165,11 @@ export default function Palmares() {
   }, [races]);
 
   return (
-    <div className="page-shell">
-      <Header />
-
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(48_90%_50%_/_0.1)_0%,_hsl(24_80%_40%_/_0.05)_40%,_transparent_70%)]" />
-        <div className="container py-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <motion.div
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 12 }}
-            >
-              <Trophy className="h-12 w-12 mx-auto mb-4 text-racing-yellow" />
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="font-racing text-2xl sm:text-4xl md:text-5xl font-bold mb-4"
-            >
-              Palmarés
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.35, duration: 0.5 }}
-              className="text-muted-foreground max-w-xl mx-auto"
-            >
-              Os melhores momentos e conquistas da Ric Team Racing ao longo das temporadas.
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+    <PageShell>
+      <PageHero
+        title="Palmarés"
+        subtitle="Os melhores momentos e conquistas da Ric Team Racing ao longo das temporadas."
+      />
 
       {/* Content */}
       <main className="container py-12">
@@ -492,6 +459,6 @@ export default function Palmares() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </PageShell>
   );
 }

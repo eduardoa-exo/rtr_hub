@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Users, Loader2, User, Instagram, ExternalLink, Plus, Pencil, Trash2, Upload } from "lucide-react";
+import { Loader2, User, Instagram, ExternalLink, Plus, Pencil, Trash2, Upload } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { RacingLoader } from "@/components/RacingLoader";
 import { supabase } from "@/integrations/supabase/client";
 import { compressImage } from "@/lib/compressImage";
 import { uploadMedia } from "@/lib/r2Upload";
-import { Header } from "@/components/layout/Header";
+import { PageShell } from "@/components/layout/PageShell";
+import { PageHero } from "@/components/layout/PageHero";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -247,45 +248,11 @@ export default function Pilotos() {
   };
 
   return (
-    <div className="page-shell">
-      <Header />
-
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(24_90%_50%_/_0.1)_0%,_hsl(268_40%_30%_/_0.05)_40%,_transparent_70%)]" />
-        <div className="container py-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <motion.div
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 12 }}
-            >
-              <Users className="h-12 w-12 mx-auto mb-4 text-primary" />
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="font-racing text-2xl sm:text-4xl md:text-5xl font-bold mb-4"
-            >
-              Pilotos
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.35, duration: 0.5 }}
-              className="text-muted-foreground max-w-xl mx-auto"
-            >
-              Os pilotos que representam a Ric Team Racing no iRacing.
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+    <PageShell>
+      <PageHero
+        title="Pilotos"
+        subtitle="Os pilotos que representam a Ric Team Racing no iRacing."
+      />
 
       {/* Content */}
       <main className="container py-12">
@@ -356,7 +323,7 @@ export default function Pilotos() {
                       </Button>
                     </div>
                   )}
-                  <div className="flex h-20 w-20 sm:h-24 sm:w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-primary/15 to-racing-purple/10 ring-2 ring-white/5 mb-4">
+                  <div className="flex h-20 w-20 sm:h-24 sm:w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-primary/15 to-secondary ring-2 ring-white/5 mb-4">
                     {driver.image_url ? (
                       <img
                         src={driver.image_url}
@@ -542,6 +509,6 @@ export default function Pilotos() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </PageShell>
   );
 }

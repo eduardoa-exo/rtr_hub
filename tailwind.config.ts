@@ -54,8 +54,8 @@ export default {
         racing: {
           red: "hsl(var(--racing-red))",
           "red-glow": "hsl(var(--racing-red-glow))",
-          purple: "hsl(var(--racing-purple))",
-          "purple-glow": "hsl(var(--racing-purple-glow))",
+          neon: "hsl(var(--racing-neon))",
+          lilac: "hsl(var(--racing-lilac))",
           carbon: "hsl(var(--carbon))",
           "carbon-light": "hsl(var(--carbon-light))",
           yellow: "hsl(var(--pit-yellow))",
@@ -85,8 +85,8 @@ export default {
           to: { opacity: "1", transform: "translateY(0)" },
         },
         "glow-pulse": {
-          "0%, 100%": { boxShadow: "0 0 18px hsl(26 50% 52% / 0.3)" },
-          "50%": { boxShadow: "0 0 26px hsl(265 38% 52% / 0.22)" },
+          "0%, 100%": { boxShadow: "0 0 14px hsl(60 100% 50% / 0.22)" },
+          "50%": { boxShadow: "0 0 20px hsl(286 92% 53% / 0.18)" },
         },
       },
       animation: {

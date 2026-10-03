@@ -1,48 +1,15 @@
 import { motion } from "framer-motion";
-import { Users, Trophy, Target, Flag, Heart, Sparkles } from "lucide-react";
-import { Header } from "@/components/layout/Header";
+import { Trophy, Target, Flag, Heart, Sparkles } from "lucide-react";
+import { PageShell } from "@/components/layout/PageShell";
+import { PageHero } from "@/components/layout/PageHero";
 
 export default function AboutUs() {
   return (
-    <div className="page-shell">
-      <Header />
-
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(24_90%_50%_/_0.1)_0%,_hsl(268_40%_30%_/_0.05)_40%,_transparent_70%)]" />
-        <div className="container py-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <motion.div
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 12 }}
-            >
-              <Users className="h-12 w-12 mx-auto mb-4 text-primary" />
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="font-racing text-2xl sm:text-4xl md:text-5xl font-bold mb-4"
-            >
-              SOBRE NÓS
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.35, duration: 0.5 }}
-              className="text-muted-foreground max-w-xl mx-auto"
-            >
-              Conhece a história, valores e visão da Ric Team Racing.
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+    <PageShell>
+      <PageHero
+        title="Sobre Nós"
+        subtitle="Conhece a história, valores e visão da Ric Team Racing."
+      />
 
       {/* Content */}
       <main className="container py-12 max-w-4xl">
@@ -173,15 +140,6 @@ export default function AboutUs() {
           </motion.div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="border-t border-border py-8">
-        <div className="container text-center">
-          <p className="text-sm text-muted-foreground">
-            © 2026 RTR Sempre a puxar croquetes
-          </p>
-        </div>
-      </footer>
-    </div>
+    </PageShell>
   );
 }
