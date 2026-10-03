@@ -8,7 +8,10 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:unit": "vitest run --config vitest.config.ts",
+    "test:media-url": "npx --yes vitest@2.1.9 run --config vitest.config.ts src/lib/mediaUrl.test.ts",
+    "migrate:storage-to-r2": "NODE_PATH=workers/r2-presign/node_modules node scripts/migrate-supabase-storage-to-r2.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

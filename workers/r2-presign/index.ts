@@ -20,7 +20,7 @@ interface Env {
 }
 
 interface PresignRequest {
-  type: 'weather' | 'map' | 'championship';
+  type: 'weather' | 'map' | 'championship' | 'driver';
   contentType: string;
   fileName?: string;
   entityId?: string;
@@ -52,6 +52,7 @@ const TYPE_PREFIX_MAP: Record<string, string> = {
   weather: 'track-weather/',
   map: 'track-images/',
   championship: 'championship-logos/',
+  driver: 'drivers/',
 };
 
 /**
@@ -228,7 +229,7 @@ async function handlePresign(request: Request, env: Env): Promise<Response> {
     if (!TYPE_PREFIX_MAP[body.type]) {
       return new Response(
         JSON.stringify({
-          error: 'Bad Request: Invalid type. Must be "weather", "map", or "championship"',
+          error: 'Bad Request: Invalid type. Must be "weather", "map", "championship", or "driver"',
         }),
         {
           status: 400,

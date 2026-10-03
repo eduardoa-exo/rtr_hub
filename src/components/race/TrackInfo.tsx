@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { uploadMedia } from "@/lib/r2Upload";
+import { mediaUrl } from "@/lib/mediaUrl";
 import { compressImage } from "@/lib/compressImage";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -287,7 +288,7 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
               className="w-full"
             >
               <img
-                src={info.weather_image.url}
+                src={mediaUrl(info.weather_image.url)}
                 alt={info.weather_image.description || "Weather forecast"}
                 loading="lazy"
                 decoding="async"
@@ -351,7 +352,7 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
             className="w-full"
           >
             <img
-              src={info.track_map.url}
+              src={mediaUrl(info.track_map.url)}
               alt={info.track_map.description || "Track map"}
               loading="lazy"
               decoding="async"
@@ -400,7 +401,7 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
             className="w-full"
           >
             <img
-              src={info.temperature_chart_image.url}
+              src={mediaUrl(info.temperature_chart_image.url)}
               alt="Gráfico de temperaturas"
               loading="lazy"
               decoding="async"
@@ -449,7 +450,7 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
             className="w-full"
           >
             <img
-              src={info.precip_chart_image.url}
+              src={mediaUrl(info.precip_chart_image.url)}
               alt="Gráfico de chuva e nuvens"
               loading="lazy"
               decoding="async"
@@ -488,7 +489,7 @@ export function TrackInfo({ raceId }: TrackInfoProps) {
               </button>
               <div className="rounded-lg bg-black/30 p-2">
                 <img
-                  src={expandedImage.url}
+                  src={mediaUrl(expandedImage.url)}
                   alt={expandedImage.title}
                   loading="lazy"
                   decoding="async"

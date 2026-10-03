@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Users, Loader2, ChevronDown, ChevronUp } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 import { useDrivers } from "@/hooks/queries/useDrivers";
+import { mediaUrl } from "@/lib/mediaUrl";
 import {
   Dialog,
   DialogContent,
@@ -28,7 +29,7 @@ function DriverCard({ driver, onClick, compact = false }: { driver: Driver; onCl
       >
         {driver.image_url ? (
           <img
-            src={driver.image_url}
+            src={mediaUrl(driver.image_url)}
             alt={driver.name}
             loading="lazy"
             decoding="async"
@@ -61,7 +62,7 @@ function DriverCard({ driver, onClick, compact = false }: { driver: Driver; onCl
     >
       {driver.image_url ? (
         <img
-          src={driver.image_url}
+          src={mediaUrl(driver.image_url)}
           alt={driver.name}
           loading="lazy"
           decoding="async"
@@ -284,7 +285,7 @@ export function RaceDrivers({ driverIds, driverGroups }: RaceDriversProps) {
               <div className="h-32 w-32 sm:h-40 sm:w-40 md:h-56 md:w-56 rounded-full overflow-hidden border-2 border-primary/20 bg-secondary/50 flex items-center justify-center shrink-0">
                 {selectedDriver.image_url ? (
                   <img
-                    src={selectedDriver.image_url}
+                    src={mediaUrl(selectedDriver.image_url)}
                     alt={selectedDriver.name}
                     loading="lazy"
                     decoding="async"

@@ -6,6 +6,7 @@ import { RacingLoader } from "@/components/RacingLoader";
 import { supabase } from "@/integrations/supabase/client";
 import { compressImage } from "@/lib/compressImage";
 import { uploadMedia } from "@/lib/r2Upload";
+import { mediaUrl } from "@/lib/mediaUrl";
 import { PageShell } from "@/components/layout/PageShell";
 import { PageHero } from "@/components/layout/PageHero";
 import { Button } from "@/components/ui/button";
@@ -140,7 +141,7 @@ export default function Pilotos() {
 
       const { publicUrl } = await uploadMedia({
         file: compressed,
-        type: "championship",
+        type: "driver",
         authToken: session.access_token,
         entityId: driverId,
       });
@@ -326,7 +327,7 @@ export default function Pilotos() {
                   <div className="flex h-20 w-20 sm:h-24 sm:w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-primary/15 to-secondary ring-2 ring-white/5 mb-4">
                     {driver.image_url ? (
                       <img
-                        src={driver.image_url}
+                        src={mediaUrl(driver.image_url)}
                         alt={driver.name}
                         loading="lazy"
                         decoding="async"
@@ -430,7 +431,7 @@ export default function Pilotos() {
               <div className="flex items-center gap-3">
                 {form.image_url && (
                   <img
-                    src={form.image_url}
+                    src={mediaUrl(form.image_url)}
                     alt="Preview"
                     className="h-16 w-16 rounded-full object-cover border-2 border-primary/20"
                   />

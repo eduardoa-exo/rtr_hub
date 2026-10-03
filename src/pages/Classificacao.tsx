@@ -10,6 +10,7 @@ import { compressImage } from "@/lib/compressImage";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { useToast } from "@/hooks/use-toast";
 import { uploadMedia } from "@/lib/r2Upload";
+import { mediaUrl } from "@/lib/mediaUrl";
 import { useStandings } from "@/hooks/queries/useStandings";
 import { queryKeys } from "@/hooks/queries/queryKeys";
 import {
@@ -715,7 +716,7 @@ export default function Classificacao() {
                         <td className="hidden sm:table-cell py-3 px-3">
                           {standing.car_logo_url ? (
                             <img
-                              src={standing.car_logo_url}
+                              src={mediaUrl(standing.car_logo_url)}
                               alt="Car logo"
                               loading="lazy"
                               decoding="async"
@@ -900,7 +901,7 @@ export default function Classificacao() {
               )}
               {form.car_logo_url && (
                 <img
-                  src={form.car_logo_url}
+                  src={mediaUrl(form.car_logo_url)}
                   alt="Preview"
                   className="mt-2 h-16 w-16 object-contain border rounded"
                 />
