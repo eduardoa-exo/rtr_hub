@@ -327,11 +327,11 @@ export function Header() {
           aria-label="Ric Team Racing"
         >
           <img
-            src="/images/ric-team-racing-wordmark.png"
+            src="/images/rtr_logo.png"
             alt="Ric Team Racing"
-            width={350}
-            height={34}
-            className="h-5 w-auto sm:h-6 md:h-7"
+            width={1448}
+            height={1086}
+            className="h-14 w-auto sm:h-[4.5rem] md:h-20"
             decoding="async"
           />
         </Link>
