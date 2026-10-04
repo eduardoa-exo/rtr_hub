@@ -1,0 +1,210 @@
+import { useEffect, useRef, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys } from "./queryKeys";
+
+const COLD_STALE_MS = 10 * 60 * 1000;
+
+/** Shared Realtime channel for session singleton — one per tab. */
+let sessionChannel = null;
+let sessionChannelRefCount = 0;
+const sessionVersionListeners = new Set();
+
+function ensureSessionChannel() {
+  if (sessionChannel) return;
+  sessionChannel = supabase
+    .channel("scoreboard-live-session-signal")
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "scoreboard_live_session",
+        filter: "id=eq.1",
+      },
+      (payload) => {
+        const next = payload.new;
+        if (!next || typeof next !== "object") return;
+        for (const listener of sessionVersionListeners) {
+          listener(next);
+        }
+      },
+    )
+    .subscribe();
+}
+
+function acquireSessionChannel(listener) {
+  sessionVersionListeners.add(listener);
+  sessionChannelRefCount += 1;
+  ensureSessionChannel();
+  return () => {
+    sessionVersionListeners.delete(listener);
+    sessionChannelRefCount -= 1;
+    if (sessionChannelRefCount <= 0 && sessionChannel) {
+      void supabase.removeChannel(sessionChannel);
+      sessionChannel = null;
+      sessionChannelRefCount = 0;
+    }
+  };
+}
+
+/** Cold standings — long staleTime, no Realtime. */
+export function useScoreboardStandings(selectedClass) {
+  return useQuery({
+    queryKey: queryKeys.standings.byClass(selectedClass),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("championship_standings")
+        .select(
+          "car_number, team_name, points, rank, class, country_code, car_logo_url",
+        )
+        .eq("class", selectedClass)
+        .order("rank", { ascending: true });
+      if (error) throw error;
+      return data ?? [];
+    },
+    staleTime: COLD_STALE_MS,
+    refetchOnWindowFocus: false,
+  });
+}
+
+/** Cold points scale — long staleTime, no Realtime. */
+export function useRacePointsScale() {
+  return useQuery({
+    queryKey: queryKeys.racePointsScale.all,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("race_points_scale")
+        .select("class, position, points")
+        .order("position", { ascending: true });
+      if (error) throw error;
+      return data ?? [];
+    },
+    staleTime: COLD_STALE_MS,
+    refetchOnWindowFocus: false,
+  });
+}
+
+export function useScoreboardLiveSession() {
+  const queryClient = useQueryClient();
+
+  const query = useQuery({
+    queryKey: queryKeys.scoreboardLive.session(),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("scoreboard_live_session")
+        .select("id, enabled, championship_class, grid_version, updated_at")
+        .eq("id", 1)
+        .maybeSingle();
+      if (error) throw error;
+      if (!data) return null;
+      return {
+        ...data,
+        championship_class: data.championship_class,
+        grid_version: Number(data.grid_version ?? 0),
+      };
+    },
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
+  });
+
+  useEffect(() => {
+    return acquireSessionChannel((next) => {
+      queryClient.setQueryData(queryKeys.scoreboardLive.session(), (prev) => {
+        if (!prev) {
+          return {
+            id: 1,
+            enabled: Boolean(next.enabled),
+            championship_class: next.championship_class ?? "BOTH",
+            grid_version: Number(next.grid_version ?? 0),
+            updated_at: String(next.updated_at ?? new Date().toISOString()),
+          };
+        }
+        return {
+          ...prev,
+          ...next,
+          championship_class:
+            next.championship_class ?? prev.championship_class,
+          grid_version: Number(next.grid_version ?? prev.grid_version),
+          enabled:
+            typeof next.enabled === "boolean" ? next.enabled : prev.enabled,
+        };
+      });
+    });
+  }, [queryClient]);
+
+  return query;
+}
+
+/**
+ * Live grid for one class. Refetches only when session.grid_version changes
+ * (debounced). NEVER subscribes to scoreboard_live_grid Realtime.
+ */
+export function useScoreboardLiveGrid(selectedClass, gridVersion, canFetch) {
+  const queryClient = useQueryClient();
+  const debounceRef = useRef(null);
+  const lastAppliedVersion = useRef(null);
+  const [optimisticSkipVersion, setOptimisticSkipVersion] = useState(null);
+
+  const query = useQuery({
+    queryKey: queryKeys.scoreboardLive.grid(selectedClass),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("scoreboard_live_grid")
+        .select(
+          "id, class, car_number, sort_order, participates, team_name, country_code, car_logo_url",
+        )
+        .eq("class", selectedClass)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data ?? [];
+    },
+    enabled: canFetch,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
+
+  useEffect(() => {
+    if (gridVersion === undefined || !canFetch) return;
+    if (lastAppliedVersion.current === null) {
+      lastAppliedVersion.current = gridVersion;
+      return;
+    }
+    if (lastAppliedVersion.current === gridVersion) return;
+    if (
+      optimisticSkipVersion !== null &&
+      gridVersion === optimisticSkipVersion
+    ) {
+      lastAppliedVersion.current = gridVersion;
+      setOptimisticSkipVersion(null);
+      return;
+    }
+
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      lastAppliedVersion.current = gridVersion;
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.scoreboardLive.grid(selectedClass),
+      });
+    }, 150);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [
+    gridVersion,
+    canFetch,
+    selectedClass,
+    queryClient,
+    optimisticSkipVersion,
+  ]);
+
+  return {
+    ...query,
+    /** Call after local optimistic write that will echo the same grid_version. */
+    markOptimisticVersion: (version) => {
+      setOptimisticSkipVersion(version);
+      lastAppliedVersion.current = version;
+    },
+  };
+}
