@@ -25,6 +25,7 @@ const Palmares = lazy(() => import("./pages/Palmares"));
 const Pilotos = lazy(() => import("./pages/Pilotos"));
 const Calendario = lazy(() => import("./pages/Calendario"));
 const Classificacao = lazy(() => import("./pages/Classificacao"));
+const Trofeus = lazy(() => import("./pages/Trofeus"));
 const ScoreboardLive = lazy(() => import("./pages/ScoreboardLive"));
 
 const queryClient = new QueryClient({
@@ -66,6 +67,7 @@ const App = () => (
                 <Route path="/palmares" element={<Palmares />} />
                 <Route path="/pilotos" element={<Pilotos />} />
                 <Route path="/classificacao" element={<Classificacao />} />
+                <Route path="/trofeus" element={<Trofeus />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/redes" element={<RedesSociais />} />

@@ -5,6 +5,18 @@
 @tailwind utilities;
 
 @layer base {
+  *,
+  *::before,
+  *::after {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  input, textarea, [contenteditable="true"] {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
   :root {
     /* Palette B — neon lead: BG #1a0443 · CTA #ffff00 · secondary #c119f5 */
     --background: 261 89% 14%; /* #1a0443 */

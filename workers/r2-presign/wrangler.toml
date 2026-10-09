@@ -17,7 +17,7 @@ R2_PUBLIC_BASE = "https://pub-f0a47a1e0660483ca04c343f23495c08.r2.dev"
 # ALLOWED_ORIGINS - comma-separated list of allowed origins for CORS
 # Example: "http://localhost:5173,https://your-app.vercel.app"
 # IMPORTANT: Set this before deployment!
-ALLOWED_ORIGINS = "http://localhost:5173,http://localhost:4173,https://ricteamracing.vercel.app,https://www.ricteamracing.pt,https://ricteamracing.pt"
+ALLOWED_ORIGINS = "http://localhost:5173,http://localhost:4173,http://localhost:8081,http://192.168.0.175:8081,https://ricteamracing.vercel.app,https://www.ricteamracing.pt,https://ricteamracing.pt"
 
 # Secrets (set using wrangler secret put <NAME>)
 # Run these commands to set secrets:

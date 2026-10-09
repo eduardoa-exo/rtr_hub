@@ -30,6 +30,9 @@ export const queryKeys = {
   achievements: {
     all: ["achievements"],
   },
+  trophies: {
+    all: ["trophies"],
+  },
   images: {
     landing: () => ["images", "landing"],
   },

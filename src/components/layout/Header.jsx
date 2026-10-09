@@ -17,6 +17,7 @@ import {
   ChevronDown,
   Menu,
   X,
+  Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -33,6 +34,7 @@ const baseNavItems = [
     items: [
       { path: "/classificacao", label: "Classificação", icon: BarChart3 },
       { path: "/palmares", label: "Palmarés", icon: Trophy },
+      { path: "/trofeus", label: "Troféus", icon: Award },
     ],
   },
   {

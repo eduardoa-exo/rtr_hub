@@ -24,6 +24,7 @@ const TYPE_PREFIX_MAP = {
   map: "track-images/",
   championship: "championship-logos/",
   driver: "drivers/",
+  trophy: "trophies/",
 };
 
 /**
@@ -206,7 +207,7 @@ async function handlePresign(request, env) {
       return new Response(
         JSON.stringify({
           error:
-            'Bad Request: Invalid type. Must be "weather", "map", "championship", or "driver"',
+            'Bad Request: Invalid type. Must be "weather", "map", "championship", "driver", or "trophy"',
         }),
         {
           status: 400,
