@@ -97,22 +97,20 @@ function PositionBadge({ position, size = "normal" }) {
 
 function StatsBar({ trophies }) {
   const counts = useMemo(() => {
-    const c = { p1: 0, p2: 0, p3: 0 };
+    const c = { p2: 0, p3: 0 };
     for (const t of trophies) {
       const p = t.position?.toUpperCase?.() ?? "";
-      if (p === "P1" || p === "1") c.p1++;
-      else if (p === "P2" || p === "2") c.p2++;
+      if (p === "P2" || p === "2") c.p2++;
       else if (p === "P3" || p === "3") c.p3++;
     }
     return c;
   }, [trophies]);
 
-  if (counts.p1 === 0 && counts.p2 === 0 && counts.p3 === 0) return null;
+  if (counts.p2 === 0 && counts.p3 === 0) return null;
 
   return (
     <div className="flex justify-center gap-4 sm:gap-6 mb-10">
       {[
-        { count: counts.p1, label: "Vitórias", color: "p1" },
         { count: counts.p2, label: "2º Lugar", color: "p2" },
         { count: counts.p3, label: "3º Lugar", color: "p3" },
       ].map(

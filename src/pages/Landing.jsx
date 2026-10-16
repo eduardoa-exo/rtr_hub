@@ -73,13 +73,6 @@ export default function Landing() {
               transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
               className="text-center max-w-3xl mx-auto px-4"
             >
-              <p className="font-racing text-sm sm:text-base uppercase tracking-[0.28em] text-white/85 mb-4">
-                <span className="text-gradient-racing">RTR</span>{" "}
-                <span className="text-white/80">Racing</span>
-              </p>
-              <h1 className="font-racing text-3xl sm:text-5xl md:text-6xl font-bold mb-5 tracking-tight text-white">
-                Sim racing de resistência
-              </h1>
               <p className="text-white/70 text-base sm:text-lg mb-8 font-light tracking-wide max-w-xl mx-auto">
                 Acompanha as nossas corridas, classificação e calendário em
                 direto.
