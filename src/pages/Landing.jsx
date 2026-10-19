@@ -3,10 +3,6 @@ import { PageShell } from "@/components/layout/PageShell";
 import { CarScrollSequence } from "@/components/landing/CarScrollSequence";
 import { useLandingImages } from "@/hooks/queries/useLandingImages";
 
-/** Hino da equipa — https://www.youtube.com/watch?v=xcFs9jls1z8 */
-const TEAM_ANTHEM_IFRAME_SRC =
-  "https://www.youtube.com/embed/xcFs9jls1z8?autoplay=0&playsinline=1&rel=0&modestbranding=1";
-
 export default function Landing() {
   const { data: landingImages = [] } = useLandingImages();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -63,23 +59,6 @@ export default function Landing() {
 
       <div className="relative z-10">
         <CarScrollSequence />
-
-        <section className="relative overflow-hidden border-t border-white/10 min-h-[70vh] flex items-center">
-          <div className="container relative flex w-full flex-col items-center justify-center py-12 sm:py-16">
-            <h2 className="font-racing mb-6 text-center text-base font-bold uppercase tracking-[0.2em] text-white/80 sm:text-lg">
-              Hino da equipa
-            </h2>
-            <div className="mx-auto aspect-video w-full max-w-3xl overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-2xl">
-              <iframe
-                src={TEAM_ANTHEM_IFRAME_SRC}
-                title="Hino da equipa — RTR Racing"
-                className="block h-full w-full border-0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </section>
       </div>
     </PageShell>
   );

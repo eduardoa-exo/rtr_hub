@@ -8,3 +8,7 @@ export const CAR_SCROLL_VIDEO = {
   mobile: "/videos/landing-lap-720.mp4",
   poster: "/images/landing/scroll/poster.webp",
 };
+
+/** Hino da equipa — https://www.youtube.com/watch?v=xcFs9jls1z8 */
+export const TEAM_ANTHEM_IFRAME_SRC =
+  "https://www.youtube.com/embed/xcFs9jls1z8?autoplay=0&playsinline=1&rel=0&modestbranding=1";

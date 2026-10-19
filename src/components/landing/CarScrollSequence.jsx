@@ -3,7 +3,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { Link } from "react-router-dom";
 import { Flag, ChevronRight, Calendar, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CAR_SCROLL_VIDEO } from "@/data/carScroll";
+import { CAR_SCROLL_VIDEO, TEAM_ANTHEM_IFRAME_SRC } from "@/data/carScroll";
 
 const STAGE_CLASSES =
   "sticky top-16 sm:top-20 md:top-24 h-[calc(100svh-4rem)] sm:h-[calc(100svh-5rem)] md:h-[calc(100svh-6rem)] overflow-hidden bg-black";
@@ -21,14 +21,14 @@ const CARD_CLASSES =
 /** Track-side boards: `range` is the scroll window in which the car approaches and passes it. */
 const BOARDS = [
   {
-    range: [0.1, 0.38],
+    range: [0.08, 0.3],
     side: -1,
     kicker: "#88 · GT3",
     title: "BMW M4 GT3",
     text: "O carro da Ric Team Racing na classe GT3, com a pintura da equipa em branco, magenta e roxo.",
   },
   {
-    range: [0.4, 0.68],
+    range: [0.3, 0.52],
     side: 1,
     kicker: "Endurance",
     title: "6, 8, 10, 12 e 24 horas",
@@ -184,7 +184,7 @@ export function CarScrollSequence() {
     <section
       ref={sectionRef}
       aria-label="Uma volta a bordo do #88"
-      className="relative h-[600vh]"
+      className="relative h-[700vh]"
     >
       <div className={STAGE_CLASSES}>
         {reduceMotion ? (
@@ -259,7 +259,31 @@ export function CarScrollSequence() {
 
           <TrackBoard
             progress={scrollYProgress}
-            range={[0.7, 0.9]}
+            range={[0.52, 0.76]}
+            side={-1}
+            isMobile={isMobile}
+            reduceMotion={reduceMotion}
+          >
+            <div className={`${CARD_CLASSES} sm:w-[34rem]`}>
+              <p className="mb-4 font-racing text-xs uppercase tracking-[0.28em] text-primary">
+                Hino da equipa
+              </p>
+              <div className="aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-black/40">
+                <iframe
+                  src={TEAM_ANTHEM_IFRAME_SRC}
+                  title="Hino da equipa — RTR Racing"
+                  loading="lazy"
+                  className="block h-full w-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          </TrackBoard>
+
+          <TrackBoard
+            progress={scrollYProgress}
+            range={[0.78, 0.94]}
             settle
             isMobile={isMobile}
             reduceMotion={reduceMotion}
