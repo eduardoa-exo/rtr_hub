@@ -1,13 +1,13 @@
 /**
- * Landing scroll animation — frames of an iRacing replay served from `public/`.
- * To swap the video: replace the files under `public/images/landing/scroll/{desktop,mobile}/`
- * (f0001.webp … f0200.webp) and update `CAR_SCROLL_FRAME_COUNT` if the count changes.
+ * Landing scroll animation — an iRacing replay scrubbed by scroll, served from `public/`.
+ * Encode as H.264 with a keyframe every few frames and no B-frames so seeking stays smooth:
+ * `-c:v libx264 -crf 21 -g 6 -keyint_min 6 -sc_threshold 0 -bf 0 -an -movflags +faststart`.
  */
-export const CAR_SCROLL_FRAME_COUNT = 200;
-
-export function carScrollFrameUrl(set, index) {
-  return `/images/landing/scroll/${set}/f${String(index + 1).padStart(4, "0")}.webp`;
-}
+export const CAR_SCROLL_VIDEO = {
+  desktop: "/videos/landing-lap-1080.mp4",
+  mobile: "/videos/landing-lap-720.mp4",
+  poster: "/images/landing/scroll/poster.webp",
+};
 
 export const CAR_GALLERY = [
   { id: "car-01", alt: "O #88 no infield, ao fim da tarde" },
