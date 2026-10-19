@@ -27,7 +27,7 @@ export default function Landing() {
       : null;
 
   return (
-    <PageShell>
+    <PageShell hideFooter>
       {activeImage ? (
         <div className="pointer-events-none fixed inset-0 z-0">
           <img
