@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Flag, ChevronRight, Calendar, ArrowDown } from "lucide-react";
+import { Flag, ChevronRight, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CAR_SCROLL_VIDEO, TEAM_ANTHEM_IFRAME_SRC } from "@/data/carScroll";
 
@@ -117,7 +117,6 @@ export function CarScrollSequence() {
   const heroZ = useTransform(scrollYProgress, [0, 0.08], reduceMotion ? [0, 0] : [0, Z_PASS]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.07], [1, 0]);
   const heroPointerEvents = useTransform(heroOpacity, (o) => (o > 0.3 ? "auto" : "none"));
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.03], [1, 0]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -178,6 +177,55 @@ export function CarScrollSequence() {
       video.load();
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
+  }, [reduceMotion, scrollYProgress]);
+
+  // Plays the lap on open by scrolling the page at the video's real pace, so the boards pass too.
+  // The first user input hands control back for good; it ends on the finish card.
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    if (!video || !section || reduceMotion) return undefined;
+
+    const inputs = ["wheel", "touchstart", "keydown", "pointerdown"];
+    let raf = 0;
+    let timer = 0;
+    let stopped = false;
+
+    function stop() {
+      stopped = true;
+      window.clearTimeout(timer);
+      cancelAnimationFrame(raf);
+      inputs.forEach((type) => window.removeEventListener(type, stop));
+      video.removeEventListener("loadeddata", schedule);
+    }
+
+    function drive() {
+      if (stopped || scrollYProgress.get() >= 0.02 || !video.duration) return;
+      const startY = section.getBoundingClientRect().top + window.scrollY;
+      const endY = document.documentElement.scrollHeight - window.innerHeight;
+      const speed = (endY - startY) / video.duration;
+      let y = Math.max(window.scrollY, startY);
+      let last = performance.now();
+      const step = (now) => {
+        const dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+        y = Math.min(endY, y + speed * dt);
+        window.scrollTo(0, y);
+        if (y >= endY) stop();
+        else raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }
+
+    function schedule() {
+      timer = window.setTimeout(drive, 1500);
+    }
+
+    inputs.forEach((type) => window.addEventListener(type, stop, { passive: true }));
+    if (video.readyState >= 2) schedule();
+    else video.addEventListener("loadeddata", schedule, { once: true });
+
+    return stop;
   }, [reduceMotion, scrollYProgress]);
 
   return (
@@ -317,14 +365,6 @@ export function CarScrollSequence() {
             </div>
           </TrackBoard>
         </TrackLayer>
-
-        <motion.div
-          style={{ opacity: hintOpacity }}
-          className="pointer-events-none absolute left-1/2 top-6 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap font-racing text-[10px] uppercase tracking-[0.2em] text-white/80 sm:text-[11px] sm:tracking-[0.26em]"
-        >
-          <ArrowDown className="h-4 w-4" />
-          Faz scroll para arrancar
-        </motion.div>
 
         <div className="pointer-events-none absolute inset-x-6 bottom-6 flex items-center gap-4 sm:inset-x-10">
           <span className="font-racing text-[11px] tracking-[0.22em] text-primary">#88</span>
