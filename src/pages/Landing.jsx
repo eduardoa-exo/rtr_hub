@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { Flag, ChevronRight, Calendar } from "lucide-react";
 import { PageShell } from "@/components/layout/PageShell";
-import { Button } from "@/components/ui/button";
+import { CarScrollSequence } from "@/components/landing/CarScrollSequence";
+import { CarScrollGallery } from "@/components/landing/CarScrollGallery";
 import { useLandingImages } from "@/hooks/queries/useLandingImages";
 
 /** Hino da equipa — https://www.youtube.com/watch?v=xcFs9jls1z8 */
@@ -65,61 +63,8 @@ export default function Landing() {
       <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,_hsl(60_100%_50%_/_0.08),_transparent_60%)]" />
 
       <div className="relative z-10">
-        <section className="relative overflow-hidden h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)]">
-          <div className="container relative h-full flex flex-col items-center justify-center pb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              className="text-center max-w-3xl mx-auto px-4"
-            >
-              <p className="text-white/70 text-base sm:text-lg mb-8 font-light tracking-wide max-w-xl mx-auto">
-                Acompanha as nossas corridas, classificação e calendário em
-                direto.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link to="/live">
-                  <Button
-                    size="lg"
-                    className="btn-racing text-sm gap-2.5 px-8 py-3.5"
-                  >
-                    <Flag className="h-5 w-5" />
-                    Ver corrida em direto
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link to="/calendario">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="btn-racing-secondary text-sm gap-2 px-8 py-3.5 backdrop-blur-sm"
-                  >
-                    <Calendar className="h-4 w-4" />
-                    Calendário
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-
-            {landingImages.length > 1 && (
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center justify-center gap-2">
-                {landingImages.map((img, index) => (
-                  <button
-                    key={`slide-${img.id}`}
-                    type="button"
-                    onClick={() => setCurrentSlide(index)}
-                    className={`h-2 w-8 rounded-full transition-colors ${
-                      index === currentSlide
-                        ? "bg-white"
-                        : "bg-white/40 hover:bg-white/60"
-                    }`}
-                    aria-label={`Ir para slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
+        <CarScrollSequence />
+        <CarScrollGallery />
 
         <section className="relative overflow-hidden border-t border-white/10 min-h-[70vh] flex items-center">
           <div className="container relative flex w-full flex-col items-center justify-center py-12 sm:py-16">
