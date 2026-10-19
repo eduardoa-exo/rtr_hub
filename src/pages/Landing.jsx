@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { PageShell } from "@/components/layout/PageShell";
 import { CarScrollSequence } from "@/components/landing/CarScrollSequence";
-import { CarScrollGallery } from "@/components/landing/CarScrollGallery";
 import { useLandingImages } from "@/hooks/queries/useLandingImages";
 
 /** Hino da equipa — https://www.youtube.com/watch?v=xcFs9jls1z8 */
@@ -64,7 +63,6 @@ export default function Landing() {
 
       <div className="relative z-10">
         <CarScrollSequence />
-        <CarScrollGallery />
 
         <section className="relative overflow-hidden border-t border-white/10 min-h-[70vh] flex items-center">
           <div className="container relative flex w-full flex-col items-center justify-center py-12 sm:py-16">
